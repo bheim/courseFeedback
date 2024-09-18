@@ -1,19 +1,56 @@
+import sqlite3
+import time
+import pickle
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-import pickle
-import time
-from bs4 import BeautifulSoup
+from imageProcessor import process_image  # Assuming you have the process_image function in process_image.py
 
 # Load cookies from file and add to Selenium browser session
 def load_cookies(driver, cookies_file):
     with open(cookies_file, 'rb') as file:
         cookies = pickle.load(file)
-    
+
     for cookie in cookies:
         if 'expiry' in cookie:
             cookie['expiry'] = int(cookie['expiry'])
         driver.add_cookie(cookie)
+
+# Extract the course header information (course name, instructors, quarter)
+def extract_header_info(driver):
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    header = soup.find('div', class_='header')
+
+    # Get course name and instructors
+    course_info = header.find('h2').text.strip()
+    course_name = course_info.split(" - ")[0].strip()  # Extract course name
+    if "Instructor(s)" in course_info:
+        # Split on 'Instructor(s)' to get the part after it
+        instructor_part = course_info.split("Instructor(s)")[1].strip()
+
+        # Remove any leading colons if they exist (to handle both formats)
+        if instructor_part.startswith(":"):
+            instructor_part = instructor_part[1:].strip()
+
+        # Split by comma if there are multiple instructors, else just return a single instructor
+        instructors = [instructor.strip() for instructor in instructor_part.split(",")]
+    else:
+        instructors = []  # Default to empty list if no instructors are found
+
+
+    # Get quarter information by looking for the correct <span> tag or by the Project Title field
+    project_title_element = header.find('span', id=lambda x: x and 'ProjectTitle' in x)
+    
+    if project_title_element:
+        quarter_info = project_title_element.find_next('dd').text.strip()
+        quarter = " ".join(quarter_info.split()[-2:])  # Extract the last two words (e.g., 'Autumn 2022')
+    else:
+        # If the element isn't found, provide a fallback
+        quarter = "Unknown Quarter"
+
+    return course_name, instructors, quarter
+
 
 # Extract rating tables with questions and ratings
 def extract_rating_tables(driver):
@@ -22,141 +59,208 @@ def extract_rating_tables(driver):
     
     # Loop through all report blocks
     for block in soup.find_all('div', class_='report-block'):
-        # Extract title from h3 or h4 elements
         title = block.find(['h3', 'h4'], class_='ReportBlockTitle')
         if title:
             table_title = title.text.strip()
             table_data = []
-            
+
             # Find the table within the block
             table = block.find('table', class_='CondensedTabular')
             if table:
-                # Extract headers, skipping the first header
                 headers = [th.text.strip() for th in table.find_all('th')[1:]]
-                
-                # Loop through the rows of the table, skipping the first header row
                 for row in table.find_all('tr')[1:]:
                     cells = row.find_all(['th', 'td'])
                     if cells:
-                        # Collect the question and its corresponding ratings
                         row_data = {
-                            'question': cells[0].text.strip(),  # First column is the question
+                            'question': cells[0].text.strip(),
                             **{headers[i]: cells[i+1].text.strip() for i in range(len(headers)) if i+1 < len(cells)}
                         }
                         table_data.append(row_data)
             
-            # Add the data for this table to the results
             tables[table_title] = table_data
-    
-    # Collect relevant data
-    rating_table = tables.get('Please respond to the following:', [])
-    question_means = {}
-    valid_question_indices = [1, 2, 3, 5, 6, 7, 8]
-
-    for index, row in enumerate(rating_table, start=1):
-        if index in valid_question_indices:
-            question = row['question']
-            mean_value = row.get('Mean', None)
-            if mean_value:
-                question_means[question] = mean_value
-
-    print(question_means)
-
-    rating_table = tables.get('The Instructor . . .', [])
-    specific_instructor_question_means = {}
-    specific_questions = [
-        'Organized the course clearly.',
-        'Challenged you to learn.',
-        'Helped you gain significant learning from the course content.',
-        'Motivated you to think independently.',
-        'Worked to create an inclusive and welcoming learning environment.'
-    ]
-
-    for row in rating_table:
-        question = row['question']
-        if question in specific_questions:
-            mean_value = row.get('Mean')
-            if mean_value is not None:
-                specific_instructor_question_means[question] = mean_value
-
-    print(specific_instructor_question_means)
 
     return tables
 
-# Extract class, instructors, and quarter information from header
-def extract_header_info(driver):
+# Extract the instructor rating value from "The Instructor . . ." table
+def extract_instructor_rating_value(tables, question_title):
+    rating_table = tables.get('The Instructor . . .', [])
+    
+    for row in rating_table:
+        if row['question'] == question_title:
+            return float(row.get('Mean', 0))
+    
+    return None
+
+# Extract the image URL based on the question title
+def extract_image_url(driver, question_title):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    
-    # Find the header block
-    header = soup.find('div', class_='header')
-    
-    if header:
-        # Extract course and instructors
-        course_info = header.find('h2').text if header.find('h2') else ""
-        class_code = course_info.split(' ')[0] if course_info else ""  # Extract "CMSC 14100"
-        instructors_info = course_info.split('Instructor(s): ')[-1] if 'Instructor(s): ' in course_info else ""
-        instructors = [instructor.strip() for instructor in instructors_info.split(',')] if instructors_info else []
-        
-        # Find the project title element and extract its text
-        project_title_element = header.find('dd')
-        project_title = project_title_element.text.strip() if project_title_element else ""
-        
-        # Define possible quarter names
-        quarters = ["Autumn", "Winter", "Spring", "Summer"]
-        
-        # Search for the quarter and year within the project title text
-        quarter_info = next((q for q in quarters if q in project_title), "")
-        
-        # Append the year following the quarter if the quarter is found
-        if quarter_info:
-            year = project_title.split(quarter_info)[-1].strip()  # Extract the year
-            quarter_info = f"{quarter_info} {year}"
+    image_block = soup.find('span', text=question_title).find_next('div', class_='FrequencyBlock_chart')
+    img_tag = image_block.find('img')
+    img_url = img_tag['src']
+    return img_url
 
-        # Return extracted information as a dictionary
-        return {
-            'class_code': class_code,
-            'instructors': instructors,
-            'quarter': quarter_info
-        }
+# Insert professors into the professors table
+def insert_professors(professors, dept, conn):
+    cursor = conn.cursor()
+    professor_ids = []
+    
+    for professor in professors:
+        first_name, last_name = professor.split()
+        cursor.execute("""
+            SELECT id FROM professors WHERE first_name = ? AND last_name = ? AND dept = ?
+        """, (first_name, last_name, dept))
+        result = cursor.fetchone()
 
-    return {}
+        if result is None:
+            cursor.execute("""
+                INSERT INTO professors (dept, first_name, last_name) 
+                VALUES (?, ?, ?)
+            """, (dept, first_name, last_name))
+            professor_id = cursor.lastrowid
+        else:
+            professor_id = result[0]
+        
+        professor_ids.append(professor_id)
+    
+    return professor_ids
+
+# Insert course-professor mappings into courses_professors table
+def insert_course_professors(course_id, professor_ids, conn):
+    cursor = conn.cursor()
+    
+    for professor_id in professor_ids:
+        cursor.execute("""
+            INSERT INTO courses_professors (course_id, professor_id) 
+            VALUES (?, ?)
+        """, (course_id, professor_id))
+
+    conn.commit()
+
+# Insert course data into the courses table
+def insert_course_data(course_data, conn):
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO courses 
+        (dept, quarter, course_id, challenge_intellect, purpose, standards, feedback, fairness, respect, excellence, organization, challenge, available, inclusive, significant, less_five, five_to_ten, ten_to_fifteen, fifteen_to_twenty, twenty_to_twenty_five, twenty_five_to_thirty, more_thirty)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        course_data['dept'], course_data['quarter'], course_data['course_id'], 
+        course_data['challenge_intellect'], course_data['purpose'], course_data['standards'], 
+        course_data['feedback'], course_data['fairness'], course_data['respect'], 
+        course_data['excellence'], course_data['organization'], course_data['challenge'], 
+        course_data['available'], course_data['inclusive'], course_data['significant'], 
+        course_data['less_five'], course_data['five_to_ten'], course_data['ten_to_fifteen'], 
+        course_data['fifteen_to_twenty'], course_data['twenty_to_twenty_five'], 
+        course_data['twenty_five_to_thirty'], course_data['more_thirty']
+    ))
+
+    course_id = cursor.lastrowid
+    conn.commit()
+    return course_id
+
+# Extract specific rating values dynamically
+def extract_rating_value(tables, question_title):
+    rating_table = tables.get('Please respond to the following:', [])
+    
+    for row in rating_table:
+        if row['question'] == question_title:
+            return float(row.get('Mean', 0))
+    
+    return None
+
+
+def processLink(driver, link):
+    
+    driver.get(link)
+    time.sleep(2)
+
+    # Step 1: Extract header info (course name, instructors, quarter)
+    course_name, instructors, quarter = extract_header_info(driver)
+    dept = course_name.split()[0]  # Extract the department dynamically from course name
+
+    # Step 2: Extract rating tables
+    rating_tables = extract_rating_tables(driver)
+
+    # Step 3: Extract image URL for hours worked and process it
+    image_url = extract_image_url(driver, "How many hours per week outside of attending required sessions did you spend on this course?")
+    counts = process_image(image_url)  # Process the image to get the counts
+
+    # Convert counts to percentages
+    total_responses = sum(counts.values())
+    percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()}
+
+    extract_header_info(driver)
+
+    # Step 4: Extract dynamic rating values for specific questions
+    allData = {
+    "instructors": instructors,
+    "dept": dept,
+    "quarter": quarter,
+    "course_data": {
+        'dept': dept,
+        'quarter': quarter,
+        'course_id': int(course_name.split()[1]),
+        'challenge_intellect': extract_rating_value(rating_tables, "This course challenged me intellectually."),
+        'purpose': extract_rating_value(rating_tables, "I understood the purpose of this course and what I was expected to gain from it."),
+        'standards': extract_rating_value(rating_tables, "I understood the standards for success on assignments."),
+        'feedback': extract_rating_value(rating_tables, "I received feedback on my performance that helped me improve my subsequent work."),
+        'fairness': extract_rating_value(rating_tables, "My work was evaluated fairly."),
+        'respect': extract_rating_value(rating_tables, "I felt respected in this class."),
+        'excellence': extract_rating_value(rating_tables, "Overall, this was an excellent course."),
+        'organization': extract_instructor_rating_value(rating_tables, "Organized the course clearly."),
+        'challenge': extract_instructor_rating_value(rating_tables, "Challenged you to learn."),
+        'available': extract_instructor_rating_value(rating_tables, "Was available and helpful outside of class."),
+        'inclusive': extract_instructor_rating_value(rating_tables, "Worked to create an inclusive and welcoming learning environment."),
+        'significant': extract_instructor_rating_value(rating_tables, "Helped you gain significant learning from the course content."),
+        'less_five': percentages.get('<5 hours', None),
+        'five_to_ten': percentages.get('5-10 hours', None),
+        'ten_to_fifteen': percentages.get('10-15 hours', None),
+        'fifteen_to_twenty': percentages.get('15-20 hours', None),
+        'twenty_to_twenty_five': percentages.get('20-25 hours', None),
+        'twenty_five_to_thirty': percentages.get('25-30 hours', None),
+        'more_thirty': percentages.get('>30 hours', None)
+    }
+    }
+
+    return allData
 
 
 # Main function to control Selenium
 def main():
-    # Set up Chrome WebDriver
+        
     chrome_options = Options()
-    driver_service = Service("/opt/homebrew/bin/chromedriver")  # Use the specified path for ChromeDriver
+    driver_service = Service("/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=driver_service, options=chrome_options)
 
-    try:
-        # Open the initial page to set domain for the cookies
-        driver.get('https://uchicago.bluera.com/uchicago/')  # Open the base URL first
+    driver.get('https://uchicago.bluera.com/uchicago/')  # Open the base URL first
+    cookies_file = 'cookies.pkl'  # Path to your cookies.pkl
+    load_cookies(driver, cookies_file)
+    driver.refresh()
 
-        # Load the cookies to bypass login
-        cookies_file = 'cookies.pkl'  # Path to your cookies.pkl
-        load_cookies(driver, cookies_file)
+    # Open database connectiona
+    conn = sqlite3.connect('course_feedback.db')
+    connToLinks = sqlite3.connect('course_urls.db')
 
-        # Refresh the page after adding cookies to ensure they are applied
-        driver.refresh()
+    cursorToLinks = connToLinks.cursor()
+    cursorToLinks.execute("SELECT url FROM course_urls")
+    urls = cursorToLinks.fetchall()
 
-        # Feedback URL
-        feedback_url = 'https://uchicago.bluera.com/uchicago/rpvf-eng.aspx?lang=eng&redi=1&SelectedIDforPrint=36bbc414a9f8093e8449347498c17bf192f23487b2a70e7f9034ec973d66b5f8a2ddb38d6a5194397ce937729a24f994&ReportType=2&regl=en-US'
+    for url_tuple in urls:
+        url = url_tuple[0]
+        print(url)
+        allData = processLink(driver, url)
 
-        # Navigate to the feedback page
-        driver.get(feedback_url)
-        time.sleep(1)  # Ensure the page loads completely
+        # Step 5: Insert the course data into the courses table
+        course_id = insert_course_data(allData.get("course_data"), conn)
 
-        # Step 1: Extract the header information (class, instructors, quarter)
-        header_info = extract_header_info(driver)
-        print(f"Class Info: {header_info}")
+        # Step 6: Insert professors and course-professor mappings
+        professor_ids = insert_professors(allData.get("instructors"), allData.get("dept"), conn)
+        insert_course_professors(course_id, professor_ids, conn)
 
-        # Step 2: Extract the rating tables
-        rating_tables = extract_rating_tables(driver)
+    conn.close()
+    driver.quit()
 
-    finally:
-        # Close the browser
-        driver.quit()
+   
 
 if __name__ == "__main__":
     main()
