@@ -1,6 +1,7 @@
 import sqlite3
 import time
 import pickle
+import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -17,6 +18,11 @@ def load_cookies(driver, cookies_file):
             cookie['expiry'] = int(cookie['expiry'])
         driver.add_cookie(cookie)
 
+# Check if the quarter falls in the COVID-era (Spring 2020, Autumn 2020, Winter 2021, Spring 2021)
+def is_covid_era(quarter):
+    covid_quarters = ['Spring 2020', 'Autumn 2020', 'Winter 2021', 'Spring 2021']
+    return quarter in covid_quarters
+
 # Extract the course header information (course name, instructors, quarter)
 def extract_header_info(driver):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
@@ -30,14 +36,13 @@ def extract_header_info(driver):
         instructor_part = course_info.split("Instructor(s)")[1].strip()
 
         # Remove any leading colons if they exist (to handle both formats)
-        if instructor_part.startswith(":"):
+        if instructor_part.startswith(":") or instructor_part.startswith("-"):
             instructor_part = instructor_part[1:].strip()
 
         # Split by comma if there are multiple instructors, else just return a single instructor
         instructors = [instructor.strip() for instructor in instructor_part.split(",")]
     else:
         instructors = []  # Default to empty list if no instructors are found
-
 
     # Get quarter information by looking for the correct <span> tag or by the Project Title field
     project_title_element = header.find('span', id=lambda x: x and 'ProjectTitle' in x)
@@ -46,11 +51,9 @@ def extract_header_info(driver):
         quarter_info = project_title_element.find_next('dd').text.strip()
         quarter = " ".join(quarter_info.split()[-2:])  # Extract the last two words (e.g., 'Autumn 2022')
     else:
-        # If the element isn't found, provide a fallback
         quarter = "Unknown Quarter"
 
     return course_name, instructors, quarter
-
 
 # Extract rating tables with questions and ratings
 def extract_rating_tables(driver):
@@ -92,12 +95,26 @@ def extract_instructor_rating_value(tables, question_title):
     return None
 
 # Extract the image URL based on the question title
-def extract_image_url(driver, question_title):
+def extract_image_url(driver):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    image_block = soup.find('span', text=question_title).find_next('div', class_='FrequencyBlock_chart')
-    img_tag = image_block.find('img')
-    img_url = img_tag['src']
-    return img_url
+    
+    question_title = "How many hours per week outside of attending required sessions did you spend on this course?"
+
+    # Try to find the question in h3 or span tags
+    question_block = soup.find('h3', string=re.compile(re.escape(question_title), re.IGNORECASE))
+
+    if not question_block:
+        question_block = soup.find('span', string=re.compile(re.escape(question_title), re.IGNORECASE))
+        if not question_block:
+            return None
+
+    # Find the next div with class 'FrequencyBlock_chart' after the question block
+    image_chart_div = question_block.find_next('div', class_='FrequencyBlock_chart')
+    if image_chart_div:
+        img_tag = image_chart_div.find('img')
+        if img_tag and 'src' in img_tag.attrs:
+            return img_tag['src']
+    return None
 
 # Insert professors into the professors table
 def insert_professors(professors, dept, conn):
@@ -105,7 +122,16 @@ def insert_professors(professors, dept, conn):
     professor_ids = []
     
     for professor in professors:
-        first_name, last_name = professor.split()
+        name_parts = professor.split()
+        if len(name_parts) > 2:
+            if(len(name_parts) > 1):
+                first_name = name_parts[0]
+                last_name = "".join(name_parts[1:])
+            else:
+                first_name = name_parts[0] + " " + name_parts[1]
+                last_name = "".join(name_parts[2:])
+        else:
+            first_name, last_name = name_parts
         cursor.execute("""
             SELECT id FROM professors WHERE first_name = ? AND last_name = ? AND dept = ?
         """, (first_name, last_name, dept))
@@ -170,26 +196,31 @@ def extract_rating_value(tables, question_title):
 
 
 def processLink(driver, link):
-    
     driver.get(link)
     time.sleep(2)
 
     # Step 1: Extract header info (course name, instructors, quarter)
     course_name, instructors, quarter = extract_header_info(driver)
+
+    # Ignore the data if it falls within the COVID-19 quarters
+    if is_covid_era(quarter):
+        print(f"Skipping {course_name} for {quarter} (COVID-19 era)")
+        return None
+
     dept = course_name.split()[0]  # Extract the department dynamically from course name
 
     # Step 2: Extract rating tables
     rating_tables = extract_rating_tables(driver)
 
     # Step 3: Extract image URL for hours worked and process it
-    image_url = extract_image_url(driver, "How many hours per week outside of attending required sessions did you spend on this course?")
-    counts = process_image(image_url)  # Process the image to get the counts
-
-    # Convert counts to percentages
-    total_responses = sum(counts.values())
-    percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()}
-
-    extract_header_info(driver)
+    image_url = extract_image_url(driver)
+    if image_url:
+        counts = process_image(image_url)  # Process the image to get the counts
+        # Convert counts to percentages
+        total_responses = sum(counts.values())
+        percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()}
+    else:
+        percentages = {}
 
     # Step 4: Extract dynamic rating values for specific questions
     allData = {
@@ -212,12 +243,12 @@ def processLink(driver, link):
         'available': extract_instructor_rating_value(rating_tables, "Was available and helpful outside of class."),
         'inclusive': extract_instructor_rating_value(rating_tables, "Worked to create an inclusive and welcoming learning environment."),
         'significant': extract_instructor_rating_value(rating_tables, "Helped you gain significant learning from the course content."),
-        'less_five': percentages.get('<5 hours', None),
-        'five_to_ten': percentages.get('5-10 hours', None),
-        'ten_to_fifteen': percentages.get('10-15 hours', None),
-        'fifteen_to_twenty': percentages.get('15-20 hours', None),
-        'twenty_to_twenty_five': percentages.get('20-25 hours', None),
-        'twenty_five_to_thirty': percentages.get('25-30 hours', None),
+        'less_five': percentages.get('<5 hours', 0),
+        'five_to_ten': percentages.get('5-10 hours', 0),
+        'ten_to_fifteen': percentages.get('10-15 hours', 0),
+        'fifteen_to_twenty': percentages.get('15-20 hours', 0),
+        'twenty_to_twenty_five': percentages.get('20-25 hours', 0),
+        'twenty_five_to_thirty': percentages.get('25-30 hours', 0),
         'more_thirty': percentages.get('>30 hours', None)
     }
     }
@@ -229,6 +260,8 @@ def processLink(driver, link):
 def main():
         
     chrome_options = Options()
+    chrome_options.add_argument("--headless")  # Enable headless mode
+    chrome_options.add_argument("--disable-gpu") 
     driver_service = Service("/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=driver_service, options=chrome_options)
 
@@ -237,7 +270,7 @@ def main():
     load_cookies(driver, cookies_file)
     driver.refresh()
 
-    # Open database connectiona
+    # Open database connection
     conn = sqlite3.connect('course_feedback.db')
     connToLinks = sqlite3.connect('course_urls.db')
 
@@ -250,6 +283,9 @@ def main():
         print(url)
         allData = processLink(driver, url)
 
+        if allData is None:
+            continue
+
         # Step 5: Insert the course data into the courses table
         course_id = insert_course_data(allData.get("course_data"), conn)
 
@@ -259,8 +295,6 @@ def main():
 
     conn.close()
     driver.quit()
-
-   
 
 if __name__ == "__main__":
     main()
