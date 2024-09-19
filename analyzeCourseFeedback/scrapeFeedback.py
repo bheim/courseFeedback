@@ -116,22 +116,29 @@ def extract_image_url(driver):
             return img_tag['src']
     return None
 
-# Insert professors into the professors table
+# Insert professors into the professors table with error handling for missing names
 def insert_professors(professors, dept, conn):
     cursor = conn.cursor()
     professor_ids = []
     
     for professor in professors:
         name_parts = professor.split()
+        
+        if len(name_parts) == 0:
+            print(f"No professor name found for department: {dept}. Skipping insertion.")
+            continue  # Skip this professor if no name is provided
+
         if len(name_parts) > 2:
-            if(len(name_parts) > 1):
-                first_name = name_parts[0]
-                last_name = "".join(name_parts[1:])
-            else:
-                first_name = name_parts[0] + " " + name_parts[1]
-                last_name = "".join(name_parts[2:])
-        else:
+            first_name = name_parts[0]
+            last_name = " ".join(name_parts[1:])
+        elif len(name_parts) == 2:
             first_name, last_name = name_parts
+        else:
+            # If there's only one part (unlikely but possible), we'll treat it as the last name
+            first_name = ""
+            last_name = name_parts[0]
+            print(f"Only one name part found ('{last_name}') for department: {dept}. Inserting as last name only.")
+
         cursor.execute("""
             SELECT id FROM professors WHERE first_name = ? AND last_name = ? AND dept = ?
         """, (first_name, last_name, dept))
@@ -149,6 +156,7 @@ def insert_professors(professors, dept, conn):
         professor_ids.append(professor_id)
     
     return professor_ids
+
 
 # Insert course-professor mappings into courses_professors table
 def insert_course_professors(course_id, professor_ids, conn):
@@ -291,7 +299,10 @@ def main():
 
         # Step 6: Insert professors and course-professor mappings
         professor_ids = insert_professors(allData.get("instructors"), allData.get("dept"), conn)
-        insert_course_professors(course_id, professor_ids, conn)
+        if professor_ids:
+            insert_course_professors(course_id, professor_ids, conn)
+        else:
+            print(f"No professors found for course {allData['course_data']['course_id']}. Skipping course-professor mapping.")
 
     conn.close()
     driver.quit()
