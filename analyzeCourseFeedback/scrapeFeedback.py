@@ -20,7 +20,8 @@ def load_cookies(driver, cookies_file):
 
 # Check if the quarter falls in the COVID-era (Spring 2020, Autumn 2020, Winter 2021, Spring 2021)
 def is_covid_era(quarter):
-    covid_quarters = ['Spring 2020', 'Autumn 2020', 'Winter 2021', 'Spring 2021']
+    #Winter 2019 included because the feedback is a nuisance
+    covid_quarters = ['Winter 2019', 'Spring 2020', 'Summer 2020', 'Autumn 2020', 'Winter 2021', 'Spring 2021']
     return quarter in covid_quarters
 
 # Extract the course header information (course name, instructors, quarter)
@@ -175,8 +176,8 @@ def insert_course_data(course_data, conn):
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO courses 
-        (dept, quarter, course_id, challenge_intellect, purpose, standards, feedback, fairness, respect, excellence, organization, challenge, available, inclusive, significant, less_five, five_to_ten, ten_to_fifteen, fifteen_to_twenty, twenty_to_twenty_five, twenty_five_to_thirty, more_thirty)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (dept, quarter, course_id, challenge_intellect, purpose, standards, feedback, fairness, respect, excellence, organization, challenge, available, inclusive, significant, less_five, five_to_ten, ten_to_fifteen, fifteen_to_twenty, twenty_to_twenty_five, twenty_five_to_thirty, more_thirty, url)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         course_data['dept'], course_data['quarter'], course_data['course_id'], 
         course_data['challenge_intellect'], course_data['purpose'], course_data['standards'], 
@@ -185,7 +186,7 @@ def insert_course_data(course_data, conn):
         course_data['available'], course_data['inclusive'], course_data['significant'], 
         course_data['less_five'], course_data['five_to_ten'], course_data['ten_to_fifteen'], 
         course_data['fifteen_to_twenty'], course_data['twenty_to_twenty_five'], 
-        course_data['twenty_five_to_thirty'], course_data['more_thirty']
+        course_data['twenty_five_to_thirty'], course_data['more_thirty'], course_data['url']
     ))
 
     course_id = cursor.lastrowid
@@ -257,7 +258,8 @@ def processLink(driver, link):
         'fifteen_to_twenty': percentages.get('15-20 hours', 0),
         'twenty_to_twenty_five': percentages.get('20-25 hours', 0),
         'twenty_five_to_thirty': percentages.get('25-30 hours', 0),
-        'more_thirty': percentages.get('>30 hours', None)
+        'more_thirty': percentages.get('>30 hours', None),
+        'url': link
     }
     }
 
