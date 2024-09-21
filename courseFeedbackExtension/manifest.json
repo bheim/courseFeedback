@@ -1,0 +1,26 @@
+{
+"manifest_version": 3,
+"name": "Course Scraper",
+"version": "1.0",
+"description": "Scrapes course information from the page and sends it to a Flask server.",
+"permissions": [
+  "activeTab",
+  "scripting",
+  "storage"
+],
+"background": {
+  "service_worker": "background.js"
+},
+"content_scripts": [
+  {
+    "matches": ["https://coursesearch92.ais.uchicago.edu/*"],
+    "js": ["courseScrape.js"]
+  }
+],
+"host_permissions": [
+  "http://localhost:5000/*"
+],
+"action": {
+  "default_popup": "popup.html"
+}
+}

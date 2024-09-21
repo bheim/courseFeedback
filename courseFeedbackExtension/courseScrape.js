@@ -1,4 +1,37 @@
-// Function to extract course data from the provided HTML structure
+let debounceTimeout;
+
+// Create a MutationObserver to watch for changes in the DOM
+const observerCallback = (mutationsList, observer) => {
+    clearTimeout(debounceTimeout);
+
+    debounceTimeout = setTimeout(() => {
+        console.log("Debounced function execution");
+        const scrapedCourses = scrapeCourseData();
+        console.log(scrapedCourses);
+
+        // Send course information to the backend only if valid data exists
+        if (scrapedCourses.length > 0) {
+            fetch('http://localhost:5000/get-course-feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(scrapedCourses),  // Send the scraped courses data
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response from backend:", data);
+                addFeedbackWidgets(data);  // Call function to add the feedback widgets
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }, 1000); // Adjust the delay (in milliseconds) to avoid frequent re-runs
+};
+
+const observer = new MutationObserver(observerCallback);
+observer.observe(document.body, { childList: true, subtree: true });
+
+// Scrape course data function
 function scrapeCourseData() {
     const courses = [];
     
@@ -11,7 +44,12 @@ function scrapeCourseData() {
         let courseTitleElement = row.querySelector(courseTitleSelector);
         let courseTitle = courseTitleElement?.textContent.trim() || '';
 
-        // Dynamic selector for course ID (This part is from the HTMLArea where the ID is embedded)
+        // Skip this row if no course title is found (filters out non-course rows)
+        if (!courseTitle) {
+            return;
+        }
+
+        // Dynamic selector for course ID
         let courseIdSelector = `#win0divUC_RSLT_NAV_WRK_HTMLAREA\\$${index}`;
         let courseIdElement = row.querySelector(courseIdSelector);
         let courseIdText = courseIdElement?.textContent.trim() || '';
@@ -21,6 +59,7 @@ function scrapeCourseData() {
         let instructorSelector = `#win0divUC_CLSRCH_WRK_SSR_INSTR_LONG\\$${index} .ps_box-value`;
         let instructorElement = row.querySelector(instructorSelector);
         let instructor = instructorElement?.textContent.trim() || '';
+        instructor = instructor.split(',')[0].trim();
 
         // Dynamic selector for other course listings
         let otherListingsSelector = `#win0divUC_CLSRCH_WRK2_DESCRLONG_NOTES\\$${index} .ps_box-value`;
@@ -39,25 +78,50 @@ function scrapeCourseData() {
     return courses;
 }
 
-// Function to send the scraped data to the Flask backend
-function sendDataToBackend(courses) {
-    fetch('http://localhost:5000/get-course-feedback', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(courses),  // Send the scraped courses data
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Response from backend:', data);
-        // This is where you would handle the response, if necessary
-    })
-    .catch(error => console.error('Error:', error));
-}
+// Function to add feedback widgets with real data from the backend
+function addFeedbackWidgets(feedbackData) {
+    const courseRows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row');
 
-// Execute the scraper and send the data when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const scrapedCourses = scrapeCourseData();  // Step 1: Scrape the course data
-    sendDataToBackend(scrapedCourses);  // Step 2: Send the data to the backend
-});
+    // Loop through each course row and add the feedback widget
+    courseRows.forEach((row, index) => {
+        // Check if a feedback widget has already been added to avoid duplication
+        if (row.querySelector('.feedback-widget')) {
+            return;  // Skip if widget already exists
+        }
+
+        const feedback = feedbackData[index];
+        const widget = document.createElement('div');
+        widget.classList.add('feedback-widget');
+
+        // Set the inner HTML for the widget based on the feedback data
+        if (feedback) {
+            const courseRating = feedback.course_rating.toFixed(2) || 'No data available';
+            const professorRating = feedback.professor_rating.toFixed(2) || 'No data available';
+            const courseHours = feedback.course_hours.toFixed(2) || 'No data available';
+            const professorCourseRating = feedback.professor_course_rating.toFixed(2) || 'No data available';
+            const professorCourseHours = feedback.professor_course_hours.toFixed(2) || 'No data available';
+
+            widget.innerHTML = `
+                <strong>Professor Rating:</strong> ${professorRating}<br>
+                <strong>Course Rating:</strong> ${courseRating}<br>
+                <strong>Prof. X Course Rating:</strong> ${professorCourseRating}<br>
+                <strong>Avg Hours:</strong> ${courseHours}<br>
+                <strong>Prof. X Course Hours:</strong> ${professorCourseHours}
+            `;
+        } else {
+            widget.innerHTML = '<strong>No data available</strong>';
+        }
+
+        // Style the widget
+        widget.style.border = '1px solid #ccc';
+        widget.style.padding = '10px';
+        widget.style.marginLeft = '10px';
+        widget.style.backgroundColor = '#f9f9f9';
+        widget.style.fontSize = '12px';
+        widget.style.width = '200px';
+        widget.style.textAlign = 'left';
+
+        // Append the widget to the course row
+        row.appendChild(widget);
+    });
+}
