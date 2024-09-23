@@ -243,6 +243,7 @@ def home():
 
 # Route to handle course data and return the course rating, professor rating, course hours, and professor course hours
 @app.route('/get-course-feedback', methods=['POST'])
+@app.route('/get-course-feedback', methods=['POST'])
 def get_course_feedback():
     data = request.json
     feedback_data = []
@@ -268,6 +269,7 @@ def get_course_feedback():
                     current_dept, current_id = split_course_name(course_info)
                     course_rating = calculate_course_rating(current_dept, current_id)
                     if(course_rating):
+                        course_name = course_info
                         old_dept = dept
                         dept = current_dept
                         course_id = current_id
