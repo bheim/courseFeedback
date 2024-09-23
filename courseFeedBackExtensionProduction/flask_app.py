@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Path to your course_feedback database
-DB_PATH = 'course_feedback.db'
+DB_PATH = '/home/benheim/courseFeedback/courseFeedBackExtensionProduction/course_feedback.db'
 
 # Helper function to split course name into dept and course_id
 def split_course_name(course_name):
