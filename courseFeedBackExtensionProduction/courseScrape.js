@@ -11,7 +11,7 @@ const observerCallback = (mutationsList, observer) => {
 
         // Send course information to the backend only if valid data exists
         if (scrapedCourses.length > 0) {
-            fetch('http://localhost:5000/get-course-feedback', {
+            fetch('https://benheim.pythonanywhere.com/get-course-feedback', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
