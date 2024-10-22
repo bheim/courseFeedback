@@ -16,7 +16,7 @@ const observerCallback = (mutationsList, observer) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(scrapedCourses),  // Send the scraped courses data
+                body: JSON.stringify(scrapedCourses),
             })
             .then(response => response.json())
             .then(data => {
@@ -59,7 +59,7 @@ function scrapeCourseData() {
         let instructorSelector = `#win0divUC_CLSRCH_WRK_SSR_INSTR_LONG\\$${index} .ps_box-value`;
         let instructorElement = row.querySelector(instructorSelector);
         let instructor = instructorElement?.textContent.trim() || '';
-        instructor = instructor.split(',')[0].trim();
+        // instructor = instructor.split(',')[0].trim();
 
         // Dynamic selector for other course listings
         let otherListingsSelector = `#win0divUC_CLSRCH_WRK2_DESCRLONG_NOTES\\$${index} .ps_box-value`;

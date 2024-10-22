@@ -5,8 +5,6 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
-
-
 # Path to your course_feedback database
 DB_PATH = 'course_feedback.db'
 
@@ -239,10 +237,11 @@ def calculate_professor_course_hours(professor_id, dept, course_id):
     conn.close()
     return professor_course_hours
 
-
 # Route to handle course data and return the course rating, professor rating, course hours, and professor course hours
 @app.route('/get-course-feedback', methods=['POST'])
 def get_course_feedback():
+
+    
     data = request.json
     feedback_data = []
 
@@ -272,25 +271,67 @@ def get_course_feedback():
                         dept = current_dept
                         course_id = current_id
                         break
-
             # Calculate course_hours
             course_hours = calculate_course_hours(dept, course_id)
 
             # Find the list of possible departments (from main and alternative courses)
             possible_depts = [old_dept if old_dept is not None else dept] + [split_course_name(alt_course)[0] for alt_course in other_listings]
 
-            # Find professor ID based on last name and departments
-            professor_id = find_professor_id(professor_last_name, possible_depts)
+            # handling multiple professors
+            if "," in professor_last_name:
+                professors = professor_last_name.split()
+                professor_ids = []
+                
+                for professor in professors:
+                    id = find_professor_id(professor, possible_depts)
+                    if id:
+                        professor_ids.append(id)
 
-            if professor_id:
-                # Calculate professor_rating, professor_course_rating, and professor_course_hours
-                professor_rating = calculate_professor_rating(professor_id)
-                professor_course_rating = calculate_professor_course_rating(professor_id, dept, course_id)
-                professor_course_hours = calculate_professor_course_hours(professor_id, dept, course_id)
-            else:
-                professor_rating = None
-                professor_course_rating = None
-                professor_course_hours = None
+                professor_ratings = []
+                professor_course_ratings = []
+                professor_course_hours_ratings = []
+
+                for id in professor_ids:
+                    rating = calculate_professor_rating(id)
+                    if rating:
+                        professor_ratings.append(rating)
+                    
+                    professor_course_rating = calculate_professor_course_rating(id, dept, course_id)
+                    if professor_course_rating:
+                        professor_course_ratings.append(professor_course_rating)
+                    
+                    professor_course_hours = calculate_professor_course_hours(id, dept, course_id)
+                    if professor_course_hours:
+                        professor_course_hours_ratings.append(professor_course_hours)
+
+                # Safely calculate the averages with error handling for empty lists
+                if professor_ratings:
+                    professor_rating = sum(professor_ratings) / len(professor_ratings)
+                else:
+                    professor_rating = None
+
+                if professor_course_ratings:
+                    professor_course_rating = sum(professor_course_ratings) / len(professor_course_ratings)
+                else:
+                    professor_course_rating = None
+
+                if professor_course_hours_ratings:
+                    professor_course_hours = sum(professor_course_hours_ratings) / len(professor_course_hours_ratings)
+                else:
+                    professor_course_hours = None
+
+            else: 
+                professor_id = find_professor_id(professor_last_name, possible_depts)
+
+                if professor_id:
+                    # Calculate professor_rating, professor_course_rating, and professor_course_hours
+                    professor_rating = calculate_professor_rating(professor_id)
+                    professor_course_rating = calculate_professor_course_rating(professor_id, dept, course_id)
+                    professor_course_hours = calculate_professor_course_hours(professor_id, dept, course_id)
+                else:
+                    professor_rating = None
+                    professor_course_rating = None
+                    professor_course_hours = None
 
             # Append the results to the feedback_data list
             feedback_data.append({
@@ -307,3 +348,4 @@ def get_course_feedback():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

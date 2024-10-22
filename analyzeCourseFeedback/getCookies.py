@@ -28,7 +28,7 @@ cookies_login = driver.get_cookies()
 with open('cookies.pkl', 'wb') as f:
     pickle.dump(cookies_login, f)
 
-print("Login cookies saved to login_cookies.pkl")
+print("Login cookies saved to cookies.pkl")
 
 # Close the browser
 driver.quit()
