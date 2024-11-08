@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Course Feedback Extension",
+  "version": "1.0",
+  "description": "Show course feedback on course search page",
+  "permissions": [
+      "activeTab",
+      "https://benheim.pythonanywhere.com/*"
+  ],
+  "background": {
+      "service_worker": "background.js"
+  },
+  "content_scripts": [
+      {
+        "matches": ["https://coursesearch92.ais.uchicago.edu/*"],
+        "js": ["courseScrape.js"]
+      }
+  ],
+  "host_permissions": [
+      "https://benheim.pythonanywhere.com/*"
+  ]
+}
