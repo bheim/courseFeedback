@@ -282,29 +282,32 @@ def main():
 
     # Open database connection
     conn = sqlite3.connect('course_feedback.db')
-    connToLinks = sqlite3.connect('course_urls.db')
+    connToLinks = sqlite3.connect('getCourseLinks/course_urls.db')
 
     cursorToLinks = connToLinks.cursor()
-    cursorToLinks.execute("SELECT url FROM course_urls")
+    # Modify your query to also select the id
+    cursorToLinks.execute("SELECT id, url FROM course_urls WHERE id > 16612")
     urls = cursorToLinks.fetchall()
+    print(len(urls))
 
     for url_tuple in urls:
-        url = url_tuple[0]
-        print(url)
+        course_id = url_tuple[0]  # Retrieve the id from the result tuple
+        url = url_tuple[1]        # Retrieve the url from the result tuple
+        print(f"Course ID {course_id}: {url}")
         allData = processLink(driver, url)
 
         if allData is None:
             continue
 
         # Step 5: Insert the course data into the courses table
-        course_id = insert_course_data(allData.get("course_data"), conn)
+        new_course_id = insert_course_data(allData.get("course_data"), conn)
 
         # Step 6: Insert professors and course-professor mappings
         professor_ids = insert_professors(allData.get("instructors"), allData.get("dept"), conn)
         if professor_ids:
-            insert_course_professors(course_id, professor_ids, conn)
+            insert_course_professors(new_course_id, professor_ids, conn)
         else:
-            print(f"No professors found for course {allData['course_data']['course_id']}. Skipping course-professor mapping.")
+            print(f"No professors found for course {allData['course_data']['course_id']} with Course ID {course_id}. Skipping course-professor mapping.")
 
     conn.close()
     driver.quit()
