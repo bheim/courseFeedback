@@ -59,7 +59,7 @@ function scrapeCourseData() {
         let instructorSelector = `#win0divUC_CLSRCH_WRK_SSR_INSTR_LONG\\$${index} .ps_box-value`;
         let instructorElement = row.querySelector(instructorSelector);
         let instructor = instructorElement?.textContent.trim() || '';
-        instructor = instructor.split(',')[0].trim();
+        //instructor = instructor.split(',')[0].trim();
 
         // Dynamic selector for other course listings
         let otherListingsSelector = `#win0divUC_CLSRCH_WRK2_DESCRLONG_NOTES\\$${index} .ps_box-value`;
@@ -95,11 +95,11 @@ function addFeedbackWidgets(feedbackData) {
     
         // Set the inner HTML for the widget based on the feedback data
         if (feedback) {
-            const professorRating = feedback.professor_rating !== null ? feedback.professor_rating.toFixed(2) : 'Not enough data';
-            const courseRating = feedback.course_rating !== null ? feedback.course_rating.toFixed(2) : 'Not enough data';
-            const professorCourseRating = feedback.professor_course_rating !== null ? feedback.professor_course_rating.toFixed(2) : 'Not enough data';
-            const courseHours = feedback.course_hours !== null ? feedback.course_hours.toFixed(2) : 'Not enough data';
-            const professorCourseHours = feedback.professor_course_hours !== null ? feedback.professor_course_hours.toFixed(2) : 'Not enough data';
+            const professorRating = feedback.professor_rating !== null ? feedback.professor_rating.toFixed(2) : 'No data since 2021';
+            const courseRating = feedback.course_rating !== null ? feedback.course_rating.toFixed(2) : 'No data since 2021';
+            const professorCourseRating = feedback.professor_course_rating !== null ? feedback.professor_course_rating.toFixed(2) : 'No data since 2021';
+            const courseHours = feedback.course_hours !== null ? feedback.course_hours.toFixed(2) : 'No data since 2021';
+            const professorCourseHours = feedback.professor_course_hours !== null ? feedback.professor_course_hours.toFixed(2) : 'No data since 2021';
     
             widget.innerHTML = `
                 <strong>Professor Rating:</strong> ${professorRating}<br>
