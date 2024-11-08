@@ -45,6 +45,7 @@ def is_valid_year(quarter_text):
 # Function to scrape course feedback links using authenticated requests
 def scrape_feedback_links(department, course_number, session):
     url = f"https://coursefeedback.uchicago.edu/?CourseDepartment={department}&CourseNumber={course_number}"
+    print("The url is", url)
     try:
         # Make the request using the session object (with cookies)
         response = session.get(url)
@@ -95,7 +96,7 @@ cursor_output.execute('''
 ''')
 
 # Fetch all course entries from the input database
-cursor_input.execute("SELECT department, course_id FROM courses")
+cursor_input.execute("SELECT department, course_id FROM courses WHERE id > 35219")
 courses = cursor_input.fetchall()
 
 # Function to process courses in batches
@@ -113,7 +114,7 @@ def process_courses_in_batches(courses, batch_size=25):
                         INSERT INTO course_urls (course_id, department, url) 
                         VALUES (?, ?, ?)
                     ''', (course_id, department, link))
-            time.sleep(5)
+            time.sleep(1)
 
         # Commit changes after processing each batch
         conn_output.commit()
