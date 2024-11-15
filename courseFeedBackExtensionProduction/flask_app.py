@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sqlite3
+import cProfile
+import pstats
+from io import StringIO
+import logging
 
 app = Flask(__name__)
 CORS(app)
@@ -17,25 +21,19 @@ def split_course_name(course_name):
         return None, None  # In case the format is unexpected
 
 # Function to query the professor's ID based on their name and department
-def find_professor_id(last_name, possible_depts):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def find_professor_id(cursor, last_name, possible_depts):
 
     # Try to find the professor using their last name and department
     for dept in possible_depts:
         cursor.execute("SELECT id FROM professors WHERE last_name=? AND dept=?", (last_name, dept))
         result = cursor.fetchone()
         if result:
-            conn.close()
             return result[0]  # Return professor ID if found
 
-    conn.close()
     return None  # Return None if no professor was found
 
 # Function to calculate course rating based on course_id and dept
-def calculate_course_rating(dept, course_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def calculate_course_rating(cursor, dept, course_id):
 
     # Columns for course rating
     course_rating_columns = [
@@ -65,13 +63,10 @@ def calculate_course_rating(dept, course_id):
     if valid_result_count > 0:
         course_rating = sum(total_ratings[col] for col in course_rating_columns) / (valid_result_count * len(course_rating_columns))
 
-    conn.close()
     return course_rating
 
 # Function to calculate professor_rating based on all the courses they taught
-def calculate_professor_rating(professor_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def calculate_professor_rating(cursor, professor_id):
 
     # Columns for professor rating
     rating_columns = [
@@ -105,13 +100,10 @@ def calculate_professor_rating(professor_id):
     if valid_course_count > 0:
         professor_rating = sum(total_ratings[column] for column in rating_columns) / (valid_course_count * len(rating_columns))
 
-    conn.close()
     return professor_rating
 
 # Function to calculate professor_course_rating for a specific professor teaching a specific course
-def calculate_professor_course_rating(professor_id, dept, course_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def calculate_professor_course_rating(cursor, professor_id, dept, course_id):
 
     # Columns for professor_course_rating
     prof_course_rating_columns = [
@@ -146,14 +138,10 @@ def calculate_professor_course_rating(professor_id, dept, course_id):
     if valid_result_count > 0:
         professor_course_rating = sum(total_ratings[col] for col in prof_course_rating_columns) / (valid_result_count * len(prof_course_rating_columns))
 
-    conn.close()
     return professor_course_rating
 
 # Function to calculate course hours based on time ranges
-def calculate_course_hours(dept, course_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
+def calculate_course_hours(cursor, dept, course_id):
     # Columns for time spent
     hour_columns = [
         "less_five", "five_to_ten", "ten_to_fifteen", "fifteen_to_twenty",
@@ -187,13 +175,10 @@ def calculate_course_hours(dept, course_id):
     if total_responses > 0:
         course_hours = total_hours / total_responses
 
-    conn.close()
     return course_hours
 
 # Function to calculate professor course hours for a specific professor teaching a specific course
-def calculate_professor_course_hours(professor_id, dept, course_id):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def calculate_professor_course_hours(cursor, professor_id, dept, course_id):
 
     # Columns for time spent
     hour_columns = [
@@ -232,7 +217,6 @@ def calculate_professor_course_hours(professor_id, dept, course_id):
     if total_responses > 0:
         professor_course_hours = total_hours / total_responses
 
-    conn.close()
     return professor_course_hours
 
 @app.route('/')
@@ -243,111 +227,126 @@ def home():
 
 # Route to handle course data and return the course rating, professor rating, course hours, and professor course hours
 @app.route('/get-course-feedback', methods=['POST'])
-@app.route('/get-course-feedback', methods=['POST'])
 def get_course_feedback():
+    profiler = cProfile.Profile()
+    profiler.enable()
     data = request.json
     feedback_data = []
+    
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
 
     # Loop through the courses sent from the frontend
-    for course in data:
-        course_name = course['courseId']  # e.g., "CMSC 14100"
-        other_listings = course['otherListings']  # List of alternative course names
-        professor_last_name = course['instructor']  # Instructor's last name
+    try:
+        # Loop through the courses sent from the frontend
+        for course in data:
+            course_name = course['courseId']  # e.g., "CMSC 14100"
+            other_listings = course['otherListings']  # List of alternative course names
+            professor_last_name = course['instructor']  # Instructor's last name
 
-        # Split the main course name into dept and course_id
-        
+            # Split the main course name into dept and course_id
+            dept, course_id = split_course_name(course_name)
 
-        dept, course_id = split_course_name(course_name)
+            old_dept = None
+            if dept and course_id:
+                # Calculate course_rating
+                course_rating = calculate_course_rating(cursor, dept, course_id)
 
-        old_dept = None
-        if dept and course_id:
-            # Calculate course_rating
-            course_rating = calculate_course_rating(dept, course_id)
+                if not course_rating:
+                    for course_info in other_listings:
+                        current_dept, current_id = split_course_name(course_info)
+                        course_rating = calculate_course_rating(cursor, current_dept, current_id)
+                        if course_rating:
+                            course_name = course_info
+                            old_dept = dept
+                            dept = current_dept
+                            course_id = current_id
+                            break
+                # Calculate course_hours
+                course_hours = calculate_course_hours(cursor, dept, course_id)
 
-            if not course_rating:
-                for course_info in other_listings:
-                    current_dept, current_id = split_course_name(course_info)
-                    course_rating = calculate_course_rating(current_dept, current_id)
-                    if(course_rating):
-                        course_name = course_info
-                        old_dept = dept
-                        dept = current_dept
-                        course_id = current_id
-                        break
-            # Calculate course_hours
-            course_hours = calculate_course_hours(dept, course_id)
+                # Find the list of possible departments (from main and alternative courses)
+                possible_depts = [old_dept if old_dept is not None else dept] + [
+                    split_course_name(alt_course)[0] for alt_course in other_listings
+                ]
 
-            # Find the list of possible departments (from main and alternative courses)
-            possible_depts = [old_dept if old_dept is not None else dept] + [split_course_name(alt_course)[0] for alt_course in other_listings]
+                # Handling multiple professors
+                if "," in professor_last_name:
+                    professors = professor_last_name.split()
+                    professor_ids = []
 
-            # handling multiple professors
-            if "," in professor_last_name:
-                professors = professor_last_name.split()
-                professor_ids = []
-                
-                for professor in professors:
-                    id = find_professor_id(professor, possible_depts)
-                    if id:
-                        professor_ids.append(id)
+                    for professor in professors:
+                        id = find_professor_id(cursor, professor, possible_depts)
+                        if id:
+                            professor_ids.append(id)
 
-                professor_ratings = []
-                professor_course_ratings = []
-                professor_course_hours_ratings = []
+                    professor_ratings = []
+                    professor_course_ratings = []
+                    professor_course_hours_ratings = []
 
-                for id in professor_ids:
-                    rating = calculate_professor_rating(id)
-                    if rating:
-                        professor_ratings.append(rating)
-                    
-                    professor_course_rating = calculate_professor_course_rating(id, dept, course_id)
-                    if professor_course_rating:
-                        professor_course_ratings.append(professor_course_rating)
-                    
-                    professor_course_hours = calculate_professor_course_hours(id, dept, course_id)
-                    if professor_course_hours:
-                        professor_course_hours_ratings.append(professor_course_hours)
+                    for id in professor_ids:
+                        rating = calculate_professor_rating(cursor, id)
+                        if rating:
+                            professor_ratings.append(rating)
 
-                # Safely calculate the averages with error handling for empty lists
-                if professor_ratings:
-                    professor_rating = sum(professor_ratings) / len(professor_ratings)
+                        professor_course_rating = calculate_professor_course_rating(cursor, id, dept, course_id)
+                        if professor_course_rating:
+                            professor_course_ratings.append(professor_course_rating)
+
+                        professor_course_hours = calculate_professor_course_hours(cursor, id, dept, course_id)
+                        if professor_course_hours:
+                            professor_course_hours_ratings.append(professor_course_hours)
+
+                    # Safely calculate the averages with error handling for empty lists
+                    if professor_ratings:
+                        professor_rating = sum(professor_ratings) / len(professor_ratings)
+                    else:
+                        professor_rating = None
+
+                    if professor_course_ratings:
+                        professor_course_rating = sum(professor_course_ratings) / len(professor_course_ratings)
+                    else:
+                        professor_course_rating = None
+
+                    if professor_course_hours_ratings:
+                        professor_course_hours = sum(professor_course_hours_ratings) / len(professor_course_hours_ratings)
+                    else:
+                        professor_course_hours = None
+
                 else:
-                    professor_rating = None
+                    professor_id = find_professor_id(cursor, professor_last_name, possible_depts)
 
-                if professor_course_ratings:
-                    professor_course_rating = sum(professor_course_ratings) / len(professor_course_ratings)
-                else:
-                    professor_course_rating = None
+                    if professor_id:
+                        # Calculate professor_rating, professor_course_rating, and professor_course_hours
+                        professor_rating = calculate_professor_rating(cursor, professor_id)
+                        professor_course_rating = calculate_professor_course_rating(cursor, professor_id, dept, course_id)
+                        professor_course_hours = calculate_professor_course_hours(cursor, professor_id, dept, course_id)
+                    else:
+                        professor_rating = None
+                        professor_course_rating = None
+                        professor_course_hours = None
 
-                if professor_course_hours_ratings:
-                    professor_course_hours = sum(professor_course_hours_ratings) / len(professor_course_hours_ratings)
-                else:
-                    professor_course_hours = None
+                # Append the results to the feedback_data list
+                feedback_data.append({
+                    'courseId': course_name,
+                    'course_rating': course_rating,
+                    'professor_rating': professor_rating,
+                    'professor_course_rating': professor_course_rating,
+                    'course_hours': course_hours,
+                    'professor_course_hours': professor_course_hours
+                })
+        # Return the feedback data as JSON
+        return jsonify(feedback_data), 200
+    finally:
+        # Close the database connection after all processing is complete
+        conn.close()
+        profiler.disable()
+        s = StringIO()
+        ps = pstats.Stats(profiler, stream=s).sort_stats('cumtime')
+        ps.print_stats()
+        logging.info(s.getvalue())
 
-            else: 
-                professor_id = find_professor_id(professor_last_name, possible_depts)
-
-                if professor_id:
-                    # Calculate professor_rating, professor_course_rating, and professor_course_hours
-                    professor_rating = calculate_professor_rating(professor_id)
-                    professor_course_rating = calculate_professor_course_rating(professor_id, dept, course_id)
-                    professor_course_hours = calculate_professor_course_hours(professor_id, dept, course_id)
-                else:
-                    professor_rating = None
-                    professor_course_rating = None
-                    professor_course_hours = None
-
-            # Append the results to the feedback_data list
-            feedback_data.append({
-                'courseId': course_name,
-                'course_rating': course_rating,
-                'professor_rating': professor_rating,
-                'professor_course_rating': professor_course_rating,
-                'course_hours': course_hours,
-                'professor_course_hours': professor_course_hours
-            })
-
-    # Return the feedback data as JSON
-    return jsonify(feedback_data), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
