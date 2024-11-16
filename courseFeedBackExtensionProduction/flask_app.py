@@ -67,10 +67,6 @@ def calculate_course_rating(cursor, dept, course_id):
 
 def calculate_course_ratings(cursor, courses):
     # Columns for course rating
-    course_rating_columns = [
-        "challenge_intellect", "purpose", "standards", "feedback", "fairness",
-        "respect", "excellence"
-    ]
     
     # Build the WHERE clause
     conditions = []
@@ -82,7 +78,7 @@ def calculate_course_ratings(cursor, courses):
     
     # Query to fetch all rows for the given courses
     query = f"""
-        SELECT dept, course_id, {', '.join(course_rating_columns)}
+        SELECT dept, course_id, avg_course_rating
         FROM courses
         WHERE {where_clause}
     """
@@ -93,37 +89,16 @@ def calculate_course_ratings(cursor, courses):
     
     # Dictionary to store cumulative ratings and counts for each course
     course_data = {}
+    course_ratings = {}
     for row in results:
         dept = row[0]
         course_id = row[1]
-        ratings = row[2:]
+        rating = row[2]
         
         # Create a key for the course
         course_key = (dept, course_id)
+        course_ratings[course_key] = rating
         
-        # Initialize storage if this course hasn't been seen before
-        if course_key not in course_data:
-            course_data[course_key] = {
-                "total_rating":  0,
-                "count": 0
-            }
-        
-        # Accumulate ratings for the course
-        for i, rating in enumerate(ratings):
-            if rating is not None:  # Only count non-null ratings
-                course_data[course_key]["total_rating"] += rating
-                course_data[course_key]["count"] += 1
-    
-    # Calculate averages for each course
-    course_ratings = {}
-    for course_key, data in course_data.items():
-        total_rating = data["total_rating"]
-        count = data["count"]
-        
-        if count > 0:
-            # Calculate the average for all columns
-            average_rating = total_rating / count
-            course_ratings[course_key] = average_rating
     
     return course_ratings
 
@@ -186,6 +161,8 @@ def calculate_professor_rating(cursor, professor_id):
         return None
     average_rating = sum(total_ratings[col] for col in rating_columns) / (valid_course_count * len(rating_columns))
     return average_rating
+
+
 
 # Function to calculate professor_course_rating for a specific professor teaching a specific course
 def calculate_professor_course_rating(cursor, professor_id, dept, course_id):
