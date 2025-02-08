@@ -461,7 +461,7 @@ def get_course_feedback():
                     professor_id = professor_ids.get((name, dept_option))
                     if professor_id:
                         break
-
+                """
                 if professor_id:
                     # Use actual_dept and actual_course_id to look up professor-course data
                     prof_course_key = (professor_id, actual_dept, actual_course_id)
@@ -472,6 +472,38 @@ def get_course_feedback():
                         professor_course_hours.get(prof_course_key)
                     )
                     single_course_professor_ratings.append(professor_ratings.get(professor_id))
+                """
+
+
+                if professor_id:
+                        single_course_professor_ratings.append(professor_ratings.get(professor_id))
+                        # First attempt: Use actual_dept and actual_course_id
+                        prof_course_key = (professor_id, actual_dept, actual_course_id)
+                        prof_course_rating = professor_course_ratings.get(prof_course_key)
+                        prof_course_hours = professor_course_hours.get(prof_course_key)
+
+                        # If no rating found, try alternative department-course combinations
+                        if prof_course_rating is None or prof_course_hours is None:
+                            for listing in other_listings:
+                                alt_dept, alt_course_id = split_course_name(listing)
+                                if alt_dept and alt_course_id:
+                                    alt_prof_course_key = (professor_id, alt_dept, alt_course_id)
+                                    alt_prof_course_rating = professor_course_ratings.get(alt_prof_course_key)
+                                    alt_prof_course_hours = professor_course_hours.get(alt_prof_course_key)
+
+                                    # Use the first valid rating we find
+                                    if prof_course_rating is None and alt_prof_course_rating is not None:
+                                        prof_course_rating = alt_prof_course_rating
+
+                                    if prof_course_hours is None and alt_prof_course_hours is not None:
+                                        prof_course_hours = alt_prof_course_hours
+
+                                    # Stop searching if both values are found
+                                    if prof_course_rating is not None and prof_course_hours is not None:
+                                        break
+
+                        single_course_professor_course_ratings.append(prof_course_rating)
+                        single_course_professor_course_hours.append(prof_course_hours)
 
             # Calculate averages
             valid_professor_ratings = list(filter(None, single_course_professor_ratings))
