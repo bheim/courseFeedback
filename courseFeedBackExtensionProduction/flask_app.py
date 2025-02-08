@@ -244,6 +244,8 @@ def calculate_professor_course_ratings(cursor, professor_course_ids):
         avg_rating = row[3]
         
         professor_course_ratings[(professor_id, dept, course_id)] = avg_rating
+
+        print(professor_course_ratings)
     
     return professor_course_ratings
 
@@ -402,7 +404,6 @@ def get_course_feedback():
 
         # Now perform bulk queries for professor-course data
         professor_course_ids_list = list(professor_course_ids)
-        print(professor_course_ids_list)
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
 
