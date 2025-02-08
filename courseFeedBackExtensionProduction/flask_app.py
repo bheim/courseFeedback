@@ -476,34 +476,57 @@ def get_course_feedback():
 
 
                 if professor_id:
-                        single_course_professor_ratings.append(professor_ratings.get(professor_id))
-                        # First attempt: Use actual_dept and actual_course_id
-                        prof_course_key = (professor_id, actual_dept, actual_course_id)
-                        prof_course_rating = professor_course_ratings.get(prof_course_key)
-                        prof_course_hours = professor_course_hours.get(prof_course_key)
+                    print(f"\nProcessing Professor: {professor_id}")
+                    print(f"Departments considered: {departments}")
+                    print(f"Course: {actual_dept} {actual_course_id}")
 
-                        # If no rating found, try alternative department-course combinations
-                        if prof_course_rating is None or prof_course_hours is None:
-                            for listing in other_listings:
-                                alt_dept, alt_course_id = split_course_name(listing)
-                                if alt_dept and alt_course_id:
-                                    alt_prof_course_key = (professor_id, alt_dept, alt_course_id)
-                                    alt_prof_course_rating = professor_course_ratings.get(alt_prof_course_key)
-                                    alt_prof_course_hours = professor_course_hours.get(alt_prof_course_key)
+                    single_course_professor_ratings.append(professor_ratings.get(professor_id))
+                    
+                    # First attempt: Use actual_dept and actual_course_id
+                    prof_course_key = (professor_id, actual_dept, actual_course_id)
+                    prof_course_rating = professor_course_ratings.get(prof_course_key)
+                    prof_course_hours = professor_course_hours.get(prof_course_key)
 
-                                    # Use the first valid rating we find
-                                    if prof_course_rating is None and alt_prof_course_rating is not None:
-                                        prof_course_rating = alt_prof_course_rating
+                    print(f"Checking main key ({actual_dept}, {actual_course_id}):")
+                    print(f"  - Professor-Course Rating: {prof_course_rating}")
+                    print(f"  - Professor-Course Hours: {prof_course_hours}")
 
-                                    if prof_course_hours is None and alt_prof_course_hours is not None:
-                                        prof_course_hours = alt_prof_course_hours
+                    # If no rating found, try alternative department-course combinations
+                    if prof_course_rating is None or prof_course_hours is None:
+                        print("  - No rating found, trying alternative departments/courses...")
 
-                                    # Stop searching if both values are found
-                                    if prof_course_rating is not None and prof_course_hours is not None:
-                                        break
+                        for listing in other_listings:
+                            alt_dept, alt_course_id = split_course_name(listing)
+                            if alt_dept and alt_course_id:
+                                alt_prof_course_key = (professor_id, alt_dept, alt_course_id)
+                                alt_prof_course_rating = professor_course_ratings.get(alt_prof_course_key)
+                                alt_prof_course_hours = professor_course_hours.get(alt_prof_course_key)
 
-                        single_course_professor_course_ratings.append(prof_course_rating)
-                        single_course_professor_course_hours.append(prof_course_hours)
+                                print(f"  - Trying alt ({alt_dept}, {alt_course_id}):")
+                                print(f"    - Alt Professor-Course Rating: {alt_prof_course_rating}")
+                                print(f"    - Alt Professor-Course Hours: {alt_prof_course_hours}")
+
+                                # Use the first valid rating we find
+                                if prof_course_rating is None and alt_prof_course_rating is not None:
+                                    prof_course_rating = alt_prof_course_rating
+                                    print(f"    - Updated Prof-Course Rating: {prof_course_rating}")
+
+                                if prof_course_hours is None and alt_prof_course_hours is not None:
+                                    prof_course_hours = alt_prof_course_hours
+                                    print(f"    - Updated Prof-Course Hours: {prof_course_hours}")
+
+                                # Stop searching if both values are found
+                                if prof_course_rating is not None and prof_course_hours is not None:
+                                    print("  - Found both values, stopping search.")
+                                    break
+
+                    # Append final values
+                    single_course_professor_course_ratings.append(prof_course_rating)
+                    single_course_professor_course_hours.append(prof_course_hours)
+
+                    print(f"Final Values for {professor_id}:")
+                    print(f"  - Professor-Course Rating: {prof_course_rating}")
+                    print(f"  - Professor-Course Hours: {prof_course_hours}")
 
             # Calculate averages
             valid_professor_ratings = list(filter(None, single_course_professor_ratings))
