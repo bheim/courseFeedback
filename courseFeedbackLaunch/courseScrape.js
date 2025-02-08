@@ -108,20 +108,18 @@ function addFeedbackWidgets(feedbackData) {
                 <strong>Avg Hours:</strong> ${courseHours}<br>
                 <strong>Prof. X Course Hours:</strong> ${professorCourseHours}
             `;
-        } else {
-            widget.innerHTML = '<strong>Feedback not available</strong>';
+             // Style the widget
+            widget.style.border = '1px solid #ccc';
+            widget.style.padding = '10px';
+            widget.style.marginLeft = '10px';
+            widget.style.backgroundColor = '#f9f9f9';
+            widget.style.fontSize = '12px';
+            widget.style.width = '200px';
+            widget.style.textAlign = 'left';
+
+            // Append the widget to the course row
+            row.appendChild(widget);
         }
-
-        // Style the widget
-        widget.style.border = '1px solid #ccc';
-        widget.style.padding = '10px';
-        widget.style.marginLeft = '10px';
-        widget.style.backgroundColor = '#f9f9f9';
-        widget.style.fontSize = '12px';
-        widget.style.width = '200px';
-        widget.style.textAlign = 'left';
-
-        // Append the widget to the course row
-        row.appendChild(widget);
+       
     });
 }
