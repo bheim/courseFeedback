@@ -402,6 +402,7 @@ def get_course_feedback():
 
         # Now perform bulk queries for professor-course data
         professor_course_ids_list = list(professor_course_ids)
+        print(professor_course_ids_list)
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
 
