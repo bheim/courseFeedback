@@ -108,7 +108,7 @@ function addFeedbackWidgets(feedbackData) {
                 <strong>Avg Hours:</strong> ${courseHours}<br>
                 <strong>Prof. X Course Hours:</strong> ${professorCourseHours}
             `;
-             // Style the widget
+             // Style the widge
             widget.style.border = '1px solid #ccc';
             widget.style.padding = '10px';
             widget.style.marginLeft = '10px';
