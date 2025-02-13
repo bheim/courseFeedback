@@ -5,9 +5,9 @@ const observerCallback = (mutationsList, observer) => {
     clearTimeout(debounceTimeout);
 
     debounceTimeout = setTimeout(() => {
-        console.log("Debounced function execution");
+        //console.log("Debounced function execution");
         const scrapedCourses = scrapeCourseData();
-        console.log(scrapedCourses);
+        // console.log(scrapedCourses);
 
         // Send course information to the backend only if valid data exists
         if (scrapedCourses.length > 0) {
@@ -20,8 +20,8 @@ const observerCallback = (mutationsList, observer) => {
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Response from backend:", data);
-                addFeedbackWidgets(data);  // Call function to add the feedback widgets
+                //console.log("Response from backend:", data);
+                addFeedbackWidgets(data, scrapedCourses);  // Call function to add the feedback widgets
             })
             .catch(error => console.error('Error:', error));
         }
@@ -79,47 +79,52 @@ function scrapeCourseData() {
 }
 
 // Function to add feedback widgets with real data from the backend
-function addFeedbackWidgets(feedbackData) {
-    const courseRows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row');
+function addFeedbackWidgets(feedbackData, courseData) {
+    const courseRows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row td.ps_grid-cell');
+    console.log(feedbackData);  
 
-    // Loop through each course row and add the feedback widget
-    courseRows.forEach((row, index) => {
-        // Check if a feedback widget has already been added to avoid duplication
-        if (row.querySelector('.feedback-widget')) {
-            return;  // Skip if widget already exists
+    courseRows.forEach((cell, index) => {
+        // Apply styles to the cell
+        cell.style.height = 'fit-content';
+        cell.style.display = 'flex';
+        cell.style.alignItems = 'center';
+        cell.style.justifyContent = 'space-between';
+
+        // Skip if widget already exists
+        if (cell.querySelector('.feedback-widget')) {
+            return;
         }
     
-        const feedback = feedbackData[index];  // Get the feedback for this course
+        const feedback = feedbackData[index];
+        const course = courseData[index];
+       
         const widget = document.createElement('div');
         widget.classList.add('feedback-widget');
     
-        // Set the inner HTML for the widget based on the feedback data
         if (feedback) {
-            const professorRating = feedback.professor_rating !== null ? feedback.professor_rating.toFixed(2) : 'No data since 2021';
-            const courseRating = feedback.course_rating !== null ? feedback.course_rating.toFixed(2) : 'No data since 2021';
-            const professorCourseRating = feedback.professor_course_rating !== null ? feedback.professor_course_rating.toFixed(2) : 'No data since 2021';
-            const courseHours = feedback.course_hours !== null ? feedback.course_hours.toFixed(2) : 'No data since 2021';
-            const professorCourseHours = feedback.professor_course_hours !== null ? feedback.professor_course_hours.toFixed(2) : 'No data since 2021';
+            const instructor = course.instructor || 'X';
+            const courseCode = course.courseId || 'Course';
+    
+            const professorRating = feedback.professor_rating !== null ? feedback.professor_rating.toFixed(2) : 'Not Found';
+            const courseRating = feedback.course_rating !== null ? feedback.course_rating.toFixed(2) : 'Not Found';
+            const professorCourseRating = feedback.professor_course_rating !== null ? feedback.professor_course_rating.toFixed(2) : 'Not Found';
+            const courseHours = feedback.course_hours !== null ? feedback.course_hours.toFixed(2) : 'Not Found';
+            const professorCourseHours = feedback.professor_course_hours !== null ? feedback.professor_course_hours.toFixed(2) : 'Not Found';
     
             widget.innerHTML = `
-                <strong>Professor Rating:</strong> ${professorRating}<br>
-                <strong>Course Rating:</strong> ${courseRating}<br>
-                <strong>Prof. X Course Rating:</strong> ${professorCourseRating}<br>
-                <strong>Avg Hours:</strong> ${courseHours}<br>
-                <strong>Prof. X Course Hours:</strong> ${professorCourseHours}
+                <span class="feedback-widget-title">Feedback:</span>
+                <div class="feedback-widget-content">
+                    <strong>${courseCode}</strong><br>
+                    Course Rating: <strong>${courseRating}</strong><br>
+                    Avg Hours: <strong>${courseHours}</strong><br>
+                    <hr class="feedback-widget-divider">
+                    <strong>Prof. ${instructor}</strong><br>
+                    Prof Rating: <strong>${professorRating}</strong><br>
+                    Prof x Course Rating: <strong>${professorCourseRating}</strong><br>
+                    Prof x Course Hours: <strong>${professorCourseHours}</strong>
+                </div>
             `;
-             // Style the widge
-            widget.style.border = '1px solid #ccc';
-            widget.style.padding = '10px';
-            widget.style.marginLeft = '10px';
-            widget.style.backgroundColor = '#f9f9f9';
-            widget.style.fontSize = '12px';
-            widget.style.width = '200px';
-            widget.style.textAlign = 'left';
-
-            // Append the widget to the course row
-            row.appendChild(widget);
+            cell.appendChild(widget);
         }
-       
     });
 }
