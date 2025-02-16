@@ -76,7 +76,6 @@ def calculate_course_rating(cursor, dept, course_id):
     results = cursor.fetchone()
     # If no results, return None
     if not results:
-        print("NO COURSE RATING RESULTS")
         return None
     return results[0]
 
@@ -343,6 +342,7 @@ def get_course_feedback():
 
         # Perform bulk queries for courses and professors
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
+        print(f"course ratings: {course_ratings}")
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
         professor_ids = find_professor_ids(cursor, professor_keys)
         professor_ratings = calculate_professors_ratings(cursor, professor_ids)
