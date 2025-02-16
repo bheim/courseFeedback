@@ -1,0 +1,6 @@
+2025-02-16 12:09:55,945 - ERROR - Error executing 'avg_prof_course_hours': no such column: avg_prof_course_hours
+2025-02-16 12:09:55,945 - ERROR - Error executing 'avg_prof_course_rating': no such column: avg_prof_course_rating
+2025-02-16 12:09:55,945 - ERROR - Error executing 'avg_course_hours': no such column: avg_course_hours
+2025-02-16 12:09:55,945 - ERROR - Error executing 'avg_course_rating': no such column: courses_professors.last_name
+2025-02-16 12:09:55,945 - ERROR - Error executing 'avg_professor_rating': no such column: avg_professor_rating
+2025-02-16 12:18:38,129 - ERROR - Error executing 'avg_course_rating': no such column: courses_professors.last_name

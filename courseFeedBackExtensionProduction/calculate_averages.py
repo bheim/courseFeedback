@@ -6,8 +6,80 @@ import os
 # Configuration
 # ----------------------------
 
-DATABASE_PATH = 'your_database.db'  # Replace with your actual database file
+DATABASE_PATH = 'course_feedback_new.db'  # Replace with your actual database file
 ERROR_LOG_PATH = 'error.log'
+
+REQUIRED_COLUMNS = {
+    "courses_professors": ["avg_prof_course_hours", "avg_prof_course_rating"],
+    "courses": ["avg_course_hours", "avg_course_rating"],
+    "professors": ["avg_professor_rating"]
+}
+
+def add_missing_columns(db_path, required_columns):
+    """Ensures all required columns exist in the database."""
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        for table, columns in required_columns.items():
+            cursor.execute(f"PRAGMA table_info({table});")
+            existing_columns = {row[1] for row in cursor.fetchall()}
+            
+            for column in columns:
+                if column not in existing_columns:
+                    print(f"Adding missing column: {table}.{column}")
+                    cursor.execute(f"ALTER TABLE {table} ADD COLUMN {column} REAL;")
+                    conn.commit()
+        
+        conn.close()
+        print("All missing columns added successfully.")
+    except sqlite3.Error as e:
+        logging.error(f"Error adding missing columns: {e}")
+        print("Database error occurred while adding missing columns. Check the log for details.")
+
+# Run the function to add missing columns
+add_missing_columns(DATABASE_PATH, REQUIRED_COLUMNS)
+
+# ----------------------------
+# Execution Function
+# ----------------------------
+
+def execute_sql_queries(db_path, queries):
+    if not os.path.exists(db_path):
+        logging.error(f"Database file '{db_path}' does not exist.")
+        print(f"Error: Database file '{db_path}' does not exist. Check the log for details.")
+        return
+
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        print("Connected to the database.")
+
+        conn.execute('BEGIN TRANSACTION;')
+
+        for name, query in queries.items():
+            try:
+                print(f"Executing: {name}")
+                cursor.execute(query)
+                print(f"Executed: {name}")
+            except sqlite3.Error as e:
+                logging.error(f"Error executing '{name}': {e}")
+                print(f"Error executing '{name}'. Check the log.")
+
+        conn.commit()
+        print("All queries executed and committed successfully.")
+
+    except sqlite3.Error as e:
+        logging.error(f"Database error: {e}")
+        print("Database error occurred. Check the log for details.")
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        print("An unexpected error occurred. Check the log for details.")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+            print("Database connection closed.")
+
 
 SQL_QUERIES = {
     "avg_prof_course_hours": """
@@ -209,46 +281,6 @@ logging.basicConfig(
     level=logging.ERROR,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
-
-# ----------------------------
-# Execution Function
-# ----------------------------
-
-def execute_sql_queries(db_path, queries):
-    if not os.path.exists(db_path):
-        logging.error(f"Database file '{db_path}' does not exist.")
-        print(f"Error: Database file '{db_path}' does not exist. Check the log for details.")
-        return
-
-    try:
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        print("Connected to the database.")
-
-        conn.execute('BEGIN TRANSACTION;')
-
-        for name, query in queries.items():
-            try:
-                print(f"Executing: {name}")
-                cursor.execute(query)
-                print(f"Executed: {name}")
-            except sqlite3.Error as e:
-                logging.error(f"Error executing '{name}': {e}")
-                print(f"Error executing '{name}'. Check the log.")
-
-        conn.commit()
-        print("All queries executed and committed successfully.")
-
-    except sqlite3.Error as e:
-        logging.error(f"Database error: {e}")
-        print("Database error occurred. Check the log for details.")
-    except Exception as e:
-        logging.error(f"Unexpected error: {e}")
-        print("An unexpected error occurred. Check the log for details.")
-    finally:
-        if 'conn' in locals():
-            conn.close()
-            print("Database connection closed.")
 
 # ----------------------------
 # Main Execution
