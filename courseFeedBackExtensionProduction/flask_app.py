@@ -317,7 +317,7 @@ def get_course_feedback():
     try:
         course_keys = set()
         professor_keys = []
-        professor_course_ids = set()  # We'll collect this during course processing
+        professor_course_ids = set()  # Stores professor-course mappings
 
         # Process each course to collect course_keys and professor_keys
         for course in data:
@@ -381,13 +381,9 @@ def get_course_feedback():
                             break
 
             # Collect departments in order
-            departments = [dept]
-            for listing in other_listings:
-                alt_dept, _ = split_course_name(listing)
-                if alt_dept:
-                    departments.append(alt_dept)
+            departments = [dept] + [split_course_name(listing)[0] for listing in other_listings if split_course_name(listing)[0]]
 
-            # Process professors for this course
+            # Process professors for this course and all its listings
             professor_names = [name.strip() for name in professor_last_name.split(',')] if ',' in professor_last_name else [professor_last_name.strip()]
 
             for name in professor_names:
@@ -395,13 +391,18 @@ def get_course_feedback():
                 professor_id = None
                 for dept_option in departments:
                     professor_id = professor_ids.get((name, dept_option))
-
                     if professor_id:
                         break
 
                 if professor_id:
-                    # Collect professor_course_id for this course
+                    # Collect professor_course_id for the main course
                     professor_course_ids.add((professor_id, actual_dept, actual_course_id))
+
+                    # Collect professor_course_id for each alternative listing
+                    for listing in other_listings:
+                        alt_dept, alt_course_id = split_course_name(listing)
+                        if alt_dept and alt_course_id:
+                            professor_course_ids.add((professor_id, alt_dept, int(alt_course_id)))
 
         # Now perform bulk queries for professor-course data
         professor_course_ids_list = list(professor_course_ids)
