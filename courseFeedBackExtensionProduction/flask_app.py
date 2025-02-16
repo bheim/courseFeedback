@@ -497,8 +497,10 @@ def get_course_feedback():
 
                         for listing in other_listings:
                             alt_dept, alt_course_id = split_course_name(listing)
+                            alt_course_id = int(alt_course_id)
                             if alt_dept and alt_course_id:
                                 alt_prof_course_key = (professor_id, alt_dept, alt_course_id)
+        
                                 print(f'Alt prof course key is {alt_prof_course_key}')
                                 print(f'Professor course ratings has {professor_course_ratings}')
                                 alt_prof_course_rating = professor_course_ratings.get(alt_prof_course_key)
