@@ -528,6 +528,8 @@ def get_course_feedback():
                     print(f"  - Professor-Course Rating: {prof_course_rating}")
                     print(f"  - Professor-Course Hours: {prof_course_hours}")
 
+            print("Prof course ratings before filter:")
+            print(single_course_professor_course_ratings)
             # Calculate averages
             valid_professor_ratings = list(filter(None, single_course_professor_ratings))
             avg_professor_rating = (
@@ -556,6 +558,7 @@ def get_course_feedback():
             })
 
         # Return the feedback data as JSON
+            print(feedback_data)
         return jsonify(feedback_data), 200
 
     finally:
