@@ -76,6 +76,7 @@ def calculate_course_rating(cursor, dept, course_id):
     results = cursor.fetchone()
     # If no results, return None
     if not results:
+        print("NO COURSE RATING RESULTS")
         return None
     return results[0]
 
