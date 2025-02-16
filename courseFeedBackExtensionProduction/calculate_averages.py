@@ -6,7 +6,7 @@ import os
 # Configuration
 # ----------------------------
 
-DATABASE_PATH = 'course_feedback_new.db'  # Replace with your actual database file
+DATABASE_PATH = 'course_feedback.db'  # Replace with your actual database file
 ERROR_LOG_PATH = 'error.log'
 
 REQUIRED_COLUMNS = {
@@ -223,21 +223,23 @@ SQL_QUERIES = {
                         COALESCE(c2.excellence, 0)
                     ) /
                     NULLIF(
-                        (c2.challenge_intellect IS NOT NULL) +
+                        ((c2.challenge_intellect IS NOT NULL) +
                         (c2.purpose IS NOT NULL) +
                         (c2.standards IS NOT NULL) +
                         (c2.feedback IS NOT NULL) +
                         (c2.fairness IS NOT NULL) +
                         (c2.respect IS NOT NULL) +
-                        (c2.excellence IS NOT NULL),
+                        (c2.excellence IS NOT NULL)),
                         0
                     ) AS rating
                 FROM courses AS c2
-                INNER JOIN courses_professors AS cp ON c2.id = cp.course_id
-                INNER JOIN professors AS p ON cp.professor_id = p.id
-                WHERE p.dept = courses.dept AND p.last_name = courses_professors.last_name
+                WHERE c2.dept = courses.dept AND c2.course_id = courses.course_id
             ) sub
             WHERE rating IS NOT NULL
+        )
+        WHERE EXISTS (
+            SELECT 1 FROM courses AS c2
+            WHERE c2.dept = courses.dept AND c2.course_id = courses.course_id
         );
     """,
     "avg_professor_rating": """
