@@ -475,6 +475,10 @@ def get_course_feedback():
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
         professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
+        professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
+        print("Professor Course URLs:")
+        for key, urls in professor_course_urls.items():
+            print(f"Key: {key}, Number of URLs: {len(urls)}")
 
 
         # Now process each course again to compile feedback_data
