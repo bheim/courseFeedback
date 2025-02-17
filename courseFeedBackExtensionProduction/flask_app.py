@@ -298,6 +298,30 @@ def calculate_professor_courses_hours(cursor, professor_course_ids):
     
     return professor_course_hours
 
+def fetch_course_urls(cursor, courses):
+    conditions = []
+    parameters = []
+    for dept, course_id in courses:
+        conditions.append("(dept = ? AND course_id = ?)")
+        parameters.extend([dept, course_id])
+    where_clause = " OR ".join(conditions)
+    query = f"""
+        SELECT dept, course_id, url
+        FROM courses
+        WHERE {where_clause}
+    """
+    cursor.execute(query, parameters)
+    results = cursor.fetchall()
+    course_urls = {}
+    for row in results:
+        dept, course_id, url = row
+        key = (dept, course_id)
+        if key in course_urls:
+            course_urls[key].append(url)
+        else:
+            course_urls[key] = [url]
+    return course_urls
+
 @app.route('/')
 def home():
     # Simple home route to check if the app is running
@@ -365,6 +389,7 @@ def get_course_feedback():
             # Fetch course rating and hours
             course_rating = course_ratings.get((dept, course_id))
             course_hours = courses_hours.get((dept, course_id))
+            course_urls = fetch_course_urls(cursor, list(course_keys))
 
             # Handle alternative listings if no rating found
             if course_rating is None:
@@ -533,6 +558,7 @@ def get_course_feedback():
                 sum(valid_professor_course_hours) / len(valid_professor_course_hours)
                 if valid_professor_course_hours else None
             )
+            urls = course_urls.get((actual_dept, actual_course_id), [])
 
             # Append the results to the feedback_data list
             feedback_data.append({
@@ -541,7 +567,8 @@ def get_course_feedback():
                 'professor_rating': avg_professor_rating,
                 'professor_course_rating': avg_professor_course_rating,
                 'course_hours': course_hours,
-                'professor_course_hours': avg_professor_course_hours
+                'professor_course_hours': avg_professor_course_hours,
+                'course_urls': urls
             })
 
         # Return the feedback data as JSON
