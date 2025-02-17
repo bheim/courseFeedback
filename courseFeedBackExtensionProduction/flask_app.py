@@ -366,6 +366,7 @@ def get_course_feedback():
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
         course_urls = fetch_course_urls(cursor, list(course_keys))
+        print("Number of course URL entries:", len(course_urls))
         print(f"here are course urls: {course_urls}")
         professor_ids = find_professor_ids(cursor, professor_keys)
         professor_ratings = calculate_professors_ratings(cursor, professor_ids)
