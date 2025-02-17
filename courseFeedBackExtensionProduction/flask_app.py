@@ -244,8 +244,6 @@ def calculate_professor_course_ratings(cursor, professor_course_ids):
         avg_rating = row[3]
         
         professor_course_ratings[(professor_id, dept, course_id)] = avg_rating
-
-        print(professor_course_ratings)
     
     return professor_course_ratings
 
@@ -366,7 +364,6 @@ def get_course_feedback():
 
         # Perform bulk queries for courses and professors
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
-        print(f"course ratings: {course_ratings}")
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
         course_urls = fetch_course_urls(cursor, list(course_keys))
         print(f"here are course urls: {course_urls}")
@@ -513,7 +510,6 @@ def get_course_feedback():
 
                     # If no rating found, try alternative department-course combinations
                     if prof_course_rating is None or prof_course_hours is None:
-                        print("  - No rating found, trying alternative departments/courses...")
 
                         for listing in other_listings:
                             alt_dept, alt_course_id = split_course_name(listing)
@@ -527,15 +523,12 @@ def get_course_feedback():
                                 # Use the first valid rating we find
                                 if prof_course_rating is None and alt_prof_course_rating is not None:
                                     prof_course_rating = alt_prof_course_rating
-                                    print(f"    - Updated Prof-Course Rating: {prof_course_rating}")
 
                                 if prof_course_hours is None and alt_prof_course_hours is not None:
                                     prof_course_hours = alt_prof_course_hours
-                                    print(f"    - Updated Prof-Course Hours: {prof_course_hours}")
 
                                 # Stop searching if both values are found
                                 if prof_course_rating is not None and prof_course_hours is not None:
-                                    print("  - Found both values, stopping search.")
                                     break
 
                     # Append final values
