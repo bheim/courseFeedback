@@ -390,6 +390,7 @@ def get_course_feedback():
             course_rating = course_ratings.get((dept, course_id))
             course_hours = courses_hours.get((dept, course_id))
             course_urls = fetch_course_urls(cursor, list(course_keys))
+            print(f"here are course urls: {course_urls}")
 
             # Handle alternative listings if no rating found
             if course_rating is None:
@@ -570,7 +571,7 @@ def get_course_feedback():
                 'professor_course_hours': avg_professor_course_hours,
                 'course_urls': urls
             })
-
+        print(feedback_data)
         # Return the feedback data as JSON
         return jsonify(feedback_data), 200
 
