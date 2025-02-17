@@ -318,7 +318,6 @@ def fetch_course_urls(cursor, courses):
             course_urls[key].append(url)
         else:
             course_urls[key] = [url]
-    course_urls = {k: list(v) for k, v in course_urls.items()}
     return course_urls
 
 def fetch_professor_course_urls(cursor, professor_course_ids):
@@ -360,7 +359,6 @@ def fetch_professor_course_urls(cursor, professor_course_ids):
             professor_course_urls[key].append(url)
         else:
             professor_course_urls[key] = [url]
-    professor_course_urls = {k: list(v) for k, v in professor_course_urls.items()}
     return professor_course_urls
 
 @app.route('/')
