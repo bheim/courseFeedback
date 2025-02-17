@@ -368,6 +368,8 @@ def get_course_feedback():
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
         print(f"course ratings: {course_ratings}")
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
+        course_urls = fetch_course_urls(cursor, list(course_keys))
+        print(f"here are course urls: {course_urls}")
         professor_ids = find_professor_ids(cursor, professor_keys)
         professor_ratings = calculate_professors_ratings(cursor, professor_ids)
 
@@ -389,9 +391,6 @@ def get_course_feedback():
             # Fetch course rating and hours
             course_rating = course_ratings.get((dept, course_id))
             course_hours = courses_hours.get((dept, course_id))
-            course_urls = fetch_course_urls(cursor, list(course_keys))
-            print(f"here are course urls: {course_urls}")
-
             # Handle alternative listings if no rating found
             if course_rating is None:
                 for listing in other_listings:
