@@ -3,9 +3,6 @@
   "name": "Course Feedback Extension",
   "version": "2.0",
   "description": "Show course feedback on course search page",
-  "permissions": [
-      "https://benheim.pythonanywhere.com/*"
-  ],
   "background": {
       "service_worker": "background.js"
   },
@@ -13,6 +10,7 @@
       {
         "matches": ["https://coursesearch92.ais.uchicago.edu/*",
                     "https://ais92psprd.ais.uchicago.edu/psc/psprd/EMPLOYEE/SA/c/UC_STUDENT_RECORDS_FL.UC_SSR_CLSRCH_FL.GBL*"],
+        "css": ["styles.css"],
         "js": ["courseScrape.js"]
       }
   ],
