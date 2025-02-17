@@ -318,7 +318,50 @@ def fetch_course_urls(cursor, courses):
             course_urls[key].append(url)
         else:
             course_urls[key] = [url]
+    course_urls = {k: list(v) for k, v in course_urls.items()}
     return course_urls
+
+def fetch_professor_course_urls(cursor, professor_course_ids):
+    """
+    Fetch URLs that are unique to a professor-course combination.
+    
+    Args:
+        cursor (sqlite3.Cursor): The database cursor.
+        professor_course_ids (list): List of tuples (professor_id, dept, course_id).
+    
+    Returns:
+        dict: A dictionary with keys as (professor_id, dept, course_id) and values as lists of URLs.
+    """
+    conditions = []
+    parameters = []
+    for professor_id, dept, course_id in professor_course_ids:
+        conditions.append("(cp.professor_id = ? AND c.dept = ? AND c.course_id = ?)")
+        parameters.extend([professor_id, dept, course_id])
+    
+    if not conditions:
+        return {}
+    
+    where_clause = " OR ".join(conditions)
+    query = f"""
+        SELECT cp.professor_id, c.dept, c.course_id, cp.url
+        FROM courses_professors cp
+        JOIN courses c ON cp.course_id = c.id
+        WHERE {where_clause}
+    """
+    
+    cursor.execute(query, parameters)
+    results = cursor.fetchall()
+    
+    professor_course_urls = {}
+    for row in results:
+        professor_id, dept, course_id, url = row
+        key = (professor_id, dept, course_id)
+        if key in professor_course_urls:
+            professor_course_urls[key].append(url)
+        else:
+            professor_course_urls[key] = [url]
+    professor_course_urls = {k: list(v) for k, v in professor_course_urls.items()}
+    return professor_course_urls
 
 @app.route('/')
 def home():
@@ -431,6 +474,8 @@ def get_course_feedback():
         professor_course_ids_list = list(professor_course_ids)
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
+        professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
+
 
         # Now process each course again to compile feedback_data
         for course in data:
@@ -508,6 +553,8 @@ def get_course_feedback():
                     prof_course_key = (professor_id, actual_dept, actual_course_id)
                     prof_course_rating = professor_course_ratings.get(prof_course_key)
                     prof_course_hours = professor_course_hours.get(prof_course_key)
+                    prof_urls = professor_course_urls.get(prof_course_key, [])
+                    
 
                     # If no rating found, try alternative department-course combinations
                     if prof_course_rating is None or prof_course_hours is None:
