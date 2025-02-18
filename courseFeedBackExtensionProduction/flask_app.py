@@ -342,7 +342,7 @@ def fetch_professor_course_urls(cursor, professor_course_ids):
     
     where_clause = " OR ".join(conditions)
     query = f"""
-        SELECT cp.professor_id, c.dept, c.course_id, cp.url
+        SELECT cp.professor_id, c.dept, c.course_id, c.url
         FROM courses_professors cp
         JOIN courses c ON cp.course_id = c.id
         WHERE {where_clause}
