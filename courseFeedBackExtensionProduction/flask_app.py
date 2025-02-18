@@ -473,12 +473,7 @@ def get_course_feedback():
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
         professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
-        professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
-        print("Professor Course URLs:")
-        for key, urls in professor_course_urls.items():
-            print(f"Key: {key}, Number of URLs: {len(urls)}")
-
-
+   
         # Now process each course again to compile feedback_data
         for course in data:
             course_name = course['courseId']
@@ -578,6 +573,8 @@ def get_course_feedback():
                                 if prof_course_hours is None and alt_prof_course_hours is not None:
                                     prof_course_hours = alt_prof_course_hours
 
+                                #TODO: add urls here!
+
                                 # Stop searching if both values are found
                                 if prof_course_rating is not None and prof_course_hours is not None:
                                     break
@@ -605,7 +602,10 @@ def get_course_feedback():
             )
             urls = course_urls.get((actual_dept, actual_course_id), [])
             urls = list(set(urls))
-            single_course_professor_course_hours = list(set(single_course_professor_course_urls))
+            print(f"Here are the urls: {single_course_professor_course_urls} for {course_name}")
+
+
+            #single_course_professor_course_urls = list(set(single_course_professor_course_urls))
 
             # Append the results to the feedback_data list
             feedback_data.append({
