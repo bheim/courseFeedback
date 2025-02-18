@@ -407,8 +407,6 @@ def get_course_feedback():
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
         course_urls = fetch_course_urls(cursor, list(course_keys))
-        for key, urls in course_urls.items():
-            print(f"Key: {key}, Number of URLs: {len(urls)}")
         professor_ids = find_professor_ids(cursor, professor_keys)
         professor_ratings = calculate_professors_ratings(cursor, professor_ids)
 
@@ -602,7 +600,6 @@ def get_course_feedback():
             )
             urls = course_urls.get((actual_dept, actual_course_id), [])
             urls = list(set(urls))
-            print(f"Here are the urls: {single_course_professor_course_urls} for {course_name}")
             # Flatten the list-of-lists of professor URLs into one list
             flat_prof_urls = [url for sublist in single_course_professor_course_urls for url in sublist]
             # Remove duplicates by converting to a set and back to a list
@@ -622,7 +619,6 @@ def get_course_feedback():
                 'course_urls': urls,
                 'professor_course_urls': flat_prof_urls
             })
-        print(feedback_data)
         # Return the feedback data as JSON
         return jsonify(feedback_data), 200
 
