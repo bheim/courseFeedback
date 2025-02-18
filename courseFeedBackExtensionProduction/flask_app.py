@@ -603,6 +603,10 @@ def get_course_feedback():
             urls = course_urls.get((actual_dept, actual_course_id), [])
             urls = list(set(urls))
             print(f"Here are the urls: {single_course_professor_course_urls} for {course_name}")
+            # Flatten the list-of-lists of professor URLs into one list
+            flat_prof_urls = [url for sublist in single_course_professor_course_urls for url in sublist]
+            # Remove duplicates by converting to a set and back to a list
+            flat_prof_urls = list(set(flat_prof_urls))
 
 
             #single_course_professor_course_urls = list(set(single_course_professor_course_urls))
@@ -616,7 +620,7 @@ def get_course_feedback():
                 'course_hours': course_hours,
                 'professor_course_hours': avg_professor_course_hours,
                 'course_urls': urls,
-                'professor_course_urls': single_course_professor_course_urls
+                'professor_course_urls': flat_prof_urls
             })
         print(feedback_data)
         # Return the feedback data as JSON
