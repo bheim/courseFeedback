@@ -525,6 +525,7 @@ def get_course_feedback():
             single_course_professor_ratings = []
             single_course_professor_course_ratings = []
             single_course_professor_course_hours = []
+            single_course_professor_course_urls = [] 
 
             for name in professor_names:
                 # Find the professor ID based on department order
@@ -584,6 +585,7 @@ def get_course_feedback():
                     # Append final values
                     single_course_professor_course_ratings.append(prof_course_rating)
                     single_course_professor_course_hours.append(prof_course_hours)
+                    single_course_professor_course_urls.append(prof_urls)
 
             # Calculate averages
             valid_professor_ratings = list(filter(None, single_course_professor_ratings))
@@ -602,6 +604,8 @@ def get_course_feedback():
                 if valid_professor_course_hours else None
             )
             urls = course_urls.get((actual_dept, actual_course_id), [])
+            urls = list(set(urls))
+            single_course_professor_course_hours = list(set(single_course_professor_course_urls))
 
             # Append the results to the feedback_data list
             feedback_data.append({
@@ -611,7 +615,8 @@ def get_course_feedback():
                 'professor_course_rating': avg_professor_course_rating,
                 'course_hours': course_hours,
                 'professor_course_hours': avg_professor_course_hours,
-                'course_urls': urls
+                'course_urls': urls,
+                'professor_course_urls': single_course_professor_course_urls
             })
         print(feedback_data)
         # Return the feedback data as JSON
