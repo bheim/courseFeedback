@@ -92,30 +92,41 @@ function createExternalLinkIcon() {
     return img;
 }
 
-// Function to add feedback widgets with real data from the backend
+// Add this helper function at the top with other helpers
+function isCoursesearchSite() {
+    return window.location.hostname.includes('coursesearch92');
+}
+
+// Modify the addFeedbackWidgets function
 function addFeedbackWidgets(feedbackData, courseData) {
-    const courseRows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row td.ps_grid-cell');
-    //console.log(feedbackData);  
+    // Change selector based on site
+    const rows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row');
+    
+    rows.forEach((row, index) => {
+        // Determine where to insert the widget
+        const container = !isCoursesearchSite() 
+            ? row.querySelector('td.ps_grid-cell')  // ais92psprd site
+            : row;  // coursesearch92 site
 
-    courseRows.forEach((cell, index) => {
-        // Apply styles to the cell
-        cell.style.height = 'fit-content';
-        cell.style.display = 'flex';
-        cell.style.alignItems = 'center';
-        cell.style.justifyContent = 'space-between';
-
-        // Skip if widget already exists
-        if (cell.querySelector('.feedback-widget')) {
+        if (!container || container.querySelector('.feedback-widget')) {
             return;
         }
-    
+
+        // Only style the cell for NOT coursesearch92 site
+        if (!isCoursesearchSite()) {
+            container.style.height = 'fit-content';
+            container.style.display = 'flex';
+            container.style.alignItems = 'center';
+            container.style.justifyContent = 'space-between';
+        }
+
         const feedback = feedbackData[index];
         const course = courseData[index];
        
-        const widget = document.createElement('div');
-        widget.classList.add('feedback-widget');
-    
         if (feedback) {
+            const widget = document.createElement('div');
+            widget.classList.add('feedback-widget');
+            
             const instructor = course.instructor || 'X';
             const courseCode = course.courseId || 'Course';
     
@@ -156,7 +167,7 @@ function addFeedbackWidgets(feedbackData, courseData) {
             // Add this before cell.appendChild(widget)
             widget.addEventListener('click', (e) => e.stopPropagation());
 
-            cell.appendChild(widget);
+            container.appendChild(widget);
         }
     });
 }
