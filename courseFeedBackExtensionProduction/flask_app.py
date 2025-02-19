@@ -296,71 +296,6 @@ def calculate_professor_courses_hours(cursor, professor_course_ids):
     
     return professor_course_hours
 
-def fetch_course_urls(cursor, courses):
-    conditions = []
-    parameters = []
-    for dept, course_id in courses:
-        conditions.append("(dept = ? AND course_id = ?)")
-        parameters.extend([dept, course_id])
-    where_clause = " OR ".join(conditions)
-    query = f"""
-        SELECT dept, course_id, url
-        FROM courses
-        WHERE {where_clause}
-    """
-    cursor.execute(query, parameters)
-    results = cursor.fetchall()
-    course_urls = {}
-    for row in results:
-        dept, course_id, url = row
-        key = (dept, course_id)
-        if key in course_urls:
-            course_urls[key].append(url)
-        else:
-            course_urls[key] = [url]
-    return course_urls
-
-def fetch_professor_course_urls(cursor, professor_course_ids):
-    """
-    Fetch URLs that are unique to a professor-course combination.
-    
-    Args:
-        cursor (sqlite3.Cursor): The database cursor.
-        professor_course_ids (list): List of tuples (professor_id, dept, course_id).
-    
-    Returns:
-        dict: A dictionary with keys as (professor_id, dept, course_id) and values as lists of URLs.
-    """
-    conditions = []
-    parameters = []
-    for professor_id, dept, course_id in professor_course_ids:
-        conditions.append("(cp.professor_id = ? AND c.dept = ? AND c.course_id = ?)")
-        parameters.extend([professor_id, dept, course_id])
-    
-    if not conditions:
-        return {}
-    
-    where_clause = " OR ".join(conditions)
-    query = f"""
-        SELECT cp.professor_id, c.dept, c.course_id, c.url
-        FROM courses_professors cp
-        JOIN courses c ON cp.course_id = c.id
-        WHERE {where_clause}
-    """
-    
-    cursor.execute(query, parameters)
-    results = cursor.fetchall()
-    
-    professor_course_urls = {}
-    for row in results:
-        professor_id, dept, course_id, url = row
-        key = (professor_id, dept, course_id)
-        if key in professor_course_urls:
-            professor_course_urls[key].append(url)
-        else:
-            professor_course_urls[key] = [url]
-    return professor_course_urls
-
 @app.route('/')
 def home():
     # Simple home route to check if the app is running
@@ -406,7 +341,6 @@ def get_course_feedback():
         # Perform bulk queries for courses and professors
         course_ratings = calculate_course_ratings(cursor, list(course_keys))
         courses_hours = calculate_courses_hours(cursor, list(course_keys))
-        course_urls = fetch_course_urls(cursor, list(course_keys))
         professor_ids = find_professor_ids(cursor, professor_keys)
         professor_ratings = calculate_professors_ratings(cursor, professor_ids)
 
@@ -470,7 +404,6 @@ def get_course_feedback():
         professor_course_ids_list = list(professor_course_ids)
         professor_course_hours = calculate_professor_courses_hours(cursor, professor_course_ids_list)
         professor_course_ratings = calculate_professor_course_ratings(cursor, professor_course_ids_list)
-        professor_course_urls = fetch_professor_course_urls(cursor, professor_course_ids_list)
    
         # Now process each course again to compile feedback_data
         for course in data:
@@ -518,7 +451,6 @@ def get_course_feedback():
             single_course_professor_ratings = []
             single_course_professor_course_ratings = []
             single_course_professor_course_hours = []
-            single_course_professor_course_urls = [] 
 
             for name in professor_names:
                 # Find the professor ID based on department order
@@ -549,9 +481,7 @@ def get_course_feedback():
                     prof_course_key = (professor_id, actual_dept, actual_course_id)
                     prof_course_rating = professor_course_ratings.get(prof_course_key)
                     prof_course_hours = professor_course_hours.get(prof_course_key)
-                    prof_urls = professor_course_urls.get(prof_course_key, [])
                     
-
                     # If no rating found, try alternative department-course combinations
                     if prof_course_rating is None or prof_course_hours is None:
 
@@ -571,8 +501,6 @@ def get_course_feedback():
                                 if prof_course_hours is None and alt_prof_course_hours is not None:
                                     prof_course_hours = alt_prof_course_hours
 
-                                #TODO: add urls here!
-
                                 # Stop searching if both values are found
                                 if prof_course_rating is not None and prof_course_hours is not None:
                                     break
@@ -580,7 +508,6 @@ def get_course_feedback():
                     # Append final values
                     single_course_professor_course_ratings.append(prof_course_rating)
                     single_course_professor_course_hours.append(prof_course_hours)
-                    single_course_professor_course_urls.append(prof_urls)
 
             # Calculate averages
             valid_professor_ratings = list(filter(None, single_course_professor_ratings))
@@ -598,17 +525,7 @@ def get_course_feedback():
                 sum(valid_professor_course_hours) / len(valid_professor_course_hours)
                 if valid_professor_course_hours else None
             )
-            urls = course_urls.get((actual_dept, actual_course_id), [])
-            urls = list(set(urls))
-            # Flatten the list-of-lists of professor URLs into one list
-            flat_prof_urls = [url for sublist in single_course_professor_course_urls for url in sublist]
-            # Remove duplicates by converting to a set and back to a list
-            flat_prof_urls = list(set(flat_prof_urls))
-
-
-            #single_course_professor_course_urls = list(set(single_course_professor_course_urls))
-
-            print(f"https://coursefeedback.uchicago.edu/?CourseDepartment={dept}&CourseNumber={course_id}")
+        
             # Append the results to the feedback_data list
             feedback_data.append({
                 'courseId': course_name,
