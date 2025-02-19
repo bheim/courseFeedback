@@ -608,6 +608,7 @@ def get_course_feedback():
 
             #single_course_professor_course_urls = list(set(single_course_professor_course_urls))
 
+            print(f"https://coursefeedback.uchicago.edu/?CourseDepartment={dept}&CourseNumber={course_id}")
             # Append the results to the feedback_data list
             feedback_data.append({
                 'courseId': course_name,
