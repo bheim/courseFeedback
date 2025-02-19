@@ -616,8 +616,7 @@ def get_course_feedback():
                 'professor_course_rating': avg_professor_course_rating,
                 'course_hours': course_hours,
                 'professor_course_hours': avg_professor_course_hours,
-                'course_urls': urls,
-                'professor_course_urls': flat_prof_urls
+                'feedback_urls': f"https://coursefeedback.uchicago.edu/?CourseDepartment={dept}&CourseNumber={course_id}"
             })
         # Return the feedback data as JSON
         return jsonify(feedback_data), 200
