@@ -16,5 +16,9 @@
   ],
   "host_permissions": [
       "https://benheim.pythonanywhere.com/*"
-  ]
+  ],
+  "web_accessible_resources": [{
+    "resources": ["external-link.svg"],
+    "matches": ["<all_urls>"]
+  }]
 }

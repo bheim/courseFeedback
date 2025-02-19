@@ -7,7 +7,7 @@ const observerCallback = (mutationsList, observer) => {
     debounceTimeout = setTimeout(() => {
         //console.log("Debounced function execution");
         const scrapedCourses = scrapeCourseData();
-        // console.log(scrapedCourses);
+        //console.log(scrapedCourses);
 
         // Send course information to the backend only if valid data exists
         if (scrapedCourses.length > 0) {
@@ -78,10 +78,24 @@ function scrapeCourseData() {
     return courses;
 }
 
+// Add this helper function
+function getExtensionUrl(path) {
+    return chrome.runtime.getURL(path);
+}
+
+// Replace the createExternalLinkIcon function with this simpler version
+function createExternalLinkIcon() {
+    const img = document.createElement('img');
+    img.src = getExtensionUrl('/external-link.svg');
+    img.width = 12;
+    img.height = 12;
+    return img;
+}
+
 // Function to add feedback widgets with real data from the backend
 function addFeedbackWidgets(feedbackData, courseData) {
     const courseRows = document.querySelectorAll('tbody.ps_grid-body tr.ps_grid-row td.ps_grid-cell');
-    console.log(feedbackData);  
+    //console.log(feedbackData);  
 
     courseRows.forEach((cell, index) => {
         // Apply styles to the cell
@@ -105,9 +119,9 @@ function addFeedbackWidgets(feedbackData, courseData) {
             const instructor = course.instructor || 'X';
             const courseCode = course.courseId || 'Course';
     
-            const professorRating = feedback.professor_rating !== null ? feedback.professor_rating.toFixed(2) : 'Not Found';
-            const courseRating = feedback.course_rating !== null ? feedback.course_rating.toFixed(2) : 'Not Found';
-            const professorCourseRating = feedback.professor_course_rating !== null ? feedback.professor_course_rating.toFixed(2) : 'Not Found';
+            const professorRating = feedback.professor_rating !== null ? `${feedback.professor_rating.toFixed(2)}/5` : 'Not Found';
+            const courseRating = feedback.course_rating !== null ? `${feedback.course_rating.toFixed(2)}/5` : 'Not Found';
+            const professorCourseRating = feedback.professor_course_rating !== null ? `${feedback.professor_course_rating.toFixed(2)}/5` : 'Not Found';
             const courseHours = feedback.course_hours !== null ? feedback.course_hours.toFixed(2) : 'Not Found';
             const professorCourseHours = feedback.professor_course_hours !== null ? feedback.professor_course_hours.toFixed(2) : 'Not Found';
     
@@ -123,7 +137,25 @@ function addFeedbackWidgets(feedbackData, courseData) {
                     Prof x Course Rating: <strong>${professorCourseRating}</strong><br>
                     Prof x Course Hours: <strong>${professorCourseHours}</strong>
                 </div>
+                ${(courseRating !== 'Not Found') ? `
+                    <div class="feedback-widget-buttons">
+                    <a class="feedback-widget-button feedback-widget-left" href=${feedback.feedback_urls} target="_blank">
+                        <span>See Course Feedback</span>
+                    </a>
+                </div>`
+                : ''}
+                
             `;
+
+            // Add icons to buttons after creating the HTML
+            const buttons = widget.querySelectorAll('.feedback-widget-button');
+            buttons.forEach(button => {
+                button.appendChild(createExternalLinkIcon());
+            });
+
+            // Add this before cell.appendChild(widget)
+            widget.addEventListener('click', (e) => e.stopPropagation());
+
             cell.appendChild(widget);
         }
     });
