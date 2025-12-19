@@ -6,7 +6,7 @@ import time
 import itertools
 
 # Load the login cookies from the pickle file
-with open('../cookies.pkl', 'rb') as f:
+with open('../../cookies/cookies.pkl', 'rb') as f:
     cookies = pickle.load(f)
 
 # Create a requests session and load the cookies
@@ -16,10 +16,12 @@ session = requests.Session()
 for cookie in cookies:
     session.cookies.set(cookie['name'], cookie['value'])
 
+
 # Function to clean and split department and course number
 def split_course_id(course):
     parts = course.split("\xa0")  # Split by the non-breaking space
     return parts[0], parts[1] if len(parts) > 1 else None
+
 
 # Function to extract the year from the quarter column and check if it's 2019 or after
 def is_valid_year(quarter_text):
@@ -62,8 +64,7 @@ def scrape_feedback_links(department, course_number, session):
                     course_link = row.find("td", class_="course").find("a")
                     if course_link:
                         feedback_links.append(course_link['href'])
-
-            print(f"Course: {department} {course_number}, Links: {feedback_links}")
+            print(f"Course: {department} {course_number}, New links: {feedback_links}")
             return feedback_links
         else:
             print(f"Failed to access {url}: {response.status_code}")
@@ -96,14 +97,16 @@ cursor_output.execute('''
 ''')
 
 # Fetch all course entries from the input database
-cursor_input.execute("SELECT department, course_id FROM courses WHERE id > 35219")
+cursor_input.execute("SELECT department, course_id FROM courses")
 courses = cursor_input.fetchall()
 
 # Function to process courses in batches
 def process_courses_in_batches(courses, batch_size=25):
     # Loop through the courses in chunks of 'batch_size'
+    batch_count = 0
     for i in range(0, len(courses), batch_size):
         batch = courses[i:i + batch_size]  # Slice the courses list in batches
+        print(f"This is batch {batch_count}")
         print(f"Processing batch of {len(batch)} courses...")
         for department, course_id in batch:
             department, course_number = split_course_id(course_id)
@@ -111,10 +114,11 @@ def process_courses_in_batches(courses, batch_size=25):
                 feedback_links = scrape_feedback_links(department, course_number, session)
                 for link in feedback_links:
                     cursor_output.execute('''
-                        INSERT INTO course_urls (course_id, department, url) 
+                        INSERT OR IGNORE INTO course_urls (course_id, department, url) 
                         VALUES (?, ?, ?)
                     ''', (course_id, department, link))
-            time.sleep(1)
+            time.sleep(.1)
+        batch_count += 1
 
         # Commit changes after processing each batch
         conn_output.commit()

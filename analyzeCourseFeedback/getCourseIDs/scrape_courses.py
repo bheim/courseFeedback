@@ -34,7 +34,7 @@ def setup_database():
 def save_course(conn, department, course_id):
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO courses (department, course_id)
+        INSERT OR IGNORE INTO courses (department, course_id)
         VALUES (?, ?)
     ''', (department, course_id))
     conn.commit()
@@ -61,7 +61,6 @@ def scrape_courses(conn, department_url, department_name):
         
         # Save the course to the database
         save_course(conn, department_name, course_id)
-        print(f"Saved course: {course_id} in department: {department_name}")
 
 # Function to scrape all departments listed in the sidebar
 def scrape_all_departments(conn):
