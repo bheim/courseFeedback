@@ -17,7 +17,7 @@ for cookie in cookies:
 
 
 # Set the quarter you want to scrape
-target_quarter = "Spring 2025"
+target_quarter = "Autumn 2025"
 target_term, target_year = target_quarter.split()
 
 if target_term in ["Winter", "Spring"]:

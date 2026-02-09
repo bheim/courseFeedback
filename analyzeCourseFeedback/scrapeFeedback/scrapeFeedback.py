@@ -12,7 +12,7 @@ from imageProcessor import process_image
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Number of parallel workers (I pushed 10 one time but you could probably go even higher. This speeds things up significantly)
-NUM_WORKERS = 1
+NUM_WORKERS = 12
 
 # Threading lock for database writes
 db_lock = threading.Lock()
@@ -34,29 +34,58 @@ def create_driver():
     
     # Navigate to the domain first
     driver.get('https://uchicago.bluera.com/uchicago/')
-    time.sleep(1)
+    time.sleep(2)  # Increased wait time
     
     # Load cookies
     with open('../../cookies/cookies.pkl', 'rb') as file:
         cookies = pickle.load(file)
     
+    cookies_added = 0
     for cookie in cookies:
-        if 'domain' in cookie:
-            del cookie['domain']
-        if 'expiry' in cookie:
-            cookie['expiry'] = int(cookie['expiry'])
+        # Create a copy to avoid modifying the original
+        cookie_copy = cookie.copy()
+        
+        # Remove domain to let Selenium set it automatically
+        if 'domain' in cookie_copy:
+            del cookie_copy['domain']
+        if 'expiry' in cookie_copy:
+            cookie_copy['expiry'] = int(cookie_copy['expiry'])
+        
         try:
-            driver.add_cookie(cookie)
+            driver.add_cookie(cookie_copy)
+            cookies_added += 1
         except Exception as e:
-            print(f"Could not add cookie: {e}")
+            print(f"Could not add cookie {cookie_copy.get('name', 'unknown')}: {e}")
     
+    print(f"Successfully added {cookies_added}/{len(cookies)} cookies")
+    
+    # Refresh to apply cookies
     driver.refresh()
-    time.sleep(1)
+    time.sleep(5)
     
-    # DEBUG: Check if we're authenticated
-    print(f"DEBUG: Page title after login: {driver.title}")
+    # Verify authentication by checking the page
+    max_retries = 3
+    for attempt in range(max_retries):
+        current_url = driver.current_url
+        page_title = driver.title.lower()
+        
+        # Check if we're on a login page (adjust these checks based on your site)
+        if 'login' in current_url.lower() or 'signin' in current_url.lower() or 'sign in' in page_title:
+            print(f"Attempt {attempt + 1}/{max_retries}: Still on login page. Retrying...")
+            driver.refresh()
+            time.sleep(5)
+        else:
+            print(f"✓ Successfully authenticated. Page title: {driver.title}")
+            return driver
     
-    return driver
+    # If we get here, authentication failed
+    print(f"✗ AUTHENTICATION FAILED after {max_retries} attempts")
+    print(f"Current URL: {driver.current_url}")
+    print(f"Page title: {driver.title}")
+    
+    # You can either raise an exception or return the driver anyway
+    # raise Exception("Failed to authenticate with cookies")
+    return driver  # Return anyway and let the worker handle the error
 
 # Check if the quarter falls in the COVID-era
 def is_covid_era(quarter):

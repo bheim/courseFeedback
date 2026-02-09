@@ -55,9 +55,11 @@ You will have to do this multiple time throughout the process. That's why we pro
 
 4. Run calculate_averages.py
 
-5. Push to the repo (the only thing that matter is the updated databases)
+5. Copy the course_feedback.db and put it in the courseFeedBackExtensionProduction folder. Replace the old database. This is where the backend looks to get the database.
 
-6. On pythonanywhere, pull from the repo
+6. Push to the repo (the only thing that matter is the updated databases)
+
+7. On pythonanywhere, pull from the repo
 
 This will get the links to the feedback for all the courseIDs we just scraped. We will then scrape this.
 
