@@ -135,12 +135,18 @@ Still to use downstream: descriptions (topic search, W5), prerequisites
 (planning, W5), requirement lists (monopoly warnings, W4/W5).
 
 ### W3. Rich capture pass (laptop run with cookies)
-The new report pages expose data we never stored. Additive backfill pass +
-capture in all future quarterly scrapes:
-- [ ] Written comments -> new `comments` table keyed to section
-- [ ] Interest before/after questions -> two new columns (direct
-      "interestingness" = interest delta)
-- [ ] Response counts per section (true sample sizes)
+Script ready: `scrapeFeedback/capture_rich.py` (preview-gated, resumable,
+session guard). Privacy architecture: raw comments -> gitignored local
+comments.db, NEVER pushed (public repo, principle 2); only aggregates
+(interest means, response counts, keyword comment_signals) go into
+course_feedback.db for committing.
+- [ ] Run capture_rich.py on laptop (~1-2 hrs unattended, 4 recent quarters)
+- [ ] Written comments -> local comments.db (keyword aggregates committed)
+- [ ] Interest before/after -> columns (stats-table forms only in v1;
+      College-form interest renders as chart images -> OCR variant is v2,
+      pending label diagnostics from the preview)
+- [ ] Response counts per section (stats-table forms in v1)
+- [ ] Extend capture to pre-2025 quarters + fold into quarterly RUNBOOK
 - [ ] New College-form questions worth keeping (class time value, lectures,
       discussions, stimulated interest)
 
@@ -148,14 +154,16 @@ capture in all future quarterly scrapes:
 - [x] Offering forecaster v1 (`forecasting/forecast.py`)
 - [x] Instructor prediction with calibrated confidence
 - [x] Backtest + pressure-test harnesses (keep green as models change)
-- [x] Monopoly detection; fairness-gap (harsh grading) signal — as queries;
-      productize into precomputed tables
-- [ ] Regime classifier (A/B/C per course)
+- [x] Monopoly detection; fairness-gap signal — productized in
+      `forecasting/build_signals.py` -> signals.db (2026-08-16)
+- [x] Regime classifier v1 (A/B/C per course; B = SOSC/HUMA for now — Civ
+      course detection needs W5 refinement): 859 A / 63 B / 1,042 C among
+      1,964 established courses
 - [ ] Merge split professor identities (77 name-variant pairs)
-- [ ] Crowd-pleaser index (high rating + low challenge + low hours + small
-      class: the niche-survival pattern)
-- [ ] Goldilocks scoring: percentile ranks on workload / challenge /
-      interest / rating with user-tunable weights
+- [x] Crowd-pleaser index (rating percentile minus challenge/hours
+      percentiles): 154 courses flagged at >=40
+- [x] Goldilocks scoring v1 (percentiles, default weights 50/30/20;
+      user-tunable sliders come with the W5 site)
 - [ ] Comment parsing (after W3): themes, workload descriptions, grading
       complaints, "easy/hard" mentions -> structured signals + per-course
       synthesized summaries (LLM batch; respect principle 2)
