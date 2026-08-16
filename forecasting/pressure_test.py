@@ -19,11 +19,15 @@ from collections import defaultdict
 
 from forecast import DB_PATH, SEASON_IDX, qkey
 from backtest_instructors import ranked_instructors
+from identities import build_alias_map
 
 
 def load_sections():
     conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
     cur = conn.cursor()
+    alias = build_alias_map()
+    if alias:
+        print(f"(cross-listing merge active: {len(alias)} aliased listings)")
     sec_profs = defaultdict(set)
     for sid, pid in cur.execute("SELECT course_id, professor_id FROM courses_professors"):
         sec_profs[sid].add(pid)
@@ -34,8 +38,9 @@ def load_sections():
         if len(parts) == 2 and parts[0] in SEASON_IDX and parts[1].isdigit():
             year, season = int(parts[1]), parts[0]
             profs = sec_profs.get(sid, set())
-            sections.append(((d, c), (year, season), profs))
-            taught[(d, c)][(year, season)] |= profs
+            key = alias.get((d, c), (d, c))
+            sections.append((key, (year, season), profs))
+            taught[key][(year, season)] |= profs
     conn.close()
     return sections, taught
 

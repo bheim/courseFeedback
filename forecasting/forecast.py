@@ -20,6 +20,8 @@ import sqlite3
 import sys
 from collections import defaultdict
 
+from identities import build_alias_map
+
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "analyzeCourseFeedback", "course_feedback.db")
 
 SEASONS = ["Winter", "Spring", "Summer", "Autumn"]  # calendar order within a year
@@ -44,11 +46,19 @@ def load():
     for sid, pid in cur.execute("SELECT course_id, professor_id FROM courses_professors"):
         sec_profs[sid].add(pid)
 
+    # Collapse cross-listed listings onto one canonical identity (no-op
+    # until catalog.db exists — see identities.py)
+    alias = build_alias_map()
+    if alias:
+        print(f"(cross-listing merge active: {len(alias)} aliased listings)")
+
     course_meta = {}
     for d, c, r, h in cur.execute(
         "SELECT dept, course_id, avg_course_rating, avg_course_hours FROM courses"
     ):
-        course_meta[(d, c)] = (r, h)
+        key = alias.get((d, c), (d, c))
+        if key not in course_meta or course_meta[key][0] is None:
+            course_meta[key] = (r, h)
 
     offerings = defaultdict(set)                     # (year, season) -> {(dept, course_id)}
     taught = defaultdict(lambda: defaultdict(set))   # (dept, course_id) -> (year, season) -> {prof_id}
@@ -59,9 +69,10 @@ def load():
         # Skips malformed quarters like "Form 10" and "Unknown Quarter"
         if len(parts) == 2 and parts[0] in SEASON_IDX and parts[1].isdigit():
             year, season = int(parts[1]), parts[0]
-            offerings[(year, season)].add((d, c))
-            taught[(d, c)][(year, season)] |= sec_profs.get(sid, set())
-            n_sections[(d, c)] += 1
+            key = alias.get((d, c), (d, c))
+            offerings[(year, season)].add(key)
+            taught[key][(year, season)] |= sec_profs.get(sid, set())
+            n_sections[key] += 1
 
     conn.close()
     return offerings, taught, prof_names, course_meta, n_sections
