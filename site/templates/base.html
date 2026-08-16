@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}UChicago Course Copilot{% endblock %}</title>
+<style>
+  :root { --maroon: #800000; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e3ddd4; --bg: #faf8f4; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         color: var(--ink); background: var(--bg); line-height: 1.5; }
+  header { background: var(--maroon); color: #fff; padding: 0.7rem 1.2rem;
+           display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap; }
+  header a { color: #fff; text-decoration: none; }
+  header .brand { font-weight: 700; font-size: 1.05rem; }
+  header nav a { opacity: .85; margin-right: .9rem; font-size: .92rem; }
+  header nav a:hover { opacity: 1; }
+  main { max-width: 1080px; margin: 1.4rem auto 4rem; padding: 0 1.2rem; }
+  h1 { font-size: 1.5rem; margin: .2rem 0 .8rem; }
+  h2 { font-size: 1.08rem; margin: 1.6rem 0 .5rem; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 10px;
+          padding: 1rem 1.2rem; margin-bottom: 1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; background:#fff; }
+  th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: .8rem; text-transform: uppercase;
+       letter-spacing: .03em; }
+  tr:hover td { background: #f6f1e8; }
+  a { color: var(--maroon); }
+  .muted { color: var(--muted); font-size: .88rem; }
+  .badge { display: inline-block; padding: .1rem .5rem; border-radius: 99px;
+           font-size: .75rem; font-weight: 600; margin-right: .3rem; }
+  .badge.A { background: #e8f0e4; color: #2e5b28; }
+  .badge.B { background: #eae4f2; color: #4d3577; }
+  .badge.C { background: #f7e8d8; color: #8a5312; }
+  .badge.warn { background: #f9e3e3; color: #8a1d1d; }
+  .badge.info { background: #e6ecf5; color: #274b77; }
+  .stat { display: inline-block; margin-right: 1.4rem; margin-bottom: .4rem; }
+  .stat b { font-size: 1.25rem; display: block; }
+  .stat span { font-size: .78rem; color: var(--muted); text-transform: uppercase;
+               letter-spacing: .03em; }
+  input[type=text], input[type=number], select { padding: .45rem .6rem; border: 1px solid var(--line);
+     border-radius: 8px; font-size: .95rem; background: #fff; }
+  input[type=text].big { width: min(28rem, 100%); }
+  button { background: var(--maroon); color: #fff; border: 0; border-radius: 8px;
+           padding: .5rem .95rem; font-size: .95rem; cursor: pointer; }
+  form.filters { display: flex; gap: .7rem; flex-wrap: wrap; align-items: end; }
+  form.filters label { font-size: .78rem; color: var(--muted); display: block; }
+  .scroll { overflow-x: auto; }
+  footer { max-width: 1080px; margin: 2rem auto; padding: 0 1.2rem; color: var(--muted);
+           font-size: .8rem; }
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="/">Course Copilot</a>
+  <nav>
+    <a href="/explore">Goldilocks explorer</a>
+    <a href="/explore?regime=C">Monopolies</a>
+    <a href="/explore?regime=B">Hidden-name Core</a>
+  </nav>
+</header>
+<main>{% block content %}{% endblock %}</main>
+<footer>Built on official UChicago course feedback aggregates. Every number links back to
+the source; raw student comments are never republished. Sample sizes shown everywhere —
+trust wide data, squint at thin data.</footer>
+</body>
+</html>

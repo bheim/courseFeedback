@@ -58,6 +58,21 @@ def main():
     def avg(key, name):
         return sums[key][name] / counts[key][name] if counts[key][name] else None
 
+    # Comment signals (aggregated keyword counts; raw text never leaves the
+    # capture machine), canonicalized onto unified identities
+    comment_sig = defaultdict(lambda: [0, 0, 0, 0])   # n, grading, easy, hard
+    conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
+    try:
+        for d, c, n, g, e, h in conn.execute(
+                "SELECT dept, course_id, n_comments, grading_mentions, "
+                "easy_mentions, hard_mentions FROM comment_signals"):
+            entry = comment_sig[alias.get((d, c), (d, c))]
+            for i, v in enumerate((n, g, e, h)):
+                entry[i] += v
+    except sqlite3.OperationalError:
+        pass  # table absent before the first capture run
+    conn.close()
+
     # Program-requirement counts from the catalog
     required_by = defaultdict(set)
     if os.path.exists(CATALOG_DB):
@@ -92,6 +107,8 @@ def main():
         fairness_gap REAL, crowd_pleaser INTEGER, goldilocks INTEGER,
         required_by_n_programs INTEGER,
         p_autumn_2026 REAL, likely_instructor TEXT, instructor_conf REAL,
+        n_comments INTEGER, grading_mentions INTEGER,
+        grading_pct REAL, easy_pct REAL, hard_pct REAL,
         PRIMARY KEY (dept, course_id))""")
 
     rows = []
@@ -133,6 +150,7 @@ def main():
             goldilocks = round(0.5 * rp + 0.3 * (100 - hp) + 0.2 * cp)
 
         pid, conf = predict_instructor(taught, key, *TARGET)
+        nc, grading, easy, hard = comment_sig.get(key, (0, 0, 0, 0))
         rows.append((
             dept, cid, n_sections[key], len(quarters), last_q,
             len(instructors), monopoly, regime,
@@ -140,10 +158,14 @@ def main():
             fairness_gap, crowd_pleaser, goldilocks,
             len(required_by.get(key, ())),
             preds.get(key), prof_names.get(pid, ""), round(conf, 2),
+            nc, grading,
+            round(100 * grading / nc, 1) if nc else None,
+            round(100 * easy / nc, 1) if nc else None,
+            round(100 * hard / nc, 1) if nc else None,
         ))
 
     out.executemany(
-        "INSERT INTO course_signals VALUES (" + ",".join("?" * 21) + ")", rows)
+        "INSERT INTO course_signals VALUES (" + ",".join("?" * 26) + ")", rows)
     out.commit()
 
     n = len(rows)

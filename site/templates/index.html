@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Find your best possible schedule</h1>
+<form method="get" action="/">
+  <input class="big" type="text" name="q" value="{{ query }}"
+         placeholder="Try: ANTH 21107 · ECON · &quot;cities&quot; · &quot;climate&quot;">
+  <button>Search</button>
+</form>
+
+{% if results is not none %}
+  <h2>{{ results|length }} result{{ '' if results|length == 1 else 's' }} for “{{ query }}”</h2>
+  {% if results %}
+  <div class="scroll"><table>
+    <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>Sections</th><th>Regime</th>
+        <th>Likely Autumn ’26 instructor</th></tr>
+    {% for r in results %}
+    <tr>
+      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+      <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
+      <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
+      <td>{{ r['n_sections'] }}</td>
+      <td><span class="badge {{ r['regime'] }}">{{ {'A':'open choice','B':'hidden names','C':'monopoly'}[r['regime']] }}</span></td>
+      <td>{{ r['likely_instructor'] or '—' }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% else %}<p class="muted">Nothing found — try a department code or a topic word.</p>{% endif %}
+{% endif %}
+
+<h2>Best rated, lightest load (goldilocks top 10)</h2>
+<div class="scroll"><table>
+  <tr><th>Course</th><th>Score</th><th>Rating</th><th>Hrs/wk</th><th>Likely instructor</th></tr>
+  {% for r in top %}
+  <tr>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td>{{ r['goldilocks'] }}</td>
+    <td>{{ '%.2f'|format(r['avg_rating']) }}</td>
+    <td>{{ '%.1f'|format(r['avg_hours']) }}</td>
+    <td>{{ r['likely_instructor'] or '—' }}</td>
+  </tr>
+  {% endfor %}
+</table></div>
+<p class="muted">Tune the weights yourself in the <a href="/explore">explorer</a>.</p>
+
+<h2>Most talked about (comment volume, last 4 quarters)</h2>
+<div class="scroll"><table>
+  <tr><th>Course</th><th>Comments</th><th>“Hard” %</th><th>“Easy” %</th><th>Grading-mention %</th></tr>
+  {% for r in talked %}
+  <tr>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td>{{ r['n_comments'] }}</td>
+    <td>{{ r['hard_pct'] }}%</td>
+    <td>{{ r['easy_pct'] }}%</td>
+    <td>{{ r['grading_pct'] }}%</td>
+  </tr>
+  {% endfor %}
+</table></div>
+{% endblock %}
