@@ -3,6 +3,7 @@ import time
 import pickle
 import re
 import threading
+from urllib.parse import urljoin
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -230,52 +231,57 @@ def extract_bio_rating_tables(driver):
     return tables
 
 
-def extract_instructor_rating_value(tables, question_title):
+def extract_instructor_rating_value(tables, question_titles):
+    # Accepts one wording or a list of candidate wordings (the platform
+    # migration renamed "course" to "class" in several questions)
+    if isinstance(question_titles, str):
+        question_titles = [question_titles]
     rating_table = tables.get('The Instructor . . .', [])
-    
+
     for row in rating_table:
-        if row['question'] == question_title:
-            return float(row.get('Mean', 0))
-    
+        if row['question'] in question_titles:
+            try:
+                return float(row.get('Mean'))
+            except (TypeError, ValueError):
+                return None
+
     return None
+
+HOURS_QUESTION_TITLES = [
+    "How many hours per week outside of attending required sessions did you spend on this course?",
+    "How many hours per week outside of attending required sessions did you spend on this class?",
+]
 
 def extract_image_url(driver):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    
-    question_title = "How many hours per week outside of attending required sessions did you spend on this course?"
 
-    question_block = soup.find('h3', string=re.compile(re.escape(question_title), re.IGNORECASE))
-
-    if not question_block:
-        question_block = soup.find('span', string=re.compile(re.escape(question_title), re.IGNORECASE))
+    for question_title in HOURS_QUESTION_TITLES:
+        pattern = re.compile(re.escape(question_title), re.IGNORECASE)
+        question_block = soup.find('h3', string=pattern) or soup.find('span', string=pattern)
         if not question_block:
-            return None
-
-    image_chart_div = question_block.find_next('div', class_='FrequencyBlock_chart')
-    if image_chart_div:
-        img_tag = image_chart_div.find('img')
-        if img_tag and 'src' in img_tag.attrs:
-            return img_tag['src']
+            continue
+        image_chart_div = question_block.find_next('div', class_='FrequencyBlock_chart')
+        if image_chart_div:
+            img_tag = image_chart_div.find('img')
+            if img_tag and 'src' in img_tag.attrs:
+                return img_tag['src']
     return None
 
 def extract_bio_image_url(driver):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-    question_title = "How many hours per week outside of attending required sessions did you spend on this course?"
+    for question_title in HOURS_QUESTION_TITLES:
+        pattern = re.compile(re.escape(question_title), re.IGNORECASE)
+        question_block = soup.find('span', string=pattern) or soup.find('h3', string=pattern)
+        if not question_block:
+            continue
+        image_chart_div = question_block.find_next('div', class_='FrequencyBlock_chart')
+        if image_chart_div:
+            img_tag = image_chart_div.find('img')
+            if img_tag and 'src' in img_tag.attrs:
+                return img_tag['src']
 
-    question_block = soup.find('span', string=re.compile(re.escape(question_title), re.IGNORECASE))
-
-    if not question_block:
-        print(f"Question title '{question_title}' not found.")
-        return None
-
-    image_chart_div = question_block.find_next('div', class_='FrequencyBlock_chart')
-    if image_chart_div:
-        img_tag = image_chart_div.find('img')
-        if img_tag and 'src' in img_tag.attrs:
-            return img_tag['src']
-
-    print(f"No image found for question title: '{question_title}'")
+    print("No hours-per-week chart image found.")
     return None
 
 
@@ -349,13 +355,20 @@ def insert_course_data(course_data, conn):
     course_id = cursor.lastrowid
     return course_id
 
-def extract_rating_value(tables, question_title):
+def extract_rating_value(tables, question_titles):
+    # Accepts one wording or a list of candidate wordings (the platform
+    # migration renamed "course" to "class" in several questions)
+    if isinstance(question_titles, str):
+        question_titles = [question_titles]
     rating_table = tables.get('Please respond to the following:', [])
-    
+
     for row in rating_table:
-        if row['question'] == question_title:
-            return float(row.get('Mean', 0))
-    
+        if row['question'] in question_titles:
+            try:
+                return float(row.get('Mean'))
+            except (TypeError, ValueError):
+                return None
+
     return None
 
 
@@ -400,9 +413,10 @@ def processLink(driver, link):
 
     image_url = extract_image_url(driver)
     if image_url:
-        counts = process_image(image_url)
+        cookies = {c['name']: c['value'] for c in driver.get_cookies()}
+        counts = process_image(urljoin(link, image_url), cookies=cookies)
         total_responses = sum(counts.values())
-        percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()}
+        percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()} if total_responses else {}
     else:
         percentages = {}
 
@@ -414,18 +428,23 @@ def processLink(driver, link):
         'dept': dept,
         'quarter': quarter,
         'course_id': int(course_name.split()[1]),
-        'challenge_intellect': extract_rating_value(rating_tables, "This course challenged me intellectually."),
-        'purpose': extract_rating_value(rating_tables, "I understood the purpose of this course and what I was expected to gain from it."),
+        'challenge_intellect': extract_rating_value(rating_tables, ["This course challenged me intellectually.",
+                                                                    "This class challenged me intellectually."]),
+        'purpose': extract_rating_value(rating_tables, ["I understood the purpose of this course and what I was expected to gain from it.",
+                                                        "I understood the purpose of this class and what I was expected to gain from it."]),
         'standards': extract_rating_value(rating_tables, "I understood the standards for success on assignments."),
         'feedback': extract_rating_value(rating_tables, "I received feedback on my performance that helped me improve my subsequent work."),
         'fairness': extract_rating_value(rating_tables, "My work was evaluated fairly."),
         'respect': extract_rating_value(rating_tables, "I felt respected in this class."),
-        'excellence': extract_rating_value(rating_tables, "Overall, this was an excellent course."),
-        'organization': extract_instructor_rating_value(rating_tables, "Organized the course clearly."),
+        'excellence': extract_rating_value(rating_tables, ["Overall, this was an excellent course.",
+                                                           "Overall, this was an excellent class."]),
+        'organization': extract_instructor_rating_value(rating_tables, ["Organized the course clearly.",
+                                                                        "Organized the class clearly."]),
         'challenge': extract_instructor_rating_value(rating_tables, "Challenged you to learn."),
         'available': extract_instructor_rating_value(rating_tables, "Was available and helpful outside of class."),
         'inclusive': extract_instructor_rating_value(rating_tables, "Worked to create an inclusive and welcoming learning environment."),
-        'significant': extract_instructor_rating_value(rating_tables, "Helped you gain significant learning from the course content."),
+        'significant': extract_instructor_rating_value(rating_tables, ["Helped you gain significant learning from the course content.",
+                                                                       "Helped you gain significant learning from the class content."]),
         'less_five': percentages.get('<5 hours', 0),
         'five_to_ten': percentages.get('5-10 hours', 0),
         'ten_to_fifteen': percentages.get('10-15 hours', 0),
@@ -456,10 +475,17 @@ def processBioLink(driver, link):
         rating_tables = extract_bio_rating_tables(driver)
 
         target_titles = [
+            # pre-migration wordings ("course")
             "The learning objectives of the course were clear and I understood how to  achieve them.",
             "The course helped me to make important progress toward the stated  objectives.",
             "The graded elements of the course were directed toward assessing my progress toward the stated course objectives.",
-            "Overall, this was an excellent course."
+            "Overall, this was an excellent course.",
+            # post-migration wordings ("class")
+            "The learning objectives of the class were clear and I understood how to  achieve them.",
+            "The class helped me to make important progress toward the stated  objectives.",
+            "The graded elements of the class were directed toward assessing my progress toward the stated course objectives.",
+            "The graded elements of the class were directed toward assessing my progress toward the stated class objectives.",
+            "Overall, this was an excellent class.",
         ]
 
         normalized_target_titles = [title + " " for title in target_titles]
@@ -468,12 +494,13 @@ def processBioLink(driver, link):
             extract_bio_rating_value(rating_tables, target_titles)
             or extract_bio_rating_value(rating_tables, normalized_target_titles)
         )
-        
+
         image_url = extract_bio_image_url(driver)
         if image_url:
-            counts = process_image(image_url)
+            cookies = {c['name']: c['value'] for c in driver.get_cookies()}
+            counts = process_image(urljoin(link, image_url), cookies=cookies)
             total_responses = sum(counts.values())
-            percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()}
+            percentages = {key: round((value / total_responses) * 100, 2) for key, value in counts.items()} if total_responses else {}
         else:
             percentages = {}
         

@@ -5,11 +5,19 @@ import requests
 
 BASE_URL = 'https://uchicago.bluera.com'
 
-# Process image using OCR and extract hours worked data
-def process_image(image_url):
-    response = requests.get(BASE_URL + image_url)
+# Process image using OCR and extract hours worked data.
+# Accepts absolute or relative URLs; pass cookies for pages that require login.
+def process_image(image_url, cookies=None):
+    if not image_url.startswith('http'):
+        image_url = BASE_URL + image_url
+    response = requests.get(image_url, cookies=cookies)
     if response.status_code == 200:
-        img = Image.open(BytesIO(response.content))
+        try:
+            img = Image.open(BytesIO(response.content))
+        except Exception:
+            print(f"Response from {image_url[:80]} was not a readable image "
+                  f"(content-type: {response.headers.get('content-type')}) — login may be required.")
+            return {}
 
         # Use Tesseract to extract text from the image
         extracted_text = pytesseract.image_to_string(img)
@@ -31,6 +39,7 @@ def process_image(image_url):
         # Ensure we have the total responses before proceeding
         if not total_responses:
             print("Error: Could not extract total number of responses.")
+            print(f"OCR raw text was: {extracted_text[:300]!r}")
             return {}
 
         # Groups we want to extract data for
