@@ -103,6 +103,7 @@ def main():
     targets = [
         (2023, "Autumn"), (2024, "Winter"), (2024, "Spring"), (2024, "Autumn"),
         (2025, "Winter"), (2025, "Spring"), (2025, "Autumn"),
+        (2026, "Winter"), (2026, "Spring"),
     ]
     print("All predictions use only pre-target data (enforced by qkey filter).\n")
     header = (f"{'quarter':<13} {'courses':>7} {'top1':>5} {'top3':>5} "
