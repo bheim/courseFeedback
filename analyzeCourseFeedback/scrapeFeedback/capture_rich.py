@@ -88,20 +88,28 @@ def targets():
 
 
 def extract_comments(soup):
-    """All comment-table rows, tagged with the question block they answer."""
+    """All comment-table rows, tagged with the question block they answer.
+
+    Matches on SHAPE, not header text: comment tables are the only
+    single-column CondensedTabular tables (ratings tables always carry
+    Mean/Median/percentage columns). Old-platform renderings (Spring 2025)
+    omit the 'Comment' header row entirely, so shape is the reliable signal
+    across both eras."""
     out = []
     for table in soup.find_all('table'):
         classes = table.get('class', [])
         if 'CondensedTabular' not in classes or 'CondensedTabularFixedHalfWidth' in classes:
             continue
         rows = table.find_all('tr')
-        if not rows or rows[0].get_text(' ', strip=True) != 'Comment':
+        if not rows:
+            continue
+        if any(len(row.find_all(['th', 'td'])) != 1 for row in rows):
             continue
         title_el = table.find_previous(['h3', 'h4'], class_='ReportBlockTitle')
         question = title_el.get_text(' ', strip=True) if title_el else ''
-        for row in rows[1:]:
+        for row in rows:
             text = row.get_text(' ', strip=True)
-            if text:
+            if text and text not in ('Comment', 'Comments'):
                 out.append((question, text))
     return out
 
