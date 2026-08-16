@@ -129,10 +129,11 @@ def preview(driver):
 
 
 def worker(worker_id, driver, rows):
-    fixed = empty = errors = 0
+    fixed = empty = errors = consecutive = 0
     for row_id, dept, quarter, cid, url in rows:
         try:
             all_data = scrape_one(driver, dept, url)
+            consecutive = 0
             if all_data and has_data(all_data["course_data"]):
                 update_row(row_id, all_data["course_data"])
                 fixed += 1
@@ -140,7 +141,14 @@ def worker(worker_id, driver, rows):
                 empty += 1  # e.g. graduate-form reports the parser doesn't cover
         except Exception as e:
             errors += 1
+            consecutive += 1
             print(f"[Worker {worker_id}] Error on {dept} {cid}: {e}")
+            if consecutive >= 12:
+                print(f"[Worker {worker_id}] {consecutive} failures in a row — this browser's "
+                      f"login session has likely expired. Stopping this worker; its remaining "
+                      f"rows stay marked as damaged. Rerun repair_rescrape.py after a fresh "
+                      f"getCookies.py to finish them.")
+                break
     print(f"[Worker {worker_id}] done: {fixed} fixed, {empty} no-data, {errors} errors")
     return fixed, empty, errors
 
