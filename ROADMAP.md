@@ -107,6 +107,8 @@ Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
 - [ ] Full repair run completes on laptop; push healed DB (running now)
 - [ ] Verify healed data end to end (ratings/hours coverage by quarter)
 - [ ] Add post-scrape data-quality tripwire to the pipeline (principle 6)
+- [ ] Port the expired-session guard (stop worker after 12 consecutive
+      failures; added to repair_rescrape.py) into scrapeFeedback.py
 - [ ] Recompute averages; regenerate predictions on healed data
 
 ### W2. Catalog enrichment (public data, no login, ~minutes to run)
