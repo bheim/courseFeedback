@@ -3,3 +3,4 @@ cookies/cookies.pkl
 __pycache__/
 *.swp
 analyzeCourseFeedback/scrapeFeedback/comments.db
+analyzeCourseFeedback/scrapeFeedback/slate_comments.txt
