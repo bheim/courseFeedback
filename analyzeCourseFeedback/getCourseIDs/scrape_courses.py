@@ -26,7 +26,19 @@ def setup_database():
             course_id TEXT
         )
     ''')
-    
+
+    # Deduplicate rows from earlier runs, then enforce uniqueness so the
+    # INSERT OR IGNORE in save_course actually skips existing rows
+    cursor.execute('''
+        DELETE FROM courses WHERE id NOT IN (
+            SELECT MIN(id) FROM courses GROUP BY department, course_id
+        )
+    ''')
+    cursor.execute('''
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_dept_course
+        ON courses(department, course_id)
+    ''')
+
     conn.commit()
     return conn
 

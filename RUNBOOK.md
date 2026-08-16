@@ -4,7 +4,7 @@ Run this on your own computer (the Okta login step needs you). Everything is
 manual-start but hands-off once running. Full detail lives in README.txt; this
 is the short version.
 
-## One-time setup
+## One-time setup (~10 min)
 
 1. Install [Google Chrome](https://www.google.com/chrome/) if you don't have it.
 2. Install Tesseract (used to read the hours-per-week histogram images):
@@ -19,34 +19,41 @@ is the short version.
    pip install -r requirements.txt
    ```
 
-## Per-quarter update (run once per missing quarter)
+   (Windows: `venv\Scripts\activate` instead of `source venv/bin/activate`.)
+
+## The update (run per feedback drop)
 
 Currently missing: **Winter 2026** and **Spring 2026**.
 
 ```bash
-# 1. Get fresh cookies (~2 min). A Chrome window opens; log into Okta
-#    normally, then leave the window alone until the script closes it.
-cd cookies
+# 1. Refresh the course catalog list (~3 min, no login needed).
+#    Prints each department as it goes.
+cd analyzeCourseFeedback/getCourseIDs
+python scrape_courses.py
+
+# 2. Get fresh cookies (~2 min). A Chrome window opens; log into Okta
+#    normally (password + Duo), then leave the window alone — it closes
+#    itself about a minute after opening.
+cd ../../cookies
 python getCookies.py
 
-# 2. Collect feedback links for the quarter (~10 min per quarter)
+# 3. Collect feedback links for each missing quarter (~10 min per quarter)
 cd ../analyzeCourseFeedback/getCourseLinks
 python scrape_course_links_single_quarter.py "Winter 2026"
 python scrape_course_links_single_quarter.py "Spring 2026"
 
-# 3. Scrape the feedback reports (the long one — roughly 1-3 hours,
+# 4. Scrape the feedback reports (the long one — roughly 1-3 hours,
 #    unattended; 12 Chrome windows will open and work in parallel).
-#    If it starts erroring partway through, cookies expired: rerun
-#    getCookies.py, then rerun this — it automatically skips anything
-#    already scraped.
+#    If it starts erroring partway through, cookies expired: redo step 2,
+#    then rerun this — it automatically skips anything already scraped.
 cd ../scrapeFeedback
 python scrapeFeedback.py
 
-# 4. Recompute the precalculated averages (~1 min)
+# 5. Recompute the precalculated averages (~1 min)
 cd ..
 python calculate_averages.py
 
-# 5. Copy the updated database to where the backend reads it
+# 6. Copy the updated database to where the backend reads it
 cp course_feedback.db ../courseFeedBackExtensionProduction/course_feedback.db
 ```
 
