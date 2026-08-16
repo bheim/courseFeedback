@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+selenium
+webdriver-manager
+Pillow
+pytesseract
+Flask
+Flask-Cors
+fake-useragent

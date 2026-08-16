@@ -1,5 +1,6 @@
 import requests
 import pickle
+import sys
 from bs4 import BeautifulSoup
 import sqlite3
 import time
@@ -16,8 +17,8 @@ for cookie in cookies:
     session.cookies.set(cookie['name'], cookie['value'])
 
 
-# Set the quarter you want to scrape
-target_quarter = "Autumn 2025"
+# Set the quarter you want to scrape (pass as argument, e.g.: python scrape_course_links_single_quarter.py "Winter 2026")
+target_quarter = sys.argv[1] if len(sys.argv) > 1 else "Autumn 2025"
 target_term, target_year = target_quarter.split()
 
 if target_term in ["Winter", "Spring"]:
