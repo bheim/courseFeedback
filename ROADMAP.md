@@ -140,12 +140,14 @@ session guard). Privacy architecture: raw comments -> gitignored local
 comments.db, NEVER pushed (public repo, principle 2); only aggregates
 (interest means, response counts, keyword comment_signals) go into
 course_feedback.db for committing.
-- [ ] Run capture_rich.py on laptop (~1-2 hrs unattended, 4 recent quarters)
-- [ ] Written comments -> local comments.db (keyword aggregates committed)
-- [ ] Interest before/after -> columns (stats-table forms only in v1;
-      College-form interest renders as chart images -> OCR variant is v2,
-      pending label diagnostics from the preview)
-- [ ] Response counts per section (stats-table forms in v1)
+- [x] capture_rich.py run 2026-08-16: 9,396/9,396 sections, 342,767
+      comments banked locally, ZERO errors; comment_signals aggregated for
+      3,055 courses and pushed
+- [x] Written comments -> local comments.db (keyword aggregates committed)
+- [ ] Interest before/after -> columns (291 sections in v1 — stats-table
+      forms only; College-form interest renders as chart images -> OCR
+      variant is v2)
+- [x] Response counts per section (2,841 sections; stats-table forms)
 - [ ] Extend capture to pre-2025 quarters + fold into quarterly RUNBOOK
 - [ ] New College-form questions worth keeping (class time value, lectures,
       discussions, stimulated interest)
@@ -171,9 +173,12 @@ course_feedback.db for committing.
       pressure test re-run and baselines updated (2026-08-16)
 
 ### W5. Product surfaces
-- [ ] Site (Flask, deployable on PythonAnywhere like the existing backend):
-      search, course pages, professor pages, goldilocks explorer with
-      sliders, sequence-lottery ranker for Regime B, monopoly warnings
+- [x] Site v1 shipped 2026-08-16 (`site/`, run: `cd site && python app.py`
+      -> 127.0.0.1:5050): search by code/topic, unified course pages with
+      forecasts + comment signals + histories, goldilocks explorer with
+      weight controls, regime/monopoly/crowd-pleaser badges
+- [ ] Site v2: professor pages, sequence-lottery ranker detail view for
+      Regime B, deploy to PythonAnywhere
 - [ ] Pre-reg list builder: user picks candidate courses -> optimal 10-slot
       ranked list with per-slot reasoning
 - [ ] Hedged registration mode ("4-over-3"): the system permits 400 units
