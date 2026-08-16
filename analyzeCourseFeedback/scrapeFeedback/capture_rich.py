@@ -154,11 +154,16 @@ def capture_one(driver, url):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     if not soup.find('div', class_='header'):
         raise RuntimeError("no report header (login page?)")
+    all_tables = soup.find_all('table')
+    plain_tables = [t for t in all_tables
+                    if 'CondensedTabular' in t.get('class', [])
+                    and 'CondensedTabularFixedHalfWidth' not in t.get('class', [])]
     return {
         'comments': extract_comments(soup),
         'interest_before': stat_from_block(soup, INTEREST_BEFORE, 'Mean'),
         'interest_after': stat_from_block(soup, INTEREST_AFTER, 'Mean'),
         'response_count': response_count(soup),
+        'diag': f"{len(all_tables)} tables on page, {len(plain_tables)} comment-style",
     }
 
 
@@ -244,8 +249,15 @@ def main():
 
     print("Creating one browser for the preview...")
     driver = create_driver()
-    print("\n--- PREVIEW: 3 samples, no database writes ---")
-    for section_id, dept, cid, quarter, url in rows[:3]:
+    # One sample per quarter so format differences between the old and new
+    # platform projects are visible before committing to the full run
+    preview_rows, seen = [], set()
+    for row in rows:
+        if row[3] not in seen:
+            seen.add(row[3])
+            preview_rows.append(row)
+    print(f"\n--- PREVIEW: {len(preview_rows)} samples (one per quarter), no database writes ---")
+    for section_id, dept, cid, quarter, url in preview_rows:
         try:
             data = capture_one(driver, url)
         except Exception as e:
@@ -257,6 +269,8 @@ def main():
         if data['comments']:
             q, c = data['comments'][0]
             print(f"   e.g. ({q[:50]}...): {c[:90]}")
+        else:
+            print(f"   [no comments found — diagnostic: {data['diag']}]")
     print("--- END PREVIEW ---\n")
 
     answer = input("Continue with the FULL capture (roughly 1-2 hours, unattended)? [y/N] ").strip().lower()
