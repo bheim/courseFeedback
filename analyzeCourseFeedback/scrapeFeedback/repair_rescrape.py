@@ -45,10 +45,31 @@ def broken_rows():
     return rows
 
 
+# Reports scraped before the platform migration carry old-domain links. The
+# old domain still renders the page but no longer serves the chart images, so
+# hours extraction fails there. The same report ID resolves on the new domain
+# — try that first, and fall back to the original link if it doesn't.
+OLD_PREFIX = 'https://uchicago.bluera.com/uchicago/'
+NEW_PREFIX = 'https://my-uchicago-bc.bluera.com/'
+
+
+def migrate_url(url):
+    if url.startswith(OLD_PREFIX):
+        return url.replace(OLD_PREFIX, NEW_PREFIX, 1)
+    return url
+
+
 def scrape_one(driver, dept, url):
-    if dept == "BIOS":
-        return processBioLink(driver, url)
-    return processLink(driver, url)
+    process = processBioLink if dept == "BIOS" else processLink
+    migrated = migrate_url(url)
+    if migrated != url:
+        try:
+            result = process(driver, migrated)
+            if result:
+                return result
+        except Exception:
+            pass  # report not available on the new domain; use the old link
+    return process(driver, url)
 
 
 def has_data(course_data):
