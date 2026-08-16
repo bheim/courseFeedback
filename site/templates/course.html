@@ -49,8 +49,10 @@
 <div class="card">
   <h2 style="margin-top:0">Catalog</h2>
   <p>{{ cat['description'] }}</p>
-  {% if cat['prerequisites'] %}<p class="muted"><b>Prerequisites:</b> {{ cat['prerequisites'] }}</p>{% endif %}
+  {% if cat['prerequisites'] %}<p class="muted"><b>Prerequisites:</b> {{ cat['prerequisites'] }}
+    {% if prereqs %} — {% for d2, c2 in prereqs %}<a href="/course/{{ d2 }}/{{ c2 }}">{{ d2 }} {{ c2 }}</a>{{ ', ' if not loop.last }}{% endfor %}{% endif %}</p>{% endif %}
   {% if cat['terms_offered'] %}<p class="muted"><b>Terms offered (catalog):</b> {{ cat['terms_offered'] }}</p>{% endif %}
+  {% if programs %}<p class="muted"><b>Counts toward:</b> {{ programs|join(', ') }}</p>{% endif %}
 </div>
 {% endif %}
 

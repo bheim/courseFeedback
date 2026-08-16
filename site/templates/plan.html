@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}My Plan · Course Copilot{% endblock %}
+{% block content %}
+<h1>Your path</h1>
+<form class="filters" method="get" action="/plan">
+  <div><label>Major</label>
+    <select name="major">
+      <option value="">— choose your major —</option>
+      {% for m in majors %}<option value="{{ m }}" {{ 'selected' if m == major }}>{{ m }}</option>{% endfor %}
+    </select></div>
+  <div><button>Build my view</button></div>
+</form>
+
+{% if major_groups %}
+<h2>{{ major_groups['name'] }} — your courses, best options first</h2>
+<p class="muted">Every course the catalog lists in this program's requirements, ranked.
+{{ major_groups['unrated'] }} more appear in the requirements but don't have enough
+feedback history to rank.</p>
+{% for level, rows in major_groups['groups'] %}
+<h2 style="font-size:.95rem">{{ level }} level</h2>
+<div class="scroll"><table>
+  <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>n</th><th>Prereqs</th>
+      <th>Likely Autumn ’26</th><th>Flags</th></tr>
+  {% for r in rows %}
+  <tr>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
+    <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
+    <td>{{ r['n_sections'] }}</td>
+    <td class="muted">{% for d2, c2 in prereqs_by_code.get(r['dept'] ~ ' ' ~ r['course_id'], []) %}<a href="/course/{{ d2 }}/{{ c2 }}">{{ d2 }} {{ c2 }}</a>{{ ', ' if not loop.last }}{% endfor %}</td>
+    <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%
+        {{ r['likely_instructor'] or '' }}</td>
+    <td>
+      {% if r['monopoly'] %}<span class="badge C">monopoly</span>{% endif %}
+      {% if r['crowd_pleaser'] and r['crowd_pleaser'] >= 40 %}<span class="badge warn">pleaser</span>{% endif %}
+      {% if r['grading_pct'] and r['grading_pct'] >= 15 %}<span class="badge warn">grading {{ r['grading_pct'] }}%</span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table></div>
+{% endfor %}
+{% elif major %}
+<p class="muted">No requirement data found for “{{ major }}”.</p>
+{% endif %}
+
+<h2 id="core">Core requirements — pick your lotteries</h2>
+<p class="muted">For Hum, Sosc, and Civ you can't see instructor names at pre-registration —
+you're choosing a <i>pool</i>, not a professor. Compare the pools; enter the best lottery.</p>
+
+{% for sec in core_sections %}
+<div class="card">
+  <h2 style="margin-top:0">{{ sec['label'] }}
+    {% if sec['hidden'] %}<span class="badge B">names hidden at pre-reg</span>{% endif %}
+    <span class="muted" style="font-weight:400"> · {{ sec['n_total'] }} rated options,
+    pool median rating {{ '%.2f'|format(sec['median']) if sec['median'] else '—' }}</span>
+  </h2>
+  <div class="scroll"><table>
+    <tr><th>Sequence / course</th><th>Rating</th><th>Hrs/wk</th><th>n</th>
+        <th>Instructors ever</th><th>Likely Autumn ’26</th></tr>
+    {% for r in sec['rows'] %}
+    <tr>
+      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+      <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
+      <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
+      <td>{{ r['n_sections'] }}</td>
+      <td>{{ r['n_instructors'] }}</td>
+      <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+</div>
+{% endfor %}
+{% endblock %}

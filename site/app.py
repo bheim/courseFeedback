@@ -36,6 +36,20 @@ for member, canonical in ALIAS.items():
 
 SEASON_ORDER = {"Winter": 0, "Spring": 1, "Summer": 2, "Autumn": 3}
 
+# The Core requirement areas are catalog pages we scraped like any program
+CORE_PAGES = {
+    'humanities': 'Humanities Core',
+    'socialsciences': 'Social Sciences Core',
+    'civilizationstudies': 'Civilization Studies',
+    'artscore': 'Arts Core',
+    'biologicalsciencescore': 'Biological Sciences Core',
+    'physicalsciences': 'Physical Sciences Core',
+    'mathematicalsciencescore': 'Mathematical Sciences Core',
+}
+HIDDEN_NAME_CORE = {'humanities', 'socialsciences', 'civilizationstudies'}
+
+CODE_RE = re.compile(r'([A-Z]{4})\s+(\d{5})')
+
 
 def q(db, sql, args=()):
     conn = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
@@ -45,10 +59,68 @@ def q(db, sql, args=()):
     return rows
 
 
+# Load once at startup: all signals in memory, program pools, reverse lookup
+SIGNALS = {(r["dept"], r["course_id"]): dict(r)
+           for r in q(SIGNALS_DB, "SELECT * FROM course_signals")}
+
+PROGRAM_POOLS = {}          # program -> [canonical course keys]
+PROGRAMS_BY_COURSE = {}     # canonical course -> [program names]
+for row in q(CATALOG_DB, "SELECT program, code FROM program_courses"):
+    m = CODE_RE.search(row["code"])
+    if not m:
+        continue
+    key = ALIAS.get((m.group(1), int(m.group(2))), (m.group(1), int(m.group(2))))
+    pool = PROGRAM_POOLS.setdefault(row["program"], [])
+    if key not in pool:
+        pool.append(key)
+    PROGRAMS_BY_COURSE.setdefault(key, [])
+    if row["program"] not in PROGRAMS_BY_COURSE[key]:
+        PROGRAMS_BY_COURSE[key].append(row["program"])
+
+MAJORS = sorted(p for p in PROGRAM_POOLS if p not in CORE_PAGES)
+
+
 def signal_row(dept, cid):
-    rows = q(SIGNALS_DB, "SELECT * FROM course_signals WHERE dept=? AND course_id=?",
-             (dept, cid))
-    return rows[0] if rows else None
+    return SIGNALS.get((dept, cid))
+
+
+def ranked_pool(program):
+    """Signal rows for a program's requirement pool, best goldilocks first;
+    also returns how many pool courses lack enough data to rank."""
+    rated, unrated = [], 0
+    for key in PROGRAM_POOLS.get(program, []):
+        sig = SIGNALS.get(key)
+        if sig and sig.get("goldilocks") is not None:
+            rated.append(sig)
+        else:
+            unrated += 1
+    rated.sort(key=lambda s: -s["goldilocks"])
+    return rated, unrated
+
+
+def prereq_codes(text):
+    if not text:
+        return []
+    seen, out = set(), []
+    for m in CODE_RE.finditer(text):
+        key = (m.group(1), int(m.group(2)))
+        if key not in seen:
+            seen.add(key)
+            out.append(key)
+    return out
+
+
+# canonical "DEPT NNNNN" -> [prerequisite course keys], from the catalog
+PREREQS = {}
+for _row in q(CATALOG_DB, "SELECT code, prerequisites FROM catalog_courses "
+                          "WHERE prerequisites != ''"):
+    _m = CODE_RE.search(_row["code"])
+    if not _m:
+        continue
+    _key = ALIAS.get((_m.group(1), int(_m.group(2))), (_m.group(1), int(_m.group(2))))
+    _codes = prereq_codes(_row["prerequisites"])
+    if _codes:
+        PREREQS.setdefault(f"{_key[0]} {_key[1]}", _codes)
 
 
 def catalog_entry(dept, cid):
@@ -66,13 +138,46 @@ def home():
     results = None
     if query:
         results = search(query)
-    top = q(SIGNALS_DB, """SELECT * FROM course_signals
-        WHERE goldilocks IS NOT NULL AND n_sections >= 4
-        ORDER BY goldilocks DESC LIMIT 10""")
-    talked = q(SIGNALS_DB, """SELECT * FROM course_signals
-        WHERE n_comments > 0 ORDER BY n_comments DESC LIMIT 10""")
     return render_template("index.html", query=query, results=results,
-                           top=top, talked=talked)
+                           majors=MAJORS, core_pages=CORE_PAGES)
+
+
+@app.route("/plan")
+def plan():
+    major = request.args.get("major", "")
+    core = request.args.get("core", "")
+
+    major_groups = None
+    if major in PROGRAM_POOLS:
+        rated, unrated = ranked_pool(major)
+        groups = {}
+        for sig in rated:
+            level = f"{(sig['course_id'] // 10000) * 10000}s"
+            groups.setdefault(level, []).append(sig)
+        major_groups = {"name": major, "groups": sorted(groups.items()),
+                        "unrated": unrated}
+
+    core_sections = []
+    selected_cores = [core] if core in CORE_PAGES else list(CORE_PAGES)
+    if not major:  # core-only view keeps requested core; path view shows all
+        selected_cores = [core] if core in CORE_PAGES else list(CORE_PAGES)
+    for page in selected_cores:
+        rated, unrated = ranked_pool(page)
+        if not rated:
+            continue
+        pool_ratings = [s["avg_rating"] for s in rated if s["avg_rating"]]
+        median = sorted(pool_ratings)[len(pool_ratings) // 2] if pool_ratings else None
+        core_sections.append({
+            "page": page, "label": CORE_PAGES[page],
+            "hidden": page in HIDDEN_NAME_CORE,
+            "rows": rated[:15], "n_total": len(rated), "unrated": unrated,
+            "median": median,
+        })
+
+    return render_template("plan.html", major=major, majors=MAJORS,
+                           major_groups=major_groups, core_sections=core_sections,
+                           core=core, core_pages=CORE_PAGES,
+                           prereqs_by_code=PREREQS)
 
 
 def search(query):
@@ -145,9 +250,12 @@ def course(dept, cid):
     listings = ", ".join(f"{d} {c}" for d, c in REVERSE_ALIAS.get((dept, cid), []))
     feedback_url = (f"https://coursefeedback.uchicago.edu/?CourseDepartment={dept}"
                     f"&CourseNumber={cid}")
+    programs = [CORE_PAGES.get(p, p) for p in PROGRAMS_BY_COURSE.get((dept, cid), [])]
+    prereqs = prereq_codes(cat["prerequisites"] if cat else "")
     return render_template("course.html", dept=dept, cid=cid, sig=sig, cat=cat,
                            history=history, listings=listings,
-                           feedback_url=feedback_url)
+                           feedback_url=feedback_url, programs=programs,
+                           prereqs=prereqs)
 
 
 @app.route("/explore")
