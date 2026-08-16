@@ -193,9 +193,21 @@ def plan():
         sections = PROGRAM_SECTIONS.get(program)
         groups, unrated_total = [], 0
         if sections:
-            # Requirement-section grouping: tracks, specializations, minors
-            for sec_name, keys in sections.items():
-                rated, unrated = rank_keys(keys)
+            # Requirement-section grouping: tracks, specializations, minors.
+            # Track definitions ("Summary of Requirements...") lead; sample
+            # schedules are advisory duplicates and are skipped.
+            def sec_key(name):
+                low = name.lower()
+                if "summary of requirements" in low:
+                    return (0, name)
+                if "minor" in low:
+                    return (1, name)
+                return (2, name)
+
+            for sec_name in sorted(sections, key=sec_key):
+                if "sample program" in sec_name.lower():
+                    continue
+                rated, unrated = rank_keys(sections[sec_name])
                 unrated_total += unrated
                 if rated:
                     groups.append((sec_name, rated))
