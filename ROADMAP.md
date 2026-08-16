@@ -85,8 +85,10 @@ The regime is detectable from our own data (instructor history + dept lists).
 
 Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
 
-- Course-offering forecast: 65–71% top-1 precision at p>=0.5 (beats
-  "same as last year" baseline on most quarters).
+- Course-offering forecast: 63–74% precision at p>=0.5 across five test
+  quarters with the Terms-Offered exclusion signal (was 61–70% without;
+  costs a few recall points; current-catalog terms on past quarters carry
+  mild hindsight bias, so forward predictions are the honest use).
 - Instructor prediction: 84–88% top-1 accuracy when model confidence >=70%
   (covers ~half of courses); 77–83% top-3 pool hit rate.
 - Per-section honesty split: single-section courses 70–77% top-1;
@@ -116,20 +118,21 @@ Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
 - [x] Averages recomputed; Autumn 2026 predictions regenerated on healed
       data (981 courses at p>=0.5 with rating/hours context attached)
 
-### W2. Catalog enrichment (public data, no login, ~minutes to run)
-The catalog pages we already scrape for course IDs also contain, per course:
-full **description**, **prerequisites**, **"Terms Offered"**, **"Equivalent
-Course(s)"**, and the requirements lists for each major. Capture all of it.
-- [ ] Extend catalog scraper: descriptions, prereqs, terms, equivalents
-      (script ready: `getCourseIDs/scrape_catalog_details.py` — run on
-      laptop, ~5 min, no login; then push catalog.db)
-- [ ] Scrape major-requirement course lists per program page (same script,
-      `program_courses` table)
-- [ ] Merge equivalent/cross-listed courses into unified course identities
-      (fixes fragmented history; improves forecasts and coverage)
-- [ ] Feed "Terms Offered" into the offering forecaster
-Unlocks: topic search, prerequisite-chain planning, required-course flags,
-better forecasts.
+### W2. Catalog enrichment — DONE 2026-08-16
+- [x] Catalog details captured (`getCourseIDs/scrape_catalog_details.py`,
+      snapshot in catalog.db): 6,255 entries — 6,028 descriptions, 5,708
+      Terms Offered, 4,565 equivalents
+- [x] Program requirement lists captured (4,150 references)
+- [x] Cross-listing merge (`forecasting/identities.py`): 6,659 listings ->
+      2,566 unified courses. Measured effect on instructor accuracy: ~zero
+      (reports consistently file under their primary listing), so this is
+      a product feature (unified course pages) not an accuracy lever.
+- [x] Terms Offered in the forecaster — as an EXCLUSION signal only:
+      trusting listed seasons as positive evidence hurt precision
+      (aspirational data); halving probability for unlisted seasons raised
+      precision in all 5 test quarters. Boost variant tested and rejected.
+Still to use downstream: descriptions (topic search, W5), prerequisites
+(planning, W5), requirement lists (monopoly warnings, W4/W5).
 
 ### W3. Rich capture pass (laptop run with cookies)
 The new report pages expose data we never stored. Additive backfill pass +
@@ -156,8 +159,8 @@ capture in all future quarterly scrapes:
 - [ ] Comment parsing (after W3): themes, workload descriptions, grading
       complaints, "easy/hard" mentions -> structured signals + per-course
       synthesized summaries (LLM batch; respect principle 2)
-- [ ] Improve forecaster with W2 terms-offered + merged identities;
-      re-run pressure test and update baselines above
+- [x] Improve forecaster with W2 terms-offered + merged identities;
+      pressure test re-run and baselines updated (2026-08-16)
 
 ### W5. Product surfaces
 - [ ] Site (Flask, deployable on PythonAnywhere like the existing backend):

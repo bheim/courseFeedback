@@ -102,9 +102,37 @@ def build_alias_map(catalog_db=CATALOG_DB, verbose=False):
     return alias
 
 
+SEASON_WORDS = ("Winter", "Spring", "Summer", "Autumn")
+
+
+def load_terms(catalog_db=CATALOG_DB, alias=None):
+    """Return {(dept, course_id) -> frozenset of seasons} from the catalog's
+    'Terms Offered' field, keyed by canonical identity. Empty if no catalog."""
+    if not os.path.exists(catalog_db):
+        return {}
+    alias = alias if alias is not None else build_alias_map(catalog_db)
+    conn = sqlite3.connect(f"file:{catalog_db}?mode=ro", uri=True)
+    rows = conn.execute(
+        "SELECT code, terms_offered FROM catalog_courses WHERE terms_offered != ''"
+    ).fetchall()
+    conn.close()
+
+    terms = defaultdict(set)
+    for code_text, terms_text in rows:
+        course = parse_code(code_text)
+        if not course:
+            continue
+        seasons = {s for s in SEASON_WORDS if s in terms_text}
+        if seasons:
+            terms[alias.get(course, course)] |= seasons
+    return {k: frozenset(v) for k, v in terms.items()}
+
+
 if __name__ == "__main__":
     if not os.path.exists(CATALOG_DB):
         print(f"catalog.db not found at {CATALOG_DB} — run "
               f"scrape_catalog_details.py on the laptop and push it first.")
     else:
-        build_alias_map(verbose=True)
+        alias = build_alias_map(verbose=True)
+        terms = load_terms(alias=alias)
+        print(f"Terms Offered known for {len(terms)} unified courses")

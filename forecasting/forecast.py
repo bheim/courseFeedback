@@ -20,7 +20,7 @@ import sqlite3
 import sys
 from collections import defaultdict
 
-from identities import build_alias_map
+from identities import build_alias_map, load_terms
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "analyzeCourseFeedback", "course_feedback.db")
 
@@ -78,8 +78,14 @@ def load():
     return offerings, taught, prof_names, course_meta, n_sections
 
 
-def predict_quarter(offerings, target_year, target_season):
-    """Return {course: probability} using only quarters strictly before the target."""
+def predict_quarter(offerings, target_year, target_season, terms=None):
+    """Return {course: probability} using only quarters strictly before the target.
+
+    `terms` optionally maps course -> seasons the catalog says it's offered.
+    Used as an EXCLUSION signal only: backtesting showed the catalog's terms
+    are aspirational (a listed season doesn't reliably mean it runs, so no
+    boost) but trustworthy about seasons it omits (halve the probability).
+    """
     target_k = qkey(target_year, target_season)
     prior = [q for q in offerings if qkey(*q) < target_k]
     if not prior:
@@ -103,6 +109,10 @@ def predict_quarter(offerings, target_year, target_season):
             p = min(1.0, p + 0.15)
         if course in recent_courses:
             p = min(1.0, p + 0.10)
+        if terms:
+            course_terms = terms.get(course)
+            if course_terms and target_season not in course_terms:
+                p = p * 0.5
         preds[course] = round(p, 3)
     return preds
 
@@ -128,9 +138,22 @@ def predict_instructor(taught, course, target_year, target_season):
 
 def backtest(offerings, taught):
     print("Backtest: predict each 2025 quarter using only earlier data, then compare to reality.\n")
-    for target_year, target_season in [(2025, "Winter"), (2025, "Spring"), (2025, "Autumn")]:
+    terms = load_terms()
+    if terms:
+        print(f"(Terms Offered known for {len(terms)} courses — note: current-catalog "
+              f"terms applied to past quarters carries mild hindsight bias)\n")
+    for target_year, target_season in [(2025, "Winter"), (2025, "Spring"), (2025, "Autumn"),
+                                       (2026, "Winter"), (2026, "Spring")]:
         actual = offerings[(target_year, target_season)]
-        preds = predict_quarter(offerings, target_year, target_season)
+        if not actual:
+            continue
+        plain = predict_quarter(offerings, target_year, target_season)
+        plain_set = {c for c, p in plain.items() if p >= 0.5}
+        plain_tp = plain_set & actual
+        plain_prec = len(plain_tp) / len(plain_set) if plain_set else 0
+        plain_rec = len(plain_tp) / len(actual) if actual else 0
+
+        preds = predict_quarter(offerings, target_year, target_season, terms=terms)
         predicted = {c for c, p in preds.items() if p >= 0.5}
 
         tp = predicted & actual
@@ -154,6 +177,8 @@ def backtest(offerings, taught):
 
         print(f"{target_season} {target_year}: {len(actual)} courses actually ran")
         print(f"  predicted {len(predicted)} courses at p>=0.5 -> precision {precision:.0%}, recall {recall:.0%}")
+        if terms:
+            print(f"  (without Terms Offered: precision {plain_prec:.0%}, recall {plain_rec:.0%})")
         print(f"  (baseline 'same as last year': precision {b_precision:.0%})")
         print(f"  top-1 instructor correct on {inst_acc:.0%} of correctly predicted courses (n={evaluable})\n")
     print("Note: recall is understated — scrape coverage expanded in 2025, so many 'missed'")
@@ -168,7 +193,7 @@ def predict(offerings, taught, prof_names, course_meta, n_sections, target):
     except (ValueError, AssertionError):
         sys.exit(f'Could not parse quarter "{target}". Use e.g.: predict "Autumn 2026"')
 
-    preds = predict_quarter(offerings, target_year, target_season)
+    preds = predict_quarter(offerings, target_year, target_season, terms=load_terms())
     out_path = os.path.join(
         os.path.dirname(__file__), f"predictions_{target_season.lower()}_{target_year}.csv"
     )

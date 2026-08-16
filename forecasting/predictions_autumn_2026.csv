@@ -1,16 +1,26 @@
 dept,course,p_offered,likely_instructor,instructor_confidence,last_offered,times_offered,sections_ever,avg_course_rating,avg_course_hours
+AMER,13500,1.0,Edward M Cook Jr,0.44,Autumn 2025,6,27,4.34,6.73
+ANTH,20701,1.0,Samuel Daly,0.47,Autumn 2025,7,39,4.27,5.45
+ANTH,23101,1.0,Emilio Kouri,0.34,Autumn 2025,6,33,4.33,7.56
+ANTH,24001,1.0,Katie Hickerson,0.3,Spring 2026,7,36,4.44,6.94
+ANTH,24002,1.0,Kyeong-Hee Choi,0.24,Spring 2026,9,41,4.33,6.0
+ANTH,24003,1.0,Katherine Mitchell,0.2,Spring 2026,9,38,4.65,5.81
 ARAB,10101,1.0,Osama Abu-Eledam,0.39,Autumn 2025,6,18,,
 ARAB,20101,1.0,Zainab Hermes,0.5,Autumn 2025,6,12,,
 ARAB,20601,1.0,Noha Forster,0.69,Autumn 2025,5,5,,
-ARTH,16100,1.0,Wei-Cheng Lin,0.43,Spring 2026,12,15,4.32,4.9
+ARCH,20180,1.0,Evan Carver,1.0,Autumn 2025,3,4,4.43,10.36
+ARCH,20692,1.0,Hripsime Haroutunian,1.0,Autumn 2025,6,9,4.47,4.94
 ARTH,22305,1.0,Janet Purdy,1.0,Autumn 2025,4,4,4.64,5.62
+ARTH,24193,1.0,Abigail Winograd,0.48,Spring 2026,7,13,4.83,6.0
 ARTH,27799,1.0,Harriet Stratis,1.0,Autumn 2025,3,3,4.61,5.83
+ARTH,28500,1.0,James F Lastra,0.43,Autumn 2025,6,11,4.15,7.11
 ARTV,10100,1.0,Tongji Qian,0.1,Spring 2026,21,176,4.31,5.84
 ARTV,10200,1.0,Rebekka Federle-McCabe,0.23,Spring 2026,17,31,4.34,7.3
 ARTV,10300,1.0,Catherine Sullivan,0.34,Spring 2026,18,41,4.38,4.54
+ARTV,20300,1.0,Clint Froehlich,0.13,Spring 2026,17,79,4.52,4.56
 ARTV,21501,1.0,Katherine Desjardins,1.0,Autumn 2025,7,7,4.53,6.34
 ARTV,21800,1.0,Bethany Collins,1.0,Autumn 2025,6,6,4.46,8.53
-ARTV,22501,1.0,Jason Salavon,1.0,Autumn 2025,5,7,4.19,5.22
+ARTV,23930,1.0,Chris Filippone,0.47,Autumn 2025,5,10,4.74,9.33
 ARTV,24000,1.0,Elisabeth Hogeman,1.0,Winter 2026,10,10,4.64,11.32
 ARTV,24709,1.0,Bethany Collins,1.0,Autumn 2025,6,7,4.55,6.11
 ASLG,10100,1.0,David Reinhart,0.64,Autumn 2025,6,15,,
@@ -18,14 +28,13 @@ ASTR,12600,1.0,Paolo Privitera,0.65,Autumn 2025,8,11,4.23,5.39
 ASTR,12700,1.0,Damiano Caprioli,0.7,Autumn 2025,11,12,4.22,5.13
 ASTR,20500,1.0,Harley Katz,0.69,Autumn 2025,5,5,4.64,8.78
 ASTR,21000,1.0,Carlo Graziani,0.82,Autumn 2025,3,3,4.62,8.92
+ASTR,21400,1.0,John Carlstrom,0.32,Spring 2026,14,20,,
 ASTR,25400,1.0,Fausto Cattaneo,0.98,Autumn 2025,6,6,4.24,10.39
 ASTR,35000,1.0,Leslie Rogers,0.57,Autumn 2025,5,5,,
 BIBL,31000,1.0,Simeon Chavel,0.51,Autumn 2025,5,10,4.33,10.28
-BIBL,33900,1.0,Jaeseok Heo,0.51,Autumn 2025,3,3,,
 BIBL,35100,1.0,Lee Hoffer,0.82,Autumn 2025,3,3,,
 BIOS,10130,1.0,Beatrice Fineschi,0.62,Spring 2026,21,61,3.89,5.4
 BIOS,10140,1.0,Megan McNulty,0.18,Spring 2026,16,108,4.09,5.78
-BIOS,10501,1.0,Mark D Osadjan,0.47,Autumn 2025,6,6,4.01,7.01
 BIOS,10602,1.0,Esmael Jafari Haddadian,1.0,Autumn 2025,6,6,4.12,9.81
 BIOS,11136,1.0,Andrew Dahl,0.5,Autumn 2025,5,5,4.18,3.02
 BIOS,11140,1.0,Navneet Bhasin,1.0,Winter 2026,10,10,3.86,5.99
@@ -38,15 +47,17 @@ BIOS,20234,1.0,Alexander Ruthenburg,0.33,Autumn 2025,6,6,4.23,22.67
 BIOS,21306,1.0,Yang Li,0.47,Autumn 2025,6,6,4.4,4.72
 BIOS,23266,1.0,Christine Andrews,1.0,Autumn 2025,6,6,4.52,6.62
 BIOS,23406,1.0,John Bates,0.67,Autumn 2025,5,5,4.72,5.61
+BIOS,24101,1.0,David Freedman,0.35,Autumn 2025,5,9,3.79,5.74
 BIOS,25108,1.0,Alexander Muir,0.49,Autumn 2025,6,6,4.15,9.41
 BIOS,25206,1.0,Laurie Comstock,0.85,Autumn 2025,6,6,4.2,5.75
 BIOS,25226,1.0,Matthew Brady,0.95,Autumn 2025,6,6,4.74,6.59
 BIOS,25256,1.0,Maria-Luisa Alegre,0.5,Autumn 2025,6,6,4.32,6.19
+BIOS,25260,1.0,Alexander Chervonsky,1.0,Autumn 2025,6,6,,8.75
 BIOS,26210,1.0,Dmitry Kondrashov,1.0,Autumn 2025,6,7,4.23,7.27
 BIOS,26318,1.0,Dmitry Kondrashov,0.5,Autumn 2025,6,6,4.56,5.12
+BIOS,27810,1.0,Diane Lauderdale,0.76,Autumn 2025,6,13,4.49,5.86
 BIOS,28101,1.0,Sara Serritella,0.5,Autumn 2025,6,9,3.99,9.23
 BIOS,28900,1.0,Christine Andrews,0.59,Autumn 2025,5,5,4.33,3.97
-BPRO,24193,1.0,Abigail Winograd,0.5,Spring 2026,6,12,4.69,3.35
 BUSN,20100,1.0,Amoray Cragun,0.14,Spring 2026,17,69,4.43,7.21
 BUSN,20140,1.0,Yoel Beniluz,0.74,Autumn 2025,5,5,4.35,7.08
 BUSN,20170,1.0,Merle Erickson,0.78,Autumn 2025,6,8,4.5,7.12
@@ -55,19 +66,24 @@ BUSN,20550,1.0,Raghuveera Betina,0.98,Winter 2026,13,13,4.77,8.33
 BUSN,20620,1.0,Giovanni Compiani,1.0,Autumn 2025,5,7,4.19,7.76
 BUSN,20702,1.0,Rebecca White,0.78,Spring 2026,7,8,4.12,5.83
 BUSN,20900,1.0,John McKinney,0.44,Spring 2026,9,9,4.01,6.76
+CAPP,30350,1.0,Nicholas Feamster,0.74,Autumn 2025,5,5,,
+CCSG,22505,1.0,Raymond Lodato,0.92,Autumn 2025,5,7,4.34,7.21
 CEGU,20001,1.0,Christopher Kindell,0.8,Spring 2026,6,18,4.42,6.84
 CEGU,20002,1.0,Jessica Landau,0.68,Winter 2026,6,14,4.41,6.45
-CEGU,20180,1.0,Evan Carver,1.0,Autumn 2025,3,4,4.43,10.36
-CEGU,24701,1.0,Raymond Lodato,1.0,Autumn 2025,3,5,4.34,7.21
+CEGU,27100,1.0,Crystal Bae,1.0,Autumn 2025,3,5,4.45,4.56
 CEGU,29801,1.0,Christopher Kindell,0.55,Autumn 2025,3,5,4.5,12.3
 CHDV,20000,1.0,Sevda Numanbayraktaroglu,0.89,Autumn 2025,6,8,4.18,5.83
+CHDV,20001,1.0,Kristen Schilt,0.6,Autumn 2025,6,8,4.52,8.51
 CHDV,20305,1.0,Idolly Keels,1.0,Autumn 2025,4,8,3.59,4.07
+CHDV,25120,1.0,Ariel Kalil,1.0,Autumn 2025,5,9,4.42,8.89
+CHDV,26000,1.0,Yuan Leong,0.5,Spring 2026,8,14,4.28,4.96
+CHDV,30511,1.0,Sabrina Nardin,0.81,Autumn 2025,9,15,4.44,13.75
 CHEM,10100,1.0,Meishan Zhao,0.5,Autumn 2025,6,6,4.42,11.9
 CHEM,11100,1.0,Meishan Zhao,0.51,Autumn 2025,7,14,4.19,9.86
 CHEM,12100,1.0,Meishan Zhao,0.34,Autumn 2025,6,10,4.24,12.32
 CHEM,12900,1.0,Hannah Lant,1.0,Autumn 2025,3,5,4.51,4.95
 CHEM,22000,1.0,Valerie Keller,0.39,Autumn 2025,6,11,4.15,12.2
-CHEM,23300,1.0,Yamuna Krishnan,0.76,Autumn 2025,6,7,3.89,7.5
+CHEM,23300,1.0,Yamuna Krishnan,0.73,Autumn 2025,6,8,3.89,7.5
 CHEM,26100,1.0,Norbert Scherer,0.83,Autumn 2025,6,6,4.02,12.39
 CHEM,36100,1.0,Dipti Jasrasaria,0.43,Autumn 2025,5,5,,
 CHEM,36300,1.0,Surinarayanan Vaikuntanathan,0.57,Autumn 2025,5,5,,
@@ -77,6 +93,15 @@ CHIN,11100,1.0,Jun Yang,0.45,Autumn 2025,5,8,,
 CHIN,20100,1.0,Xiaorong Wang,0.52,Autumn 2025,6,12,,
 CHIN,20401,1.0,Yi-Lu Kuo,0.86,Autumn 2025,6,9,,
 CHIN,20501,1.0,Meng Li,1.0,Autumn 2025,6,6,,
+CHSS,33500,1.0,Virginia Schultheis,0.49,Spring 2026,11,17,4.48,6.77
+CHST,21001,1.0,Susan Gzesh,0.95,Spring 2026,15,44,4.56,4.84
+CHST,23000,1.0,Shade Murray,1.0,Autumn 2025,6,6,4.81,4.75
+CHST,26305,1.0,Karlyn Gorski,1.0,Autumn 2025,3,3,4.72,7.92
+CHST,26922,1.0,Jessica Darrow,1.0,Autumn 2025,6,9,5.0,6.07
+CLCV,20700,1.0,Jonathan Hall,0.37,Autumn 2025,6,19,4.46,5.46
+CLCV,22700,1.0,John Proios,0.58,Autumn 2025,6,8,4.21,6.13
+CLCV,25800,1.0,Hakan Karateke,0.45,Autumn 2025,5,16,4.52,6.91
+CMLT,23401,1.0,Angelina Ilieva,1.0,Autumn 2025,6,11,4.52,7.9
 CMSC,14100,1.0,Jesus Almaraz-Argueta,0.24,Winter 2026,10,35,4.26,9.92
 CMSC,14300,1.0,Matthew Wachs,0.34,Spring 2026,9,27,4.27,10.72
 CMSC,14400,1.0,Junchen Jiang,0.23,Winter 2026,6,13,4.01,13.4
@@ -87,22 +112,23 @@ CMSC,25300,1.0,Jesus Almaraz-Argueta,0.22,Spring 2026,11,42,4.19,10.15
 CMSC,25422,1.0,Nicholas Feamster,1.0,Autumn 2025,4,6,4.05,5.97
 CMSC,27100,1.0,Timothy Ng,0.32,Winter 2026,12,30,4.25,8.04
 CMSC,27130,1.0,Alexander Razborov,1.0,Autumn 2025,6,8,4.39,9.19
+CMSC,27700,1.0,Leonardo Nagami Coregliano,0.43,Autumn 2025,5,7,4.33,10.99
 CMSC,28100,1.0,William Hoza,0.59,Autumn 2025,8,13,4.36,11.47
-CMST,10100,1.0,Clint Froehlich,0.13,Spring 2026,17,79,4.52,4.56
 CMST,14400,1.0,Basil Dababneh,0.08,Spring 2026,18,65,4.4,4.04
-CMST,23930,1.0,Chris Filippone,0.47,Autumn 2025,5,10,4.74,9.33
-CMST,28500,1.0,James F Lastra,0.43,Autumn 2025,6,11,4.15,7.11
+COGS,20001,1.0,Melinh Lai,0.3,Winter 2026,9,29,4.14,6.6
+COGS,22000,1.0,Naomi Kurtz,0.14,Spring 2026,17,37,4.43,4.5
 CRWR,10206,1.0,Baird Harper,0.2,Spring 2026,19,56,4.64,6.1
 CRWR,10306,1.0,Nathan Hoks,0.56,Spring 2026,16,22,4.68,5.49
 CRWR,10406,1.0,Avi Steinberg,0.13,Spring 2026,17,30,4.72,6.25
 DATA,11800,1.0,William Trimble,0.29,Spring 2026,14,41,3.91,8.6
-DATA,11900,1.0,Amy Nussbaum,0.35,Spring 2026,12,38,4.2,8.35
+DATA,11900,1.0,Amy Nussbaum,0.34,Spring 2026,14,40,4.2,8.35
 DATA,21100,1.0,William Trok,0.29,Winter 2026,8,8,4.19,8.37
-DATA,21300,1.0,William Trok,0.3,Spring 2026,8,9,4.34,7.56
 DATA,22700,1.0,David Biron,0.44,Winter 2026,7,7,4.18,6.98
+DEMS,22100,1.0,Christopher Berry,1.0,Autumn 2025,6,9,4.22,7.08
+DEMS,25850,1.0,Callie Maidhof,1.0,Autumn 2025,3,8,4.38,6.2
+DEMS,28901,1.0,Monika Nalepa,0.29,Autumn 2025,5,7,3.72,6.95
 DIGS,20001,1.0,Clovis Gladstone,0.42,Autumn 2025,5,6,4.49,10.85
 DIGS,20003,1.0,Miller Prosser,1.0,Autumn 2025,5,5,4.56,9.44
-EALC,23001,1.0,Kyeong-Hee Choi,1.0,Autumn 2025,4,8,3.74,12.28
 ECMA,31000,1.0,Joseph Hardwick,1.0,Autumn 2025,5,5,4.57,17.95
 ECON,10000,1.0,Min Sok Lee,0.4,Winter 2026,12,20,4.1,8.63
 ECON,10200,1.0,Kanit Kuevibulvanich,0.5,Spring 2026,15,23,4.15,7.99
@@ -116,6 +142,9 @@ ECON,20100,1.0,Srinivasan Vasudevan,0.29,Winter 2026,15,35,4.23,9.54
 ECON,21020,1.0,Melissa Tartari,0.29,Spring 2026,20,43,4.39,11.31
 ECON,23950,1.0,Kanit Kuevibulvanich,0.53,Spring 2026,14,28,4.46,9.01
 EDSO,23005,1.0,Lisa Rosen,1.0,Autumn 2025,5,8,4.82,7.53
+ENSC,13400,1.0,Douglas R Macayeal,0.85,Autumn 2025,5,18,4.42,4.03
+ENSC,23900,1.0,David Archer,1.0,Autumn 2025,6,8,4.25,6.61
+ENSC,24500,1.0,Maureen Coleman,1.0,Autumn 2025,5,7,4.58,4.53
 FREN,10100,1.0,Tessa Lecomte-Fouche,0.13,Winter 2026,16,37,,
 FREN,10200,1.0,Celine Bordeaux,0.26,Spring 2026,17,43,,
 FREN,10300,1.0,Etienne Labbouz,0.11,Spring 2026,18,73,,
@@ -125,18 +154,14 @@ FREN,20100,1.0,Celine Bordeaux,0.25,Spring 2026,17,33,,
 FREN,20200,1.0,Nicolas Portugal,0.35,Spring 2026,18,29,,
 FREN,20500,1.0,Isabelle Faton,0.52,Spring 2026,17,28,4.78,7.07
 FREN,20602,1.0,Sylvie Goutas,1.0,Autumn 2025,6,6,4.65,6.89
+FREN,21601,1.0,Gerdine Ulysse,1.0,Autumn 2025,4,10,4.79,5.94
 GEOS,13100,1.0,Edwin Kite,0.48,Autumn 2025,6,6,3.61,6.19
-GEOS,23900,1.0,David Archer,1.0,Autumn 2025,6,8,4.25,6.61
-GEOS,26650,1.0,Maureen Coleman,1.0,Autumn 2025,5,7,4.58,4.53
-GEOS,34220,1.0,Elisabeth Moyer,1.0,Autumn 2025,5,5,,
-GISC,27100,1.0,Crystal Bae,1.0,Autumn 2025,3,5,4.45,4.56
+GEOS,24220,1.0,Elisabeth Moyer,0.98,Autumn 2025,6,6,4.09,9.17
 GLST,23101,1.0,Callie Maidhof,0.96,Autumn 2025,6,6,4.13,6.73
 GLST,25781,1.0,Anindita Chatterjee,1.0,Autumn 2025,3,3,4.67,4.03
-GLST,25850,1.0,Callie Maidhof,1.0,Autumn 2025,3,8,4.38,6.2
 GLST,29800,1.0,Caterina Fugazzola,0.49,Autumn 2025,4,5,4.0,10.38
 GNSE,15002,1.0,Rhiannon Auriemma,0.09,Autumn 2025,6,58,4.52,5.76
-GNSE,15003,1.0,Leah M. Feldman,0.13,Winter 2026,9,60,4.44,5.62
-GNSE,20001,1.0,Kristen Schilt,0.6,Autumn 2025,6,8,4.52,8.51
+GNSE,20127,1.0,Channelle Crittenden,0.62,Autumn 2025,4,7,,
 GREK,10100,1.0,Christopher Simon,0.39,Autumn 2025,6,12,4.88,8.3
 GREK,20100,1.0,Helma Dik,0.46,Autumn 2025,6,9,4.74,9.03
 GRMN,10100,1.0,Nicole Burgoyne,0.23,Autumn 2025,6,22,,
@@ -147,12 +172,13 @@ HEBR,10501,1.0,Ari Almog,0.91,Autumn 2025,6,8,4.86,5.0
 HEBR,20501,1.0,Ari Almog,0.79,Autumn 2025,6,8,4.75,5.0
 HIND,10100,1.0,Jason Grunebaum,0.94,Autumn 2025,6,6,,
 HIPS,29800,1.0,Emily Kern,0.51,Autumn 2025,6,7,4.59,6.27
-HIST,10101,1.0,Samuel Daly,0.47,Autumn 2025,7,39,4.27,5.45
+HIST,11701,1.0,Larisa Reznik,0.56,Autumn 2025,8,40,4.35,5.46
 HIST,13001,1.0,Sheena Finnigan,0.15,Winter 2026,12,61,4.44,7.36
-HIST,13500,1.0,Edward M Cook Jr,0.44,Autumn 2025,6,27,4.34,6.73
 HIST,13900,1.0,Alina Shokareva,0.4,Autumn 2025,6,37,4.41,6.01
-HIST,16700,1.0,Jonathan Hall,0.37,Autumn 2025,6,19,4.46,5.46
+HIST,15611,1.0,Cecilia Palombo,0.51,Autumn 2025,5,9,4.03,10.72
+HIST,25610,1.0,Austin O'Malley,0.38,Autumn 2025,6,25,4.24,4.87
 HIST,29803,1.0,Peggy Heffington,0.56,Spring 2026,16,25,4.63,7.6
+HMRT,10100,1.0,Johanna Ransmeier,0.26,Autumn 2025,7,27,4.33,6.89
 HMRT,24823,1.0,Kathleen Cavanaugh,1.0,Autumn 2025,7,10,4.26,6.75
 HUMA,11000,1.0,Kimberly Kenny,0.1,Autumn 2025,6,87,4.22,7.83
 HUMA,11500,1.0,Zachary Loeffler,0.07,Autumn 2025,6,96,4.28,6.45
@@ -162,27 +188,22 @@ HUMA,14000,1.0,Valerie Levan,0.12,Autumn 2025,6,75,4.29,7.33
 HUMA,16000,1.0,Haitham Ibrahim,0.09,Autumn 2025,6,100,4.32,6.6
 HUMA,17000,1.0,Karlos Arregui,0.12,Autumn 2025,6,57,4.13,6.22
 HUMA,18000,1.0,Andrew Broughton,0.12,Autumn 2025,6,67,4.33,6.06
-IMMU,31200,1.0,Alexander Chervonsky,1.0,Autumn 2025,6,6,,8.75
 INRE,43600,1.0,Kara Hooser,1.0,Autumn 2025,4,6,,
 ITAL,10100,1.0,Leonardo Cabrini,0.31,Autumn 2025,6,26,,
 ITAL,20100,1.0,Veronica Vegna,1.0,Autumn 2025,6,11,,
 ITAL,20400,1.0,Sara Dallavalle,0.73,Autumn 2025,6,6,4.6,6.92
 JAPN,10100,1.0,Takeaki Okamoto,0.28,Autumn 2025,6,23,4.61,7.41
 JAPN,20401,1.0,Yoko Katagiri,0.58,Autumn 2025,6,6,3.84,7.5
-JWSC,12000,1.0,Larisa Reznik,0.56,Autumn 2025,8,40,4.35,5.46
 KORE,10100,1.0,Rachel Bahng,0.4,Autumn 2025,6,17,,
 KORE,20401,1.0,Rachel Bahng,1.0,Autumn 2025,3,3,,
 KORE,21100,1.0,Won Na,1.0,Autumn 2025,4,4,4.59,5.97
 KREY,12201,1.0,Gerdine Ulysse,1.0,Autumn 2025,3,5,4.77,4.92
-KREY,21600,1.0,Gerdine Ulysse,1.0,Autumn 2025,4,10,4.79,5.94
-LACS,16100,1.0,Emilio Kouri,0.34,Autumn 2025,6,33,4.33,7.56
+LACS,21100,1.0,Felipe Pieras-Guasp,0.4,Spring 2026,11,18,4.77,5.29
 LATN,10100,1.0,Christopher Simon,0.49,Autumn 2025,6,12,,
 LATN,20100,1.0,Michael I. Allen,0.63,Autumn 2025,6,10,,
-LING,20001,1.0,Naomi Kurtz,0.14,Spring 2026,17,37,4.43,4.5
-LING,20101,1.0,Steven Castro,0.23,Spring 2026,9,13,4.12,5.85
 LLSO,28040,1.0,David Lebow,1.0,Autumn 2025,5,5,4.27,8.18
 LLSO,29400,1.0,Shamshad Pasarlay,0.27,Autumn 2025,5,13,4.6,10.47
-MACS,30500,1.0,Sabrina Nardin,0.81,Autumn 2025,9,15,4.44,13.75
+MADD,24410,1.0,Sandor Weisz,0.57,Autumn 2025,5,7,4.34,11.1
 MATH,10500,1.0,Charles Cunningham,0.46,Autumn 2025,4,8,4.41,9.52
 MATH,15910,1.0,Benjamin Lowe,0.39,Winter 2026,14,30,4.31,9.63
 MATH,16100,1.0,Tina Torkaman,0.2,Autumn 2025,6,31,4.41,12.78
@@ -198,7 +219,6 @@ MATH,20320,1.0,Sarah N Ziesler,0.84,Autumn 2025,5,5,4.72,12.87
 MATH,20400,1.0,Lie Qian,0.22,Spring 2026,17,33,4.32,10.65
 MATH,20500,1.0,Tina Torkaman,0.28,Spring 2026,15,28,4.42,10.42
 MATH,20700,1.0,Luis Silvestre,0.68,Autumn 2025,6,6,4.62,23.73
-MATH,21100,1.0,Tristan Goodwill,0.3,Spring 2026,8,13,4.11,10.03
 MATH,23500,1.0,Ewain Gwynne,0.41,Spring 2026,10,17,4.5,9.96
 MATH,25400,1.0,Mariana Vicaria,0.26,Winter 2026,12,21,4.44,8.88
 MATH,25700,1.0,Oron Propp,0.28,Autumn 2025,6,12,4.46,13.87
@@ -206,12 +226,11 @@ MATH,26200,1.0,Daniil Rudenko,0.26,Winter 2026,12,13,4.52,9.81
 MATH,26700,1.0,Benson Farb,0.53,Autumn 2025,6,6,4.44,14.02
 MATH,27000,1.0,Anne Wilkinson,0.27,Spring 2026,16,25,4.61,9.63
 MATH,27300,1.0,Simion Filip,0.47,Winter 2026,12,23,4.17,12.14
-MATH,27700,1.0,Leonardo Nagami Coregliano,0.43,Autumn 2025,5,7,4.33,10.99
 MENG,20000,1.0,Terry Johnson,0.82,Autumn 2025,6,6,4.39,3.35
 MENG,21100,1.0,Mark Stoykovich,0.96,Autumn 2025,6,6,4.21,13.9
 MENG,21500,1.0,Po-Chun Hsu,0.56,Autumn 2025,5,5,4.06,10.58
 MENG,23130,1.0,Samantha Riesenfeld,0.77,Autumn 2025,5,5,4.08,9.32
-MENG,23200,1.0,Cathryn Nagler,1.0,Autumn 2025,4,4,4.51,12.24
+MENG,23200,1.0,Cathryn Nagler,1.0,Autumn 2025,5,5,4.51,12.24
 MENG,24100,1.0,Chibueze Amanchukwu,0.73,Autumn 2025,6,6,4.16,13.09
 MENG,25100,1.0,Paul Nealey,0.52,Autumn 2025,5,5,3.9,9.07
 MENG,26100,1.0,Liang Jiang,1.0,Autumn 2025,5,5,4.74,12.08
@@ -222,27 +241,16 @@ MUSI,10300,1.0,Anh Vu,0.26,Winter 2026,16,30,4.49,4.73
 MUSI,10400,1.0,Jennifer Iverson,0.23,Spring 2026,17,36,4.29,4.87
 MUSI,15100,1.0,Olga Sanchez Kisielewska,1.0,Autumn 2025,6,12,4.66,7.25
 NEHC,20004,1.0,Susanne Paulus,1.0,Autumn 2025,6,8,4.59,4.35
-NEHC,20012,1.0,Hakan Karateke,0.45,Autumn 2025,5,16,4.52,6.91
-NEHC,20201,1.0,Cecilia Palombo,0.51,Autumn 2025,5,9,4.03,10.72
-NEHC,20601,1.0,Austin O'Malley,0.38,Autumn 2025,6,25,4.24,4.87
-NEHC,20692,1.0,Hripsime Haroutunian,1.0,Autumn 2025,6,9,4.47,4.94
 NORW,10100,1.0,Kimberly Kenny,1.0,Autumn 2025,6,6,,
-NSCI,20101,1.0,David Freedman,0.35,Autumn 2025,5,9,3.79,5.74
 NSCI,22010,1.0,Nicholas Hatsopoulos,1.0,Autumn 2025,5,5,,5.48
-PBHS,30910,1.0,Diane Lauderdale,1.0,Autumn 2025,6,9,4.5,6.07
+PBHS,32400,1.0,Daniel Xiang,0.41,Spring 2026,11,13,4.16,7.71
 PBPL,20000,1.0,Ryan Kellogg,0.85,Autumn 2025,6,7,4.18,6.82
-PBPL,22100,1.0,Christopher Berry,1.0,Autumn 2025,6,9,4.22,7.08
-PBPL,25120,1.0,Ariel Kalil,1.0,Autumn 2025,5,9,4.42,8.89
 PBPL,25550,1.0,Alicia Menendez,0.63,Spring 2026,7,8,4.34,6.69
-PBPL,26305,1.0,Karlyn Gorski,1.0,Autumn 2025,3,3,4.72,7.92
 PBPL,29800,1.0,Maria Bautista,0.88,Autumn 2025,7,17,4.16,8.57
 PERS,10101,1.0,Pouneh Shabani-Jadidi,0.98,Autumn 2025,6,6,,
 PERS,20101,1.0,Pouneh Shabani-Jadidi,0.98,Autumn 2025,5,5,,
 PHIL,20012,1.0,Anubav Vasudevan,1.0,Autumn 2025,4,4,4.35,5.71
-PHIL,20100,1.0,Virginia Schultheis,0.49,Spring 2026,11,17,4.48,6.77
-PHIL,25000,1.0,John Proios,0.58,Autumn 2025,6,8,4.21,6.13
 PHIL,29601,1.0,Arnold Brooks,0.43,Autumn 2025,6,6,4.57,6.4
-PHSC,13400,1.0,Douglas R Macayeal,0.85,Autumn 2025,5,18,4.42,4.03
 PHYS,12100,1.0,Arvind Murugan,0.31,Autumn 2025,6,12,4.09,7.7
 PHYS,13100,1.0,Juan Collar,0.26,Autumn 2025,10,23,4.15,8.11
 PHYS,14100,1.0,Henry J Frisch,0.22,Autumn 2025,6,12,4.39,11.55
@@ -253,25 +261,16 @@ PHYS,25000,1.0,David Miller,0.7,Autumn 2025,6,6,4.21,9.67
 PHYS,26400,1.0,Savdeep Sethi,0.43,Autumn 2025,6,6,4.48,7.65
 PHYS,27900,1.0,P M Guyot-Sionnest,0.68,Autumn 2025,6,6,4.11,9.28
 PLSC,22913,1.0,Patricia Conley,0.67,Spring 2026,17,22,4.51,5.48
-PLSC,28901,1.0,Monika Nalepa,0.29,Autumn 2025,5,7,3.72,6.95
 PLSC,29800,1.0,Patricia Conley,1.0,Autumn 2025,4,4,4.66,11.01
 PORT,10100,1.0,Juliano Saccomani,1.0,Autumn 2025,3,3,,
-PSMS,31400,1.0,John Carlstrom,0.32,Spring 2026,14,20,,
 PSYC,20200,1.0,Alysson Light,0.48,Spring 2026,11,11,3.96,7.08
-PSYC,20600,1.0,Yuan Leong,0.5,Spring 2026,8,14,4.28,4.96
-PSYC,20700,1.0,Steven K Shevell,0.54,Winter 2026,12,17,4.32,6.92
-PSYC,22580,1.0,Katherine O'doherty,1.0,Autumn 2025,6,8,4.74,4.67
 PSYC,25101,1.0,Boaz Keysar,1.0,Autumn 2025,5,5,4.66,4.82
-RDIN,24001,1.0,Katie Hickerson,0.3,Spring 2026,7,36,4.44,6.94
-RDIN,24002,1.0,Kyeong-Hee Choi,0.24,Spring 2026,9,41,4.33,6.0
-RDIN,24003,1.0,Katherine Mitchell,0.2,Spring 2026,9,38,4.65,5.81
-REES,29013,1.0,Angelina Ilieva,1.0,Autumn 2025,6,11,4.52,7.9
+RDIN,26312,1.0,Reuben Miller,1.0,Autumn 2025,3,4,,
+REES,21302,1.0,Valentina Pichugin,1.0,Autumn 2025,6,8,4.8,5.96
 RUSS,10103,1.0,Erik Houle,0.42,Autumn 2025,6,15,,
 RUSS,20103,1.0,Mark Baugher,0.75,Autumn 2025,6,9,,
-RUSS,21302,1.0,Valentina Pichugin,1.0,Autumn 2025,6,8,4.8,5.96
 SOCI,20004,1.0,Stephen Raudenbush,0.97,Autumn 2025,6,6,3.98,8.15
 SOCI,20120,1.0,Terry N Clark,1.0,Autumn 2025,5,7,4.05,4.92
-SOCI,40164,1.0,Sharon Hicks-Bartlett,1.0,Winter 2026,10,12,,
 SOSC,11400,1.0,Jennifer Spruill,0.08,Autumn 2025,6,125,4.43,9.69
 SOSC,12400,1.0,Elham Mireshghi,0.05,Autumn 2025,10,184,4.46,7.74
 SOSC,13100,1.0,Richard Cooley,0.15,Autumn 2025,6,45,4.36,6.45
@@ -281,8 +280,6 @@ SOSC,15100,1.0,Julia Brown,0.12,Autumn 2025,8,83,4.49,8.48
 SOSC,16100,1.0,Salih Noor,0.15,Autumn 2025,6,48,4.38,7.81
 SOSC,17100,1.0,Ryan Coyne,0.07,Autumn 2025,5,41,4.48,6.42
 SOSC,18400,1.0,Angus Brown,0.21,Winter 2026,7,21,4.39,8.33
-SOSC,21001,1.0,Susan Gzesh,1.0,Spring 2026,12,41,4.56,4.84
-SOSC,24900,1.0,Johanna Ransmeier,0.29,Autumn 2025,5,20,4.55,6.39
 SPAN,10100,1.0,Neringa Pukelis,0.13,Winter 2026,12,52,,
 SPAN,10200,1.0,Irena Cajkova,0.14,Spring 2026,17,92,,
 SPAN,10300,1.0,Eduardo Leão,0.08,Spring 2026,17,128,4.67,9.5
@@ -292,13 +289,8 @@ SPAN,20300,1.0,Veronica Moraga Guerra,0.42,Spring 2026,17,39,4.56,5.84
 SPAN,20302,1.0,Megan Marshall,0.48,Spring 2026,11,14,4.73,5.85
 SPAN,20401,1.0,Celia Diaz,0.51,Spring 2026,9,16,4.82,6.16
 SPAN,20402,1.0,James Leon Weber,0.2,Winter 2026,10,17,4.71,8.08
-SPAN,21100,1.0,Felipe Pieras-Guasp,0.4,Spring 2026,11,18,4.77,5.29
-SSAD,46312,1.0,Reuben Miller,1.0,Autumn 2025,3,4,,
-SSAD,46922,1.0,Jessica Darrow,1.0,Autumn 2025,6,9,5.0,6.07
-SSAD,69600,1.0,Channelle Crittenden,0.62,Autumn 2025,4,7,,
 STAT,20000,1.0,Yibi Huang,0.42,Spring 2026,11,11,4.06,6.01
 STAT,22000,1.0,Fei Liu,0.37,Spring 2026,21,62,4.04,8.05
-STAT,22400,1.0,Daniel Xiang,0.41,Spring 2026,11,13,4.16,7.71
 STAT,23400,1.0,Ryan McShane,0.33,Spring 2026,17,32,3.93,10.03
 STAT,24300,1.0,Yuxin Zhou,0.38,Winter 2026,11,13,4.15,8.82
 STAT,24400,1.0,Jiaqi Li,0.24,Winter 2026,13,16,4.23,10.72
@@ -309,49 +301,59 @@ TAPS,10200,1.0,Celeste Cooper,0.22,Spring 2026,21,69,4.65,3.45
 TAPS,10300,1.0,John Muse,0.16,Spring 2026,17,64,4.46,4.47
 TAPS,10800,1.0,Rachel Russell,0.33,Spring 2026,14,16,4.4,3.79
 TAPS,10900,1.0,Maya Odim,0.47,Spring 2026,12,19,4.4,3.61
-TAPS,23000,1.0,Shade Murray,1.0,Autumn 2025,6,6,4.81,4.75
 TURK,10101,1.0,Kagan Arik,1.0,Autumn 2025,6,6,,
 URDU,10100,1.0,Romeena Kureishy,0.92,Autumn 2025,5,5,,
-ANTH,25305,0.917,Stephan Palmie,1.0,Autumn 2025,4,4,4.22,8.08
+AASR,35305,0.917,Stephan Palmie,1.0,Autumn 2025,4,4,4.22,8.08
+AASR,49003,0.917,Alireza Doostdar,0.5,Autumn 2025,2,7,,
+AMER,22680,0.917,Leslie Buxbaum,0.93,Autumn 2025,3,6,4.79,5.0
+AMER,33000,0.917,Richard A Shweder,1.0,Autumn 2025,6,9,3.97,5.49
+ANTH,20101,0.917,David Schloen,0.79,Autumn 2025,5,5,4.43,6.33
+ANTH,21750,0.917,Robin Bartram,1.0,Autumn 2025,2,6,,
+ANTH,29109,0.917,Deirdre Lyons,1.0,Autumn 2025,2,7,,
 ANTH,29910,0.917,Kamala Russell,0.53,Autumn 2025,5,5,4.62,10.06
 ARAB,20115,0.917,Zainab Hermes,1.0,Autumn 2025,3,3,,
-ARTH,17761,0.917,Jacobe Huet,1.0,Autumn 2025,2,4,4.05,4.3
-ARTH,22816,0.917,Federica Caneparo,1.0,Autumn 2025,3,4,4.68,6.35
-ARTH,24651,0.917,Jacobe Huet,1.0,Autumn 2025,3,5,4.75,7.32
-ARTH,27314,0.917,Christine Mehring,1.0,Autumn 2025,2,4,4.69,12.5
+ARCH,17761,0.917,Jacobe Huet,1.0,Autumn 2025,2,4,4.05,4.3
+ARCH,24651,0.917,Jacobe Huet,1.0,Autumn 2025,3,5,4.75,7.32
+ARCH,27155,0.917,Sabina Shaikh,0.5,Autumn 2025,3,8,3.73,9.11
+ARCH,27314,0.917,Christine Mehring,1.0,Autumn 2025,2,4,4.69,12.5
 ARTV,22000,0.917,Katherine Desjardins,0.54,Autumn 2025,7,8,4.46,8.95
+ARTV,24554,0.917,Nathan Rohrer,1.0,Autumn 2025,2,3,4.44,14.35
+ARTV,25403,0.917,Christopher Collins,1.0,Autumn 2025,3,6,4.51,10.42
 ARTV,29600,0.917,Amber Ginsburg,0.57,Spring 2026,6,7,4.54,10.65
 ASTR,18100,0.917,Nickolay Gnedin,1.0,Autumn 2025,4,5,4.39,4.11
 BASQ,12000,0.917,Ariane Echenique Calleja,1.0,Autumn 2025,2,2,,
 BIOS,12114,0.917,Paul J Strieleman,0.64,Autumn 2025,12,12,4.18,5.95
 BIOS,20200,0.917,Marvin W Makinen,0.24,Spring 2026,11,11,3.3,15.88
 BIOS,21236,0.917,Xiaochang Zhang,0.25,Autumn 2025,5,5,4.2,11.16
+BIOS,23261,0.917,Mark Webster,1.0,Autumn 2025,4,5,4.34,10.26
 BIOS,25329,0.917,Daria Esterhazy,0.5,Autumn 2025,2,2,4.05,8.06
 BIOS,26120,0.917,Esmael Jafari Haddadian,1.0,Autumn 2025,5,5,4.09,8.56
-BUSN,20600,0.917,John McKinney,0.46,Winter 2026,13,15,3.93,8.97
+BPRO,29520,0.917,Andrew Chien,1.0,Autumn 2025,2,4,3.67,6.11
 BUSN,20711,0.917,Linda Elaine Ginzel,1.0,Autumn 2025,4,9,4.29,4.76
-CEGU,27155,0.917,Sabina Shaikh,0.5,Autumn 2025,3,8,3.73,9.11
-CHDV,21000,0.917,Richard A Shweder,1.0,Autumn 2025,6,9,3.97,5.49
-CHEM,12400,0.917,Bozhi Tian,0.77,Autumn 2025,5,6,3.9,5.32
+CCSG,22501,0.917,Kate Burrows,1.0,Autumn 2025,2,3,,
+CEGU,20201,0.917,Colin Benert,0.96,Winter 2026,9,15,,
+CEGU,27104,0.917,Crystal Bae,1.0,Autumn 2025,2,2,4.41,4.65
+CHEM,12400,0.917,Bozhi Tian,0.75,Autumn 2025,6,7,3.9,5.32
 CHIN,20800,0.917,Laura Skosey,1.0,Autumn 2025,3,4,4.89,9.92
 CHIN,22110,0.917,Shan Xiang,0.97,Autumn 2025,4,4,4.52,5.81
+CHST,23900,0.917,Lindsay Gifford,1.0,Autumn 2025,2,3,4.67,8.19
+CHST,28502,0.917,Clayton Harris,1.0,Autumn 2025,7,7,4.37,5.27
 CMSC,20310,0.917,Ken Nakagaki,1.0,Autumn 2025,2,4,4.07,7.52
 CMSC,20600,0.917,Sarah Sebo,1.0,Autumn 2025,5,5,4.65,19.02
 CMSC,20900,0.917,Diana Franklin,1.0,Autumn 2025,4,5,3.18,15.33
 CMSC,21800,0.917,Sanjay Krishnan,0.86,Spring 2026,7,8,4.06,4.91
-CMSC,29520,0.917,Andrew Chien,1.0,Autumn 2025,2,4,3.67,6.11
-CMSC,30350,0.917,Nicholas Feamster,1.0,Autumn 2025,2,2,,
-CMSC,33260,0.917,Nicholas Feamster,1.0,Autumn 2025,2,3,,
+CMSC,23260,0.917,Nicholas Feamster,1.0,Autumn 2025,2,3,,
+CMST,14109,0.917,Cameron Mankin,1.0,Autumn 2025,2,2,4.39,3.33
+CMST,20110,0.917,Gabriel Ojeda-Sague,1.0,Autumn 2025,3,9,4.76,6.42
+CMST,25450,0.917,Katherine O'Brien,1.0,Autumn 2025,2,6,4.72,8.17
 CMST,26089,0.917,Maria Belodubrovskaya,1.0,Autumn 2025,2,3,4.15,3.79
-COGS,20001,0.917,Melinh Lai,0.44,Winter 2026,6,26,4.14,6.6
+COGS,25518,0.917,Clifton W Ragsdale,1.0,Autumn 2025,2,3,,10.2
+COGS,25519,0.917,Peggy Mason,1.0,Autumn 2025,2,2,,9.88
 CRWR,22117,0.917,Vu Tran,1.0,Autumn 2025,2,2,4.39,7.19
-CRWR,22132,0.917,Benjamin Hoffman,1.0,Autumn 2025,4,4,4.66,7.99
 CRWR,23132,0.917,Suzanne Buffam,1.0,Autumn 2025,5,5,4.52,7.16
 CRWR,24031,0.917,Valer Popa,1.0,Autumn 2025,2,2,4.88,5.0
 DATA,13600,0.917,William Trimble,0.63,Spring 2026,6,7,3.5,8.79
 DATA,23700,0.917,Alexander Kale,1.0,Autumn 2025,3,3,4.01,9.22
-DATA,24100,0.917,Nicholas Ross,1.0,Autumn 2025,2,2,4.59,8.92
-DATA,25900,0.917,Amanda Kube,0.42,Spring 2026,7,8,3.69,10.15
 ECMA,31360,0.917,Melissa Tartari,1.0,Winter 2026,7,8,,
 ECMA,33220,0.917,Harald Uhlig,1.0,Autumn 2025,4,4,4.37,11.53
 ECMA,34150,0.917,Sadegh Eshaghnia,0.5,Autumn 2025,2,2,,
@@ -362,102 +364,79 @@ ECON,18010,0.917,Pablo Pena Munoz,1.0,Winter 2026,8,9,4.57,4.79
 ECON,20520,0.917,Ryan Fang,1.0,Autumn 2025,3,3,4.59,7.82
 ECON,23000,0.917,Harald Uhlig,0.98,Autumn 2025,5,6,4.25,6.45
 ECON,25100,0.917,Fernando Alvarez,1.0,Autumn 2025,4,4,4.01,7.0
-ENGL,10110,0.917,Gabriel Ojeda-Sague,1.0,Autumn 2025,3,9,4.76,6.42
 ENGL,10402,0.917,Sarah Lesley,1.0,Autumn 2025,2,4,4.92,5.96
 ENGL,10620,0.917,Fabien Maltais-Bayda,0.51,Autumn 2025,4,6,4.79,8.01
 ENGL,16600,0.917,Timothy Harrison,0.95,Autumn 2025,4,6,4.71,7.59
 FREN,20300,0.917,Georgy Khabarovskiy,0.33,Spring 2026,17,24,4.63,7.27
-FREN,23333,0.917,Nicolas Portugal,0.58,Spring 2026,12,13,4.67,9.19
 GEOS,24230,0.917,Noboru Nakamura,0.82,Autumn 2025,4,4,4.64,7.92
-GEOS,26300,0.917,Mark Webster,1.0,Autumn 2025,4,5,4.34,10.26
-GISC,27104,0.917,Crystal Bae,1.0,Autumn 2025,2,2,4.41,4.65
 GLST,25199,0.917,Caterina Fugazzola,1.0,Autumn 2025,5,9,4.83,7.2
+GNSE,23180,0.917,Erick Amick,1.0,Autumn 2025,2,2,,
+GNSE,23702,0.917,David Moskowitz,1.0,Autumn 2025,5,5,,
 GRMN,20102,0.917,Maeve Hooper,0.56,Spring 2026,3,4,,
-GRMN,20201,0.917,Colin Benert,0.96,Winter 2026,9,15,,
 HIPS,18302,0.917,Daniel Kranzelbinder,1.0,Autumn 2025,2,2,4.3,5.06
 HIST,11301,0.917,Steven Pincus,1.0,Autumn 2025,4,6,4.75,8.62
 HIST,13100,0.917,James Vaughn,0.57,Autumn 2025,5,6,4.15,5.39
 HIST,29801,0.917,Alexander Jania,0.38,Autumn 2025,4,12,4.51,9.95
 HMRT,23472,0.917,Kathleen Cavanaugh,0.62,Autumn 2025,2,2,4.24,2.5
-HMRT,23930,0.917,Lindsay Gifford,1.0,Autumn 2025,2,3,4.67,8.19
-ISLM,49003,0.917,Alireza Doostdar,0.5,Autumn 2025,2,7,,
 JAPN,20100,0.917,Miku Fukasaku,0.4,Autumn 2025,5,10,4.88,7.5
+LACS,12200,0.917,Alan Parma,0.49,Spring 2026,9,15,4.57,4.17
+LACS,24901,0.917,Charles (Chad) Broughton,1.0,Autumn 2025,4,7,4.54,7.26
+LACS,25660,0.917,Danielle Roper,1.0,Autumn 2025,2,5,4.78,6.5
 LATN,11100,0.917,Christopher Simon,1.0,Autumn 2025,2,2,,
-LING,20201,0.917,Si Kai Lee,0.42,Spring 2026,8,12,4.5,6.14
-MACS,30000,0.917,David Peterson,0.47,Winter 2026,4,8,,
-MACS,30111,0.917,Jean Clipperton,1.0,Autumn 2025,2,2,,
+MACS,10000,0.917,David Peterson,0.47,Winter 2026,4,8,,
+MACS,10111,0.917,Jean Clipperton,1.0,Autumn 2025,2,2,,
+MACS,20123,0.917,Zhao Wang,0.73,Autumn 2025,2,2,,
 MACS,40101,0.917,Sabrina Nardin,1.0,Autumn 2025,4,5,,
-MACS,40123,0.917,Zhao Wang,0.73,Autumn 2025,2,2,,
-MADD,14109,0.917,Cameron Mankin,1.0,Autumn 2025,2,2,4.39,3.33
-MADD,20500,0.917,Christopher Collins,1.0,Autumn 2025,3,6,4.51,10.42
 MADD,24820,0.917,Michael Shallow,1.0,Autumn 2025,2,4,4.58,5.11
 MADD,29401,0.917,Nicholas Briz,1.0,Autumn 2025,2,3,4.13,9.11
-MAPS,39109,0.917,Deirdre Lyons,1.0,Autumn 2025,2,7,,
+MDVL,21705,0.917,Lizette Arellano,0.39,Spring 2026,6,9,4.58,5.99
 MENG,25300,0.917,Chong Liu,1.0,Autumn 2025,4,4,4.34,6.15
 MUSI,12101,0.917,Anne W Robertson,1.0,Autumn 2025,2,4,4.32,6.57
-MUSI,12201,0.917,Robert Kendrick,1.0,Autumn 2025,2,4,3.69,7.95
 MUSI,12300,0.917,Robert Kendrick,1.0,Autumn 2025,2,3,3.7,8.45
-NEAA,20100,0.917,David Schloen,0.79,Autumn 2025,5,5,4.43,6.33
 NEHC,20200,0.917,Brian Muhs,0.92,Autumn 2025,3,3,3.93,7.49
 NEHC,29899,0.917,Anna-Latifa Mourad-Cizek,0.61,Autumn 2025,3,3,4.42,6.94
-NSCI,21620,0.917,Clifton W Ragsdale,1.0,Autumn 2025,2,3,,10.2
-NSCI,21630,0.917,Peggy Mason,1.0,Autumn 2025,2,2,,9.88
 NSCI,22470,0.917,Carolyn Martineau,1.0,Autumn 2025,2,2,,6.39
-PBHS,31720,0.917,Kate Burrows,1.0,Autumn 2025,2,3,,
-PBHS,33700,0.917,David Moskowitz,1.0,Autumn 2025,5,5,,
-PBHS,33800,0.917,Erick Amick,1.0,Autumn 2025,2,2,,
 PBHS,35500,0.917,Loren Saulsberry,0.61,Autumn 2025,3,5,,
-PBPL,24901,0.917,Charles (Chad) Broughton,1.0,Autumn 2025,4,7,4.54,7.26
 PBPL,25600,0.917,Christopher Blattman,0.88,Autumn 2025,4,6,4.3,7.71
-PBPL,28502,0.917,Clayton Harris,1.0,Autumn 2025,7,7,4.37,5.27
 PBPL,29500,0.917,Charles (Chad) Broughton,0.54,Spring 2026,10,11,4.56,10.34
-PLSC,22677,0.917,Ramon Garibaldo Valdez,1.0,Autumn 2025,2,3,4.63,6.5
 PLSC,38878,0.917,Roger Myerson,0.5,Autumn 2025,2,4,,
-PORT,12200,0.917,Alan Parma,0.49,Spring 2026,9,15,4.57,4.17
 PORT,20100,0.917,Ana Maria Lima,1.0,Autumn 2025,4,4,,
 PSYC,23660,0.917,Kerry Le Doux,1.0,Autumn 2025,5,6,4.75,6.69
 PSYC,43030,0.917,Akram Bakkour,0.5,Autumn 2025,2,4,,
 RDIN,12100,0.917,Joyce Bell,0.62,Autumn 2025,2,2,4.46,8.47
+REES,20702,0.917,Valentina Pichugin,1.0,Autumn 2025,5,6,4.74,8.05
 RLST,24200,0.917,Anand Venkatkrishnan,1.0,Autumn 2025,2,4,4.76,3.0
-RUSS,20702,0.917,Valentina Pichugin,1.0,Autumn 2025,5,6,4.74,8.05
 RUSS,21600,0.917,Maria Iakubovich,1.0,Autumn 2025,4,4,4.67,6.54
 SANS,10100,0.917,Lidia Wojtczak,0.57,Autumn 2025,5,5,,
 SOCI,20138,0.917,Elisabeth Clemens,1.0,Autumn 2025,2,5,4.52,7.53
 SOCI,29998,0.917,Tessa Huttenlocher,0.72,Spring 2026,7,8,4.19,8.59
-SPAN,21705,0.917,Lizette Arellano,0.39,Spring 2026,6,9,4.58,5.99
 SPAN,21805,0.917,Miguel Martinez,0.62,Autumn 2025,7,8,4.41,7.16
-SPAN,25660,0.917,Danielle Roper,1.0,Autumn 2025,2,5,4.78,6.5
-SSAD,41750,0.917,Robin Bartram,1.0,Autumn 2025,2,6,,
 STAT,24630,0.917,Jingshu Wang,1.0,Autumn 2025,4,4,4.26,8.08
 STAT,27815,0.917,Ryan McShane,1.0,Autumn 2025,3,3,4.01,13.53
 TAPS,21700,0.917,Pamela Pascoe,1.0,Autumn 2025,5,6,4.44,3.69
-TAPS,22680,0.917,Leslie Buxbaum,0.93,Autumn 2025,3,6,4.79,5.0
 TAPS,23600,0.917,Susan Messing,1.0,Autumn 2025,5,5,4.85,2.5
 TAPS,23930,0.917,Mickle Maher,1.0,Autumn 2025,5,5,4.52,7.52
 TAPS,25170,0.917,Devon De Mayo,1.0,Autumn 2025,2,2,4.33,7.92
-TAPS,25450,0.917,Katherine O'Brien,1.0,Autumn 2025,2,6,4.72,8.17
 TAPS,26110,0.917,Julia Rhoads,1.0,Autumn 2025,4,4,4.78,3.75
-TAPS,27550,0.917,Nathan Rohrer,1.0,Autumn 2025,2,3,4.44,14.35
-CHEM,30100,0.767,Anna Wuttig,1.0,Winter 2026,5,5,,
+CCSG,22702,0.767,Jordan Bimm,1.0,Winter 2026,5,13,4.82,5.07
+CHEM,20100,0.767,Anna Wuttig,0.88,Winter 2026,10,10,3.79,9.87
 CHEM,32200,0.767,Guangbin Dong,0.62,Winter 2026,5,5,,
 DIGS,20002,0.767,Brooke Luetgert,0.98,Winter 2026,6,8,4.16,10.1
-ECON,13000,0.767,Rui Zhao,0.52,Winter 2026,15,21,4.23,8.47
-ENGL,20464,0.767,Darrel Chia,1.0,Winter 2026,4,4,4.52,8.45
+MAPS,30233,0.767,Sharon Hicks-Bartlett,1.0,Spring 2026,10,19,4.41,6.88
 MATH,20510,0.767,Donald Stull,0.33,Spring 2026,8,20,4.2,9.83
-NSCI,21100,0.767,Eric Schwartz,1.0,Winter 2026,6,8,3.99,7.4
-RLST,10100,0.767,Richard Rosengarten,0.38,Spring 2026,10,12,4.47,5.34
-SCPD,11300,0.767,Jordan Bimm,1.0,Winter 2026,5,13,4.82,5.07
-SOCI,30233,0.767,Sharon Hicks-Bartlett,1.0,Spring 2026,9,18,,
 STAT,26100,0.767,Wei Biao Wu,1.0,Spring 2026,6,6,4.31,12.28
+AMER,24190,0.667,Luke Joyner,1.0,Autumn 2024,3,3,4.72,11.39
+ANTH,24125,0.667,Lake Polan,1.0,Autumn 2024,2,2,4.2,8.13
+ANTH,26710,0.667,Mehrnoush Soroush,0.96,Autumn 2024,4,4,4.62,9.37
 ARAB,29001,0.667,Hala Abdel Mobdy,1.0,Autumn 2024,3,3,4.31,7.08
-ARTH,24190,0.667,Luke Joyner,1.0,Autumn 2024,3,3,4.72,11.39
 ARTH,29800,0.667,Martha Ward,1.0,Autumn 2024,2,2,3.95,8.12
 ARTV,29850,0.667,Katherine Desjardins,0.52,Spring 2025,8,9,4.44,8.8
 BIOS,10087,0.667,Timothy Sosa,1.0,Autumn 2024,2,3,4.24,3.24
 BIOS,13132,0.667,Trevor Price,1.0,Autumn 2024,4,6,3.28,4.88
 CATA,23500,0.667,Bel Olid,1.0,Autumn 2024,2,5,4.78,8.3
-CEGU,26260,0.667,Raymond Lodato,1.0,Autumn 2024,2,3,4.22,5.83
+CCSG,22507,0.667,Raymond Lodato,1.0,Autumn 2024,2,3,4.22,5.83
 CHIN,20601,0.667,Yi-Lu Kuo,0.96,Autumn 2024,4,4,,
+CLCV,21722,0.667,Mehrnoush Soroush,1.0,Autumn 2024,3,5,4.56,5.29
 CLCV,29500,0.667,Catherine Kearns,0.24,Autumn 2024,4,4,4.5,4.58
 CMST,25507,0.667,Ariel Stevenson,1.0,Autumn 2024,2,4,4.41,8.68
 CMST,28910,0.667,Katherine Buse,1.0,Autumn 2024,2,3,4.27,4.77
@@ -465,36 +444,37 @@ CMST,29201,0.667,Ariel Stevenson,0.51,Autumn 2024,3,3,4.58,6.43
 CPNS,30116,0.667,Anne-Marie Oswald,1.0,Autumn 2024,3,3,,
 CRWR,17003,0.667,Daniel Raeburn,1.0,Autumn 2024,2,2,4.64,8.81
 CRWR,17015,0.667,Kirsten Ihns,1.0,Autumn 2024,2,2,4.56,4.75
+CRWR,20250,0.667,Srikanth Reddy,1.0,Autumn 2024,3,3,4.52,8.19
+DEMS,21002,0.667,Ben Laurence,1.0,Autumn 2024,4,6,4.46,8.64
 ECON,26030,0.667,Casey Mulligan,1.0,Autumn 2024,6,6,3.78,6.73
-ENGL,20250,0.667,Srikanth Reddy,1.0,Autumn 2024,3,3,4.52,8.19
-ENGL,33000,0.667,Tracy Weiner,0.41,Spring 2025,13,14,,
 GEOS,22200,0.667,Nicolas Dauphas,1.0,Autumn 2024,5,5,4.28,5.0
-HMRT,21002,0.667,Ben Laurence,1.0,Autumn 2024,4,6,4.46,8.64
-HMRT,24125,0.667,Lake Polan,1.0,Autumn 2024,2,2,4.2,8.13
+JWSC,20300,0.667,Jessica Kirzane,1.0,Autumn 2024,4,5,4.95,2.5
 KORE,20100,0.667,Jieun Kim,0.56,Autumn 2024,5,9,,
 MENG,23100,0.667,Mustafa Guler,0.5,Autumn 2024,4,4,4.39,5.18
 MUSI,26100,0.667,Anh Vu,0.46,Autumn 2024,4,4,4.61,4.96
-NEAA,20061,0.667,Mehrnoush Soroush,0.96,Autumn 2024,4,4,4.62,9.37
-NEHC,20014,0.667,Mehrnoush Soroush,1.0,Autumn 2024,3,5,4.56,5.29
 NSCI,21811,0.667,Narayanan Kasthuri,1.0,Autumn 2024,3,3,,4.56
-PBPL,28829,0.667,Jens Ludwig,1.0,Autumn 2024,2,2,4.46,6.08
 PHIL,29901,0.667,Agnes Callard,0.48,Autumn 2024,5,6,4.42,5.78
 PHSC,10800,0.667,Celeste Labedz,0.56,Winter 2025,6,6,4.21,5.53
 PHSC,11600,0.667,Savan Kharel,0.87,Autumn 2024,5,5,4.23,5.33
 PLSC,26969,0.667,Anton Strezhnev,1.0,Autumn 2024,2,2,4.61,8.75
 POLI,10103,0.667,Dag Lindskog,1.0,Autumn 2024,3,3,,
-RDIN,29800,0.667,Maya Singhal,0.43,Spring 2025,4,6,4.75,8.28
-SOCI,20002,0.667,Julian Go III,0.98,Autumn 2024,5,5,4.57,7.26
-TAPS,24410,0.667,Sandor Weisz,1.0,Autumn 2024,4,5,4.34,11.1
-YDDH,10100,0.667,Jessica Kirzane,1.0,Autumn 2024,4,5,4.95,2.5
 AASR,35100,0.583,Abimbola Adelakun,1.0,Autumn 2025,1,1,,
+AASR,35530,0.583,Maliha Chishti,1.0,Autumn 2025,1,4,4.35,6.39
+AASR,38777,0.583,Anand Venkatkrishnan,0.5,Autumn 2025,1,2,,
 AASR,54000,0.583,Alireza Doostdar,1.0,Autumn 2025,1,1,,
+AMER,12112,0.583,Garin Cycholl,1.0,Autumn 2025,1,1,4.62,4.17
+AMER,21303,0.583,Curtis Evans,1.0,Autumn 2025,2,4,,
+AMER,27008,0.583,Adrienne Brown,1.0,Autumn 2025,1,3,4.82,5.0
 ANTH,20015,0.583,Sarah Newman,1.0,Autumn 2025,1,1,4.95,4.17
 ANTH,21006,0.583,Kenzell Huggins,1.0,Autumn 2025,1,1,4.43,2.5
 ANTH,21014,0.583,Reed McConnell,1.0,Autumn 2025,1,4,4.72,6.79
 ANTH,21270,0.583,Alice Yao,1.0,Autumn 2025,1,2,4.57,2.5
+ANTH,22107,0.583,Paula Martin,1.0,Autumn 2025,1,5,4.93,7.5
+ANTH,22200,0.583,Tanima Sharma,1.0,Autumn 2025,1,3,4.86,8.21
 ANTH,26701,0.583,John Kelly,1.0,Autumn 2025,2,2,4.43,7.5
+ANTH,28110,0.583,Zeresenay Alemseged,1.0,Autumn 2025,3,4,4.92,3.61
 ANTH,30501,0.583,Kaushik Sunder Rajan,1.0,Autumn 2025,1,1,,
+ANTH,31530,0.583,Damien Bright,1.0,Autumn 2025,1,3,,
 ANTH,34000,0.583,Alice Yao,0.5,Autumn 2025,1,1,,
 ANTH,34101,0.583,Hussein Agrama,1.0,Autumn 2025,1,1,,
 ANTH,34102,0.583,Hussein Agrama,1.0,Autumn 2025,1,1,,
@@ -502,52 +482,68 @@ ANTH,51942,0.583,Michael Fisch,1.0,Autumn 2025,1,1,,
 ANTH,57300,0.583,Constantine Nakassis,1.0,Autumn 2025,1,3,,
 ARAB,20211,0.583,Pamela Klasova,1.0,Autumn 2025,1,2,,
 ARAB,20701,0.583,Mehmetcan Akpinar,1.0,Autumn 2025,1,1,4.37,8.5
+ARCH,20150,0.583,Evan Carver,1.0,Autumn 2025,5,8,4.51,6.53
+ARCH,24199,0.583,Chana Haouzi,1.0,Autumn 2025,3,5,4.34,10.73
 ARTH,10100,0.583,Zhiyan Yang,0.18,Spring 2026,9,9,4.14,4.22
 ARTH,21313,0.583,Ina Blom,1.0,Autumn 2025,1,3,3.43,5.0
 ARTH,22811,0.583,Niall Atkinson,1.0,Autumn 2025,1,2,4.77,6.5
 ARTH,23325,0.583,Sizhao Yi,1.0,Autumn 2025,1,1,4.79,6.88
 ARTH,23602,0.583,Alaka Wali,1.0,Autumn 2025,1,1,4.86,5.83
-ARTH,24199,0.583,Chana Haouzi,1.0,Autumn 2025,3,5,4.34,10.73
 ARTH,24612,0.583,Jessie Alperin,1.0,Autumn 2025,1,1,4.9,8.75
+ARTH,25115,0.583,Andrei Pop,1.0,Autumn 2025,1,2,,
 ARTH,26501,0.583,Ina Blom,1.0,Autumn 2025,1,3,3.98,8.33
+ARTH,28335,0.583,Lauren Beversluis,1.0,Autumn 2025,1,3,4.19,7.5
 ARTH,29943,0.583,Claudia Brittenham,1.0,Autumn 2025,1,3,4.82,8.75
 ARTH,40100,0.583,Chelsea Foxwell,1.0,Autumn 2025,1,1,,
+ARTV,16210,0.583,Cameron Mankin,0.21,Spring 2026,4,52,4.21,3.99
+ARTV,20312,0.583,Danielle Aubert,1.0,Autumn 2025,1,3,4.27,5.0
+ARTV,20813,0.583,Rasean Johnson,1.0,Autumn 2025,1,3,4.0,9.17
 ARTV,22301,0.583,Nazafarin Lotfi,1.0,Autumn 2025,1,1,4.24,9.17
 ARTV,22323,0.583,Amber Ginsburg,1.0,Autumn 2025,1,1,4.24,14.17
-ARTV,27200,0.583,Mari Eastman,0.62,Autumn 2025,4,4,4.48,7.2
 ASTR,18200,0.583,Austin Joyce,0.62,Autumn 2025,4,5,4.43,3.49
 ASTR,30100,0.583,Harley Katz,1.0,Autumn 2025,1,1,,
 ASTR,30350,0.583,Diana Powell,1.0,Autumn 2025,1,1,,
 BCSN,10103,0.583,Nada Petkovic,1.0,Autumn 2025,2,2,,
 BIOS,11143,0.583,Wen Yi Low,1.0,Autumn 2025,1,1,4.39,3.75
-BIOS,22265,0.583,Zeresenay Alemseged,1.0,Autumn 2025,3,4,4.92,3.61
+BIOS,21507,0.583,Huanhuan Chen,1.0,Autumn 2025,5,7,3.66,4.67
+BIOS,21508,0.583,Jun Huang,1.0,Autumn 2025,5,7,4.19,5.76
+BIOS,23414,0.583,Gregory Dwyer,0.5,Autumn 2025,1,1,,
 BIOS,26123,0.583,Aarti Venkat,0.46,Spring 2026,4,9,4.48,6.85
 BUSN,20355,0.583,Michael Alter,1.0,Autumn 2025,1,1,4.44,7.85
-BUSN,20410,0.583,Constantine Yannelis,0.39,Spring 2026,13,32,4.35,7.23
-BUSN,20710,0.583,Joshua Dean,0.48,Autumn 2025,8,11,4.36,5.35
 CATA,21660,0.583,Bel Olid,1.0,Autumn 2025,1,2,4.33,5.0
-CCSG,19000,0.583,Michael Greenstone,1.0,Autumn 2025,1,4,4.03,7.84
-CCSG,20700,0.583,David A Weisbach,1.0,Autumn 2025,1,3,4.6,6.25
+CCCT,11200,0.583,Sianne Ngai,1.0,Autumn 2025,3,3,4.66,7.59
 CCSG,21025,0.583,Conor Carney,1.0,Autumn 2025,1,5,4.18,5.54
-CEGU,20150,0.583,Evan Carver,1.0,Autumn 2025,5,8,4.51,6.53
+CEGU,20101,0.583,Nicholas Foster,1.0,Autumn 2025,1,2,4.75,3.75
+CEGU,24800,0.583,Felice Gianluca Sperone,1.0,Autumn 2025,1,1,4.57,7.5
+CEGU,25723,0.583,Anindita Chatterjee,1.0,Autumn 2025,3,7,4.04,3.8
+CEGU,25909,0.583,Aaron Jakes,1.0,Autumn 2025,1,3,4.38,10.83
+CEGU,28150,0.583,Zihao Lin,1.0,Autumn 2025,1,2,4.86,7.5
 CHDV,22699,0.583,Emilia Wenzel,1.0,Autumn 2025,1,1,4.74,4.5
+CHDV,23360,0.583,Diane Brentari,0.5,Autumn 2025,3,5,4.69,7.56
+CHDV,23370,0.583,Jean Decety,1.0,Autumn 2025,2,4,3.08,4.12
 CHDV,24999,0.583,Hera Shakil,1.0,Autumn 2025,1,3,4.35,5.36
 CHDV,26700,0.583,Terra Edwards,1.0,Autumn 2025,2,4,4.46,6.88
-CHDV,28105,0.583,Zihao Lin,1.0,Autumn 2025,1,2,4.86,7.5
 CHDV,35200,0.583,Eman Abdelhadi,1.0,Autumn 2025,1,3,,
 CHDV,40000,0.583,Terra Edwards,1.0,Autumn 2025,1,1,,
 CHDV,46500,0.583,Leoandra Rogers,1.0,Autumn 2025,1,2,,
 CHEM,111,0.583,Joshua Weatherston,1.0,Autumn 2025,1,2,4.38,6.65
 CHEM,23000,0.583,Mark Levin,0.5,Autumn 2025,1,1,4.91,10.11
-CHEM,30600,0.583,Wenbin Lin,1.0,Autumn 2025,5,5,,
 CHEM,31300,0.583,Aaron Dinner,1.0,Autumn 2025,2,2,,
 CHEM,32100,0.583,Alexander Cusumano,0.53,Autumn 2025,5,5,,
 CHEM,37000,0.583,Bryan Dickinson,1.0,Autumn 2025,1,1,,
-CHST,20101,0.583,Nicholas Foster,1.0,Autumn 2025,1,2,4.75,3.75
-CHST,20336,0.583,Julia Bachrach,1.0,Autumn 2025,1,4,3.71,7.5
-CLCV,29325,0.583,Jonah Radding,1.0,Autumn 2025,1,1,4.7,5.83
+CHSS,32504,0.583,Isabel Gabel,1.0,Autumn 2025,1,2,4.86,9.17
+CHSS,32790,0.583,Amanda Lanzillo,1.0,Autumn 2025,1,2,,
+CHSS,35421,0.583,Ada Palmer,1.0,Autumn 2025,1,4,4.37,5.62
+CHST,20801,0.583,Maria Lozada Cerna,1.0,Autumn 2025,1,2,4.95,7.5
+CHST,24400,0.583,Michael Bourdaghs,1.0,Autumn 2025,2,4,4.9,8.33
+CHST,24450,0.583,Heidi Coleman,0.5,Autumn 2025,1,2,4.33,5.5
+CLAS,39325,0.583,Jonah Radding,1.0,Autumn 2025,1,1,4.7,5.83
 CMES,31002,0.583,Kathryn Bandy,1.0,Autumn 2025,1,1,,
+CMLT,20030,0.583,William Nickell,1.0,Autumn 2025,1,4,4.08,6.88
+CMLT,20615,0.583,Melih Levi,1.0,Autumn 2025,1,3,4.94,6.88
+CMLT,20770,0.583,Na'ama Rokem,1.0,Autumn 2025,1,4,4.63,5.0
 CMLT,28871,0.583,Hoda El Shakry,1.0,Autumn 2025,1,4,4.68,7.5
+CMLT,28888,0.583,Nikhita Obeegadoo,1.0,Autumn 2025,1,4,4.3,4.58
 CMLT,28995,0.583,Anna Elena Torres,1.0,Autumn 2025,1,5,4.14,7.5
 CMLT,35412,0.583,Nisha Kommattam,1.0,Autumn 2025,1,3,,
 CMSC,22200,0.583,Frederic Chong,0.63,Autumn 2025,8,9,4.19,14.13
@@ -563,44 +559,52 @@ CMSC,35480,0.583,Lorenzo Orecchia,1.0,Autumn 2025,1,1,,
 CMSC,35900,0.583,Ariel Holtzman,0.5,Autumn 2025,1,2,,
 CMSC,39100,0.583,William Fefferman,1.0,Autumn 2025,1,1,,
 CMSC,39600,0.583,William Hoza,0.41,Spring 2026,3,8,,
-CMST,34649,0.583,Thomas Lamarre,1.0,Autumn 2025,1,1,,
+CMST,24119,0.583,Sheila Jelen,1.0,Autumn 2025,1,5,4.67,4.17
+CMST,24649,0.583,Thomas Lamarre,1.0,Autumn 2025,1,1,,
+CMST,26001,0.583,Jon Satrom,1.0,Autumn 2025,2,5,4.64,7.11
+CMST,27916,0.583,Ashlyn Sparrow,0.39,Autumn 2025,4,7,4.63,9.88
 CMST,40000,0.583,Daniel Morgan,1.0,Autumn 2025,1,3,,
 CMST,67812,0.583,Allyson Field,1.0,Autumn 2025,1,1,,
-COGS,29001,0.583,Melinh Lai,1.0,Autumn 2025,1,2,4.57,3.75
-CRWR,12112,0.583,Garin Cycholl,1.0,Autumn 2025,1,1,4.62,4.17
+COGS,20027,0.583,Craig Thorburn,1.0,Autumn 2025,1,3,4.78,9.32
+COGS,22013,0.583,Sanghee Kim,0.33,Spring 2026,11,22,4.25,4.7
+COGS,23009,0.583,Jason Bridges,0.5,Autumn 2025,1,2,4.39,6.36
+COGS,26803,0.583,Russell Johnson,1.0,Autumn 2025,3,4,4.74,5.44
 CRWR,12134,0.583,Julie Iromuanya,1.0,Autumn 2025,1,1,4.76,5.83
 CRWR,12148,0.583,Lina Ferreira Cabeza-Vanegas,1.0,Autumn 2025,4,5,4.13,12.65
-CRWR,12170,0.583,Valer Popa,1.0,Autumn 2025,1,1,4.5,5.0
 CRWR,12173,0.583,Jonathan Gleason,1.0,Autumn 2025,1,1,4.51,3.61
 CRWR,12179,0.583,Baird Harper,1.0,Autumn 2025,1,1,4.5,2.5
-CRWR,12181,0.583,Danielle Aubert,1.0,Autumn 2025,1,2,3.87,9.72
 CRWR,17018,0.583,Ryan Van Meter,1.0,Autumn 2025,2,3,4.5,3.22
 CRWR,17019,0.583,Augustus Rose,1.0,Autumn 2025,1,1,4.53,3.93
 CRWR,20232,0.583,Sharon Pomerantz,1.0,Autumn 2025,4,5,4.32,6.92
 CRWR,22128,0.583,Augustus Rose,1.0,Autumn 2025,4,4,4.65,12.29
 CRWR,22151,0.583,Stephanie Soileau,1.0,Autumn 2025,1,1,4.95,10.83
 CRWR,23139,0.583,Robyn Schiff,1.0,Autumn 2025,2,2,4.9,6.67
-CRWR,24034,0.583,Rachel Cohen,1.0,Autumn 2025,1,2,4.57,5.83
 DATA,22100,0.583,Amanda Kube,0.43,Spring 2026,10,12,3.99,10.14
 DATA,23100,0.583,David Biron,0.47,Spring 2026,5,6,4.28,9.75
 DATA,30100,0.583,Dan Nicolae,1.0,Autumn 2025,1,1,,
 DATA,37000,0.583,Edwin Lo,1.0,Autumn 2025,1,1,,
 DATA,37711,0.583,Victor Veitch,1.0,Autumn 2025,1,2,,
+DEMS,23480,0.583,Limor Yehuda,1.0,Autumn 2025,1,4,4.81,7.5
+DEMS,26920,0.583,James Wilson,1.0,Autumn 2025,1,3,4.64,9.17
+DEMS,28801,0.583,Ruth Bloch Rubin,0.97,Autumn 2025,6,7,3.85,7.34
+DEMS,30301,0.583,Jon Rogowski,0.85,Autumn 2025,2,3,,
+DEMS,31822,0.583,James Wilson,1.0,Autumn 2025,1,4,,
 DIGS,20009,0.583,Brooke Luetgert,1.0,Autumn 2025,1,1,4.35,7.5
 DIGS,20016,0.583,Helma Dik,1.0,Autumn 2025,1,1,3.83,5.68
+DVPR,31801,0.583,Ryan Coyne,1.0,Autumn 2025,1,3,4.29,8.37
 DVPR,44276,0.583,Brook Ziporyn,1.0,Autumn 2025,1,4,,
 EALC,12255,0.583,Yoonbin Cho,1.0,Autumn 2025,1,1,4.38,10.83
+EALC,15411,0.583,Kenneth Pomeranz,0.31,Autumn 2025,3,19,3.86,7.49
 EALC,22460,0.583,Edward L Shaughnessy,1.0,Autumn 2025,1,1,4.26,6.5
-EALC,24400,0.583,Michael Bourdaghs,1.0,Autumn 2025,2,4,4.9,8.33
-EALC,24607,0.583,Paola Iovene,1.0,Autumn 2025,1,2,4.65,8.75
+EALC,24518,0.583,Johanna Ransmeier,1.0,Autumn 2025,2,4,4.74,6.5
 EALC,25301,0.583,Ariel Fox,1.0,Autumn 2025,1,2,4.65,5.0
 EALC,46971,0.583,Paola Iovene,1.0,Autumn 2025,1,1,,
 EALC,50000,0.583,Ariel Fox,1.0,Autumn 2025,1,1,,
-ECEV,42900,0.583,Gregory Dwyer,0.5,Autumn 2025,1,1,,
 ECMA,30100,0.583,Derek A Neal,1.0,Autumn 2025,1,1,,
 ECMA,30400,0.583,Andrew Kennedy,0.5,Autumn 2025,1,1,,
 ECMA,33210,0.583,Nancy L Stokey,1.0,Autumn 2025,1,1,,
 ECON,11850,0.583,Matthew Brown,1.0,Winter 2026,2,3,4.04,9.39
+ECON,28030,0.583,Kathryn Ierulli,1.0,Autumn 2025,4,6,4.27,8.76
 ECON,30100,0.583,Kevin Murphy,1.0,Autumn 2025,1,1,,
 ECON,30400,0.583,Joseph Root,1.0,Autumn 2025,1,1,,
 ECON,31000,0.583,Alex Torgovitsky,1.0,Autumn 2025,1,1,,
@@ -612,122 +616,96 @@ EDSO,33006,0.583,Lisa Rosen,1.0,Autumn 2025,1,3,,
 ENGL,10104,0.583,Dana Glaser,1.0,Autumn 2025,2,2,4.33,7.92
 ENGL,10418,0.583,Rachel Willis,1.0,Autumn 2025,1,2,4.92,4.64
 ENGL,10432,0.583,Adam Fales,1.0,Autumn 2025,1,2,4.67,6.71
-ENGL,11200,0.583,Sianne Ngai,1.0,Autumn 2025,3,3,4.66,7.59
+ENGL,12143,0.583,Gabriel Ojeda-Sague,1.0,Autumn 2025,1,2,4.86,6.25
 ENGL,18660,0.583,John Muse,1.0,Autumn 2025,1,2,4.52,4.77
 ENGL,18860,0.583,Ngara Ndiaye,1.0,Autumn 2025,1,3,4.74,6.67
 ENGL,20144,0.583,Timothy Campbell,1.0,Autumn 2025,1,1,3.96,8.75
 ENGL,20163,0.583,Alexis Chema,1.0,Autumn 2025,1,1,4.82,5.0
 ENGL,20164,0.583,Misha McDaniel,1.0,Autumn 2025,1,1,4.29,7.5
-ENGL,20308,0.583,Danielle Aubert,1.0,Autumn 2025,1,3,4.27,5.0
 ENGL,20818,0.583,Sarah Kunjummen,1.0,Autumn 2025,1,2,4.81,5.83
 ENGL,21312,0.583,Benjamin Saltzman,0.61,Spring 2026,2,2,3.8,5.33
 ENGL,24240,0.583,Ngara Ndiaye,1.0,Autumn 2025,2,6,4.56,6.91
-ENGL,26249,0.583,Kenneth W Warren,1.0,Autumn 2025,2,4,4.31,7.65
-ENGL,27008,0.583,Adrienne Brown,1.0,Autumn 2025,1,3,4.82,5.0
+ENGL,24326,0.583,Sophie Salvo,1.0,Autumn 2025,1,3,,
+ENGL,28145,0.583,Brook Ziporyn,1.0,Autumn 2025,1,3,4.43,6.25
 ENGL,41370,0.583,Tristan Schweiger,1.0,Autumn 2025,2,3,,
 ENGL,48613,0.583,Rachel Galvin,1.0,Autumn 2025,1,3,,
 ENGL,51588,0.583,Timothy Harrison,1.0,Autumn 2025,1,1,,
 ENGL,56700,0.583,Sianne Ngai,1.0,Autumn 2025,1,1,,
 ENSC,36100,0.583,Daniel Muratore,1.0,Autumn 2025,1,1,,
 FINM,34800,0.583,Lek-Heng Lim,1.0,Autumn 2025,1,1,,
-FNDL,20615,0.583,Melih Levi,1.0,Autumn 2025,1,3,4.94,6.88
-FNDL,20770,0.583,Na'ama Rokem,1.0,Autumn 2025,1,4,4.63,5.0
+FNDL,21820,0.583,Maria Anna Mariani,1.0,Autumn 2025,2,3,4.74,11.25
+FNDL,23104,0.583,William Schweiker,0.98,Autumn 2025,3,5,4.91,6.25
+FNDL,24304,0.583,Stephen Brock,1.0,Autumn 2025,2,3,4.8,5.33
+FNDL,24440,0.583,Kevin Hector,1.0,Autumn 2025,1,3,4.55,2.5
 FREN,15001,0.583,Xin Miao,0.28,Spring 2026,4,18,,
 FREN,15002,0.583,Xin Miao,0.62,Winter 2026,3,4,,
 FREN,15003,0.583,Francois Thuillier,0.53,Spring 2026,4,4,,
 FREN,15005,0.583,Francois Thuillier,0.61,Winter 2026,2,3,,
 FREN,23926,0.583,Ryan Brown,1.0,Autumn 2025,1,2,4.97,3.5
 FREN,25660,0.583,Khalid Lyamlahy,1.0,Autumn 2025,1,1,4.96,5.0
-FREN,28888,0.583,Nikhita Obeegadoo,1.0,Autumn 2025,1,4,4.3,4.58
 FREN,41400,0.583,Khalid Lyamlahy,1.0,Autumn 2025,1,3,,
+GEOS,22700,0.583,Andrew Davis,1.0,Autumn 2025,2,2,,
 GEOS,30200,0.583,Linta Reji,1.0,Autumn 2025,1,1,,
-GEOS,32700,0.583,Andrew Davis,1.0,Autumn 2025,2,2,,
 GEOS,33825,0.583,Jacob Waldbauer,1.0,Autumn 2025,1,1,,
 GEOS,36900,0.583,David Jablonski,0.33,Autumn 2025,1,1,,
-GISC,24800,0.583,Felice Gianluca Sperone,1.0,Autumn 2025,1,1,4.57,7.5
-GLST,25723,0.583,Anindita Chatterjee,1.0,Autumn 2025,3,7,4.04,3.8
-GNSE,12143,0.583,Gabriel Ojeda-Sague,1.0,Autumn 2025,1,2,4.86,6.25
+GNSE,12140,0.583,Virginia White,1.0,Autumn 2025,1,2,5.0,2.5
 GNSE,15010,0.583,Daisy Delogu,1.0,Autumn 2025,1,1,4.56,8.61
+GNSE,20157,0.583,Noel Blanco Mourelle,1.0,Autumn 2025,1,3,4.7,8.86
+GNSE,20158,0.583,Carlos Halaburda,1.0,Autumn 2025,1,3,4.95,5.0
+GNSE,20165,0.583,David Lebow,1.0,Autumn 2025,1,2,4.7,9.77
 GNSE,23165,0.583,Red Tremmel,1.0,Autumn 2025,1,2,5.0,11.25
 GNSE,23178,0.583,Omar Safadi,1.0,Autumn 2025,2,8,4.51,6.88
 GREK,22525,0.583,Antonios Kaldellis,1.0,Autumn 2025,1,1,4.77,8.21
 GRMN,13333,0.583,Frederic Kopp,1.0,Autumn 2025,1,1,,
-GRMN,21303,0.583,Daniel Pinto,0.81,Autumn 2025,2,2,4.79,5.0
 GRMN,32526,0.583,Margareta Christian,1.0,Autumn 2025,1,3,,
-GRMN,37326,0.583,Sophie Salvo,1.0,Autumn 2025,1,3,,
 HCHR,41500,0.583,Kirsten Macfarlane,1.0,Autumn 2025,1,1,,
 HIJD,36314,0.583,Yehuda Halper,1.0,Autumn 2025,1,4,,
 HIPS,18404,0.583,Emily Kern,1.0,Autumn 2025,1,2,4.33,6.67
-HIST,15411,0.583,Kenneth Pomeranz,0.31,Autumn 2025,3,19,3.86,7.49
-HIST,17521,0.583,Fredrik Albritton Jonsson,0.41,Winter 2026,6,22,4.69,7.07
-HIST,18702,0.583,Matthew Briones,1.0,Autumn 2025,4,6,4.77,5.96
+HIST,21307,0.583,Kirsten Macfarlane,1.0,Autumn 2025,1,2,4.73,4.5
 HIST,22213,0.583,Svetlana Natkovich,1.0,Autumn 2025,1,2,4.67,7.5
 HIST,22409,0.583,Rachel Fulton Brown,1.0,Autumn 2025,1,2,4.62,7.5
-HIST,24409,0.583,Hannah Park,1.0,Autumn 2025,1,3,4.69,5.83
-HIST,25421,0.583,Ada Palmer,1.0,Autumn 2025,1,4,4.37,5.62
-HIST,25909,0.583,Aaron Jakes,1.0,Autumn 2025,1,3,4.38,10.83
-HIST,28308,0.583,Isabel Gabel,1.0,Autumn 2025,1,2,4.86,9.17
-HIST,29631,0.583,Johanna Ransmeier,1.0,Autumn 2025,2,4,4.74,6.5
+HIST,26105,0.583,Silvia Elena Giorguli Saucedo,1.0,Autumn 2025,1,2,4.88,13.33
+HIST,27611,0.583,Jared Berkowitz,1.0,Autumn 2025,1,2,4.74,10.23
+HIST,27612,0.583,Jared Berkowitz,1.0,Autumn 2025,1,2,4.79,9.32
 HIST,29641,0.583,Aaron Jakes,1.0,Autumn 2025,2,2,4.59,10.62
+HIST,29918,0.583,Alexander Hofmann,1.0,Autumn 2025,1,2,,
+HIST,46606,0.583,Ulrike Stark,1.0,Autumn 2025,1,2,,
 HIST,51503,0.583,Steven Pincus,1.0,Autumn 2025,1,1,,
 HIST,53900,0.583,Faith Hillis,0.5,Autumn 2025,1,2,,
 HIST,62705,0.583,Rashauna Johnson,1.0,Autumn 2025,1,4,,
 HIST,70001,0.583,Johanna Ransmeier,0.5,Autumn 2025,1,1,,
-HLTH,22107,0.583,Paula Martin,1.0,Autumn 2025,1,5,4.93,7.5
+HLTH,26555,0.583,Miwa Yasui,1.0,Autumn 2025,1,2,,
 HMRT,22310,0.583,Ben Laurence,1.0,Autumn 2025,1,2,4.8,8.93
+HMRT,22401,0.583,Jose Guevara,1.0,Autumn 2025,1,2,4.47,5.36
 HMRT,23416,0.583,Heba Alex,1.0,Autumn 2025,1,1,4.07,6.25
-HMRT,24638,0.583,Ishani Dasgupta,0.87,Autumn 2025,3,4,4.24,5.32
+HMRT,27380,0.583,Tyler Zimmer,1.0,Autumn 2025,2,3,4.73,4.67
 HREL,32900,0.583,Stephan Licha,1.0,Autumn 2025,1,1,,
-HREL,38140,0.583,James Robinson,0.5,Autumn 2025,1,4,,
-HREL,38777,0.583,Anand Venkatkrishnan,0.5,Autumn 2025,1,2,,
 HREL,40020,0.583,Sarah Taylor,1.0,Autumn 2025,1,1,,
 HUMA,19100,0.583,Geoffrey Rees,0.02,Winter 2026,4,324,4.16,4.47
 IMMU,48000,0.583,Luis Barreiro,0.5,Autumn 2025,1,1,4.25,5.36
-ISLM,39030,0.583,Maliha Chishti,1.0,Autumn 2025,2,5,,
-ITAL,21820,0.583,Maria Anna Mariani,1.0,Autumn 2025,2,3,4.74,11.25
 JAPN,34901,0.583,Thomas Lamarre,1.0,Autumn 2025,1,2,,
-LACS,22400,0.583,Jose Guevara,1.0,Autumn 2025,1,2,4.47,5.36
-LACS,22500,0.583,Silvia Elena Giorguli Saucedo,1.0,Autumn 2025,1,2,4.88,13.33
+LACS,24400,0.583,Victoria Saramago Padua,1.0,Autumn 2025,1,3,4.62,10.83
 LACS,29801,0.583,Diana Schwartz Francisco,1.0,Autumn 2025,2,2,4.83,6.67
 LATN,11500,0.583,Christopher Simon,1.0,Autumn 2025,1,1,,
 LATN,21100,0.583,David Wray,1.0,Autumn 2025,1,2,4.54,8.75
-LING,20301,0.583,Anastasia Giannakidou,0.67,Autumn 2025,6,11,4.45,5.35
-LING,22500,0.583,Craig Thorburn,1.0,Autumn 2025,1,3,4.78,9.32
 LING,24650,0.583,Sharese King,1.0,Autumn 2025,2,2,4.71,6.36
-LING,26002,0.583,Sharese King,0.84,Autumn 2025,4,4,4.62,6.76
-LING,26020,0.583,Chris Kennedy,1.0,Autumn 2025,1,2,4.34,6.25
-LING,26050,0.583,Salikoko Mufwene,1.0,Autumn 2025,3,5,3.93,4.89
-LING,27010,0.583,Sanghee Kim,0.33,Spring 2026,11,22,4.25,4.7
 LING,28345,0.583,Fidele Mpiranya,1.0,Autumn 2025,1,1,4.43,2.5
 LING,30201,0.583,Erik Zyman,1.0,Autumn 2025,1,1,,
-LING,33920,0.583,Jason Riggle,1.0,Autumn 2025,6,10,4.35,3.59
 LING,47900,0.583,Itamar Francez,1.0,Winter 2026,2,2,,
-LLSO,25316,0.583,Jared Berkowitz,1.0,Autumn 2025,1,2,4.74,10.23
 LLSO,28089,0.583,Giovanni Giorgini,1.0,Autumn 2025,1,1,5.0,7.5
 LLSO,29015,0.583,Heba Alex,1.0,Autumn 2025,1,2,3.75,7.5
-LLSO,29712,0.583,Shamshad Pasarlay,1.0,Autumn 2025,2,3,4.39,7.92
-LLSO,29714,0.583,Jared Berkowitz,1.0,Autumn 2025,1,2,4.79,9.32
-LLSO,29716,0.583,David Lebow,1.0,Autumn 2025,1,2,4.7,9.77
 MACS,30120,0.583,Jonathan Clindaniel,1.0,Autumn 2025,1,1,,
 MACS,30121,0.583,Zhao Wang,1.0,Autumn 2025,1,1,,
 MACS,30455,0.583,Henry Dambanemuya,1.0,Autumn 2025,1,1,,
 MACS,33000,0.583,Jean Clipperton,1.0,Autumn 2025,1,1,,
-MADD,12320,0.583,Ashlyn Sparrow,0.5,Autumn 2025,1,4,4.7,8.82
-MADD,20601,0.583,Jon Satrom,1.0,Autumn 2025,2,5,4.64,7.11
-MADD,22506,0.583,Nicholas Briz,1.0,Autumn 2025,2,4,4.75,6.1
-MADD,24410,0.583,Sandor Weisz,1.0,Autumn 2025,1,2,4.18,11.25
-MADD,26210,0.583,Cameron Mankin,0.21,Spring 2026,4,52,4.21,3.99
 MAPH,30100,0.583,Hilary Strang,1.0,Autumn 2025,1,1,,
 MAPS,30000,0.583,Hannah Hamilton,0.07,Winter 2026,2,15,,
 MAPS,30125,0.583,Hannah Hamilton,1.0,Autumn 2025,1,2,,
 MAPS,30128,0.583,Marshall Jean,1.0,Autumn 2025,1,2,,
 MAPS,30210,0.583,Megan Mclean,0.85,Autumn 2025,3,4,,
 MAPS,31500,0.583,John McCallum III,1.0,Autumn 2025,1,1,,
-MAPS,31530,0.583,Damien Bright,1.0,Autumn 2025,1,3,,
-MAPS,31545,0.583,Yasmin Cho,1.0,Autumn 2025,2,4,,
 MAPS,31565,0.583,Max Smith,1.0,Autumn 2025,1,2,,
 MAPS,36006,0.583,Yanyan Sheng,1.0,Autumn 2025,1,1,,
-MAPS,41600,0.583,Alexander Hofmann,1.0,Autumn 2025,1,2,,
 MAPS,49800,0.583,Jon Rogowski,1.0,Spring 2026,4,8,,
 MATH,31200,0.583,Yu Deng,1.0,Autumn 2025,1,1,,
 MATH,31700,0.583,Danny Calegari,1.0,Autumn 2025,1,1,,
@@ -737,8 +715,6 @@ MATH,35607,0.583,Anne Wilkinson,0.5,Autumn 2025,1,1,,
 MATH,37904,0.583,Carlos E Kenig,1.0,Autumn 2025,1,1,,
 MENG,211,0.583,Mark Stoykovich,1.0,Autumn 2025,1,2,4.62,3.75
 MENG,15100,0.583,Andrew Ferguson,1.0,Autumn 2025,1,2,4.64,5.23
-MENG,22200,0.583,Jun Huang,1.0,Autumn 2025,5,7,4.19,5.76
-MENG,23110,0.583,Huanhuan Chen,1.0,Autumn 2025,5,7,3.66,4.67
 MENG,31100,0.583,Sihong Wang,1.0,Autumn 2025,1,1,,
 MENG,31200,0.583,Jay Schieber,1.0,Autumn 2025,1,1,,
 MENG,31400,0.583,Tian Zhong,1.0,Autumn 2025,1,1,,
@@ -746,29 +722,22 @@ MENG,37500,0.583,Peter Maurer,1.0,Autumn 2025,1,1,,
 MUSI,20025,0.583,Mollie Stone,1.0,Autumn 2025,1,1,4.59,2.5
 MUSI,20719,0.583,Lawrence Zbikowski,1.0,Autumn 2025,4,4,4.53,5.58
 MUSI,23100,0.583,Travis Jackson,1.0,Autumn 2025,1,1,4.39,7.5
+MUSI,24321,0.583,Scott Elmegreen,1.0,Autumn 2025,5,7,4.94,8.94
 MUSI,25801,0.583,Lawrence Zbikowski,1.0,Autumn 2025,1,1,4.5,7.5
 MUSI,27100,0.583,Caleb Herrmann,0.83,Autumn 2025,2,2,4.62,4.58
 MUSI,35525,0.583,Alexander Cowan,1.0,Autumn 2025,1,1,,
 NEAA,20146,0.583,Augusta McMahon,0.5,Autumn 2025,1,1,4.19,10.83
-NEHC,20018,0.583,Derek Kennet,1.0,Autumn 2025,2,6,4.28,6.3
-NSCI,22950,0.583,Brent Doiron,0.5,Autumn 2025,1,1,,8.5
 PBHS,32901,0.583,Mei-Yin Polley,1.0,Autumn 2025,1,1,,
 PBHS,33400,0.583,Donald Hedeker,1.0,Autumn 2025,1,1,,
 PBHS,33500,0.583,Robert Gibbons,1.0,Autumn 2025,1,2,,
-PBPL,25540,0.583,Maliha Chishti,1.0,Autumn 2025,1,4,4.35,6.39
-PBPL,27110,0.583,James A Leitzel,1.0,Autumn 2025,3,9,4.68,8.83
-PBPL,27300,0.583,James A Leitzel,1.0,Autumn 2025,2,4,4.28,5.99
-PBPL,28670,0.583,Kathryn Ierulli,1.0,Autumn 2025,4,6,4.27,8.76
 PECO,40102,0.583,Scott Gehlbach,1.0,Autumn 2025,1,2,,
 PHIL,21013,0.583,Candace Vogler,1.0,Autumn 2025,1,1,4.64,7.5
 PHIL,21626,0.583,Agnes Callard,1.0,Autumn 2025,1,1,4.5,7.5
 PHIL,22961,0.583,Virginia Schultheis,1.0,Autumn 2025,3,3,4.43,5.59
+PHIL,23409,0.583,Robert B Pippin,1.0,Autumn 2025,1,1,,
 PHIL,24261,0.583,Thomas Pendlebury,1.0,Autumn 2025,1,1,4.7,8.12
-PHIL,25102,0.583,Stephen Brock,1.0,Autumn 2025,2,3,4.8,5.33
 PHIL,25104,0.583,Sean Kelsey,1.0,Autumn 2025,1,1,4.95,9.5
-PHIL,27380,0.583,Tyler Zimmer,1.0,Autumn 2025,2,3,4.73,4.67
 PHIL,27507,0.583,Maya Krishnan,1.0,Autumn 2025,1,1,4.69,14.5
-PHIL,29906,0.583,Jason Bridges,0.5,Autumn 2025,1,2,4.39,6.36
 PHIL,31414,0.583,Benjamin Callard,1.0,Autumn 2025,1,1,,
 PHSC,11000,0.583,Mark Webster,0.67,Spring 2026,7,8,3.88,6.86
 PHYS,31600,0.583,Wendy Zhang,1.0,Autumn 2025,1,1,,
@@ -776,21 +745,15 @@ PHYS,34100,0.583,Michael Levin,1.0,Autumn 2025,1,1,,
 PHYS,34800,0.583,Zoe Yan,1.0,Autumn 2025,1,1,,
 PHYS,36100,0.583,Kathryn Levin,1.0,Autumn 2025,1,1,,
 PHYS,44300,0.583,Clay Cordova,1.0,Autumn 2025,1,1,,
-PLSC,23480,0.583,Limor Yehuda,1.0,Autumn 2025,1,4,4.81,7.5
+PLSC,25700,0.583,Eric Oliver,1.0,Autumn 2025,1,1,,
 PLSC,26800,0.583,Paul Staniland,1.0,Autumn 2025,3,3,4.38,11.14
-PLSC,26920,0.583,James Wilson,1.0,Autumn 2025,1,3,4.64,9.17
-PLSC,28801,0.583,Ruth Bloch Rubin,0.97,Autumn 2025,6,7,3.85,7.34
-PLSC,30301,0.583,Jon Rogowski,0.85,Autumn 2025,2,3,,
 PLSC,30500,0.583,Isaac Mehlhaff,1.0,Autumn 2025,1,1,,
-PLSC,31822,0.583,James Wilson,1.0,Autumn 2025,1,4,,
-PLSC,35700,0.583,Eric Oliver,1.0,Autumn 2025,1,1,,
 PLSC,40510,0.583,Robert Pape Jr,1.0,Autumn 2025,1,1,,
 PLSC,40600,0.583,Rochelle Terman,1.0,Autumn 2025,1,1,,
 PLSC,48401,0.583,Paul Poast,1.0,Autumn 2025,1,1,,
 PLSC,49200,0.583,Ruth Bloch Rubin,1.0,Autumn 2025,1,2,,
 PLSC,49999,0.583,Isaac Mehlhaff,1.0,Autumn 2025,1,1,,
 PLSC,50901,0.583,Austin Carson,1.0,Autumn 2025,1,1,,
-PORT,24400,0.583,Victoria Saramago Padua,1.0,Autumn 2025,1,3,4.62,10.83
 PPHA,30105,0.583,Harry Franklin,0.5,Autumn 2025,1,1,,
 PPHA,30110,0.583,Harry Franklin,1.0,Autumn 2025,1,3,,
 PPHA,30545,0.583,Jeffrey Levy,0.5,Autumn 2025,1,6,,
@@ -843,43 +806,20 @@ PPHA,65525,0.583,Justin Marlowe,1.0,Autumn 2025,1,1,,
 PPHA,65562,0.583,Thomas Coleman,1.0,Autumn 2025,1,1,,
 PPHA,65585,0.583,Justin Daab,1.0,Autumn 2025,1,1,,
 PSYC,22350,0.583,Jean Decety,1.0,Autumn 2025,3,6,4.37,3.61
-PSYC,23360,0.583,Diane Brentari,0.5,Autumn 2025,3,5,4.69,7.56
-PSYC,23370,0.583,Jean Decety,1.0,Autumn 2025,2,4,3.08,4.12
 PSYC,23580,0.583,Shigehiro Oishi,1.0,Autumn 2025,1,1,4.52,3.75
 PSYC,40851,0.583,Lin Bian,1.0,Autumn 2025,1,1,,
 PSYC,43921,0.583,Edward Awh,1.0,Autumn 2025,1,1,,
 PSYC,44150,0.583,Lydia Emery,1.0,Autumn 2025,1,1,,
 PSYC,46050,0.583,Jai Yu,1.0,Autumn 2025,1,1,,
-RAME,42901,0.583,Curtis Evans,1.0,Autumn 2025,2,4,,
-RDIN,22200,0.583,Tanima Sharma,1.0,Autumn 2025,1,3,4.86,8.21
 RDIN,23400,0.583,Jiakai Sheng,1.0,Autumn 2025,1,3,4.41,10.62
 RDIN,23500,0.583,Katherine Mitchell,1.0,Autumn 2025,1,2,5.0,5.83
 RDIN,23600,0.583,Katherine Mitchell,1.0,Autumn 2025,1,2,4.69,9.17
-REES,20030,0.583,William Nickell,1.0,Autumn 2025,1,4,4.08,6.88
-REES,24220,0.583,Malynne Sternstein,1.0,Autumn 2025,2,4,4.45,4.61
 RETH,35404,0.583,Raissa von Doetinchem de Rande,1.0,Autumn 2025,1,1,,
-RLST,22606,0.583,Kirsten Macfarlane,1.0,Autumn 2025,1,2,4.73,4.5
-RLST,23104,0.583,William Schweiker,1.0,Autumn 2025,2,4,4.94,6.54
-RLST,23312,0.583,Elizabeth Brocious,1.0,Autumn 2025,1,2,4.76,5.83
-RLST,24109,0.583,Sheila Jelen,1.0,Autumn 2025,1,5,4.67,4.17
-RLST,24400,0.583,Kevin Hector,1.0,Autumn 2025,1,3,4.55,2.5
-RLST,24801,0.583,Ryan Coyne,1.0,Autumn 2025,1,3,4.29,8.37
-RLST,25602,0.583,Virginia White,1.0,Autumn 2025,1,2,5.0,2.5
-RLST,27140,0.583,Russell Johnson,1.0,Autumn 2025,3,4,4.74,5.44
-RLST,28145,0.583,Brook Ziporyn,1.0,Autumn 2025,1,3,4.43,6.25
-RLST,28335,0.583,Lauren Beversluis,1.0,Autumn 2025,1,3,4.19,7.5
-SALC,21353,0.583,Karma Ngodup,1.0,Autumn 2025,1,2,4.26,4.17
-SALC,32709,0.583,Amanda Lanzillo,1.0,Autumn 2025,1,2,,
-SALC,35710,0.583,Sascha Ebeling,1.0,Autumn 2025,1,1,,
-SALC,40106,0.583,Ulrike Stark,1.0,Autumn 2025,1,2,,
+RLST,27306,0.583,Karma Ngodup,1.0,Autumn 2025,1,2,4.26,4.17
+SALC,25710,0.583,Sascha Ebeling,1.0,Autumn 2025,1,1,,
 SANS,30100,0.583,Daniel Arnold,1.0,Autumn 2025,1,1,,
-SCPD,11800,0.583,Jordan Bimm,1.0,Autumn 2025,2,6,4.7,4.09
-SCTH,33901,0.583,Robert B Pippin,1.0,Autumn 2025,1,1,,
-SCTH,35000,0.583,Andrei Pop,1.0,Autumn 2025,1,2,,
 SOCI,20232,0.583,Tessa Huttenlocher,1.0,Autumn 2025,1,3,4.56,12.5
-SOCI,20602,0.583,Bernard Koch,1.0,Autumn 2025,2,13,4.34,10.51
 SOCI,20618,0.583,Kristen Schilt,1.0,Autumn 2025,1,1,4.68,8.75
-SOCI,20624,0.583,Kimberly Hoang,1.0,Autumn 2025,2,3,4.78,8.94
 SOCI,20628,0.583,Xiangyi Ren,1.0,Autumn 2025,1,1,4.7,5.83
 SOCI,20638,0.583,Simon Bittman,1.0,Autumn 2025,1,1,4.45,9.17
 SOCI,30002,0.583,Jenny Trinitapoli,1.0,Autumn 2025,1,1,,
@@ -910,9 +850,6 @@ SPAN,10402,0.583,Megan Marshall,1.0,Winter 2026,2,2,,
 SPAN,15001,0.583,Tanit Fernandez De La Reguera Taya,1.0,Winter 2026,2,2,,
 SPAN,15003,0.583,Tanit Fernandez De La Reguera Taya,0.74,Spring 2026,3,4,,
 SPAN,15005,0.583,Tanit Fernandez De La Reguera Taya,1.0,Winter 2026,2,2,,
-SPAN,20801,0.583,Maria Lozada Cerna,1.0,Autumn 2025,1,2,4.95,7.5
-SPAN,24990,0.583,Carlos Halaburda,1.0,Autumn 2025,1,3,4.95,5.0
-SPAN,27880,0.583,Noel Blanco Mourelle,1.0,Autumn 2025,1,3,4.7,8.86
 SSAD,30000,0.583,Rhoda Waxman,0.12,Winter 2026,2,18,,
 SSAD,30100,0.583,Shipra Parikh,0.11,Winter 2026,2,17,,
 SSAD,32700,0.583,Niki Aquino,0.36,Winter 2026,2,9,,
@@ -929,7 +866,6 @@ SSAD,44122,0.583,S. Simmons,1.0,Autumn 2025,1,2,,
 SSAD,44222,0.583,Shipra Parikh,1.0,Spring 2026,2,2,,
 SSAD,44501,0.583,Rachel Kazez,0.43,Spring 2026,4,9,,
 SSAD,45312,0.583,William Sites,1.0,Autumn 2025,1,1,,
-SSAD,46555,0.583,Miwa Yasui,1.0,Autumn 2025,1,2,,
 SSAD,46712,0.583,Jessica Darrow,1.0,Autumn 2025,2,2,,
 SSAD,46722,0.583,June Parks,0.29,Spring 2026,3,13,,
 SSAD,47300,0.583,Kate Attea,1.0,Spring 2026,2,2,,
@@ -963,32 +899,48 @@ STAT,31200,0.583,Wei Biao Wu,1.0,Autumn 2025,2,2,,
 STAT,31410,0.583,Mary Silber,0.5,Autumn 2025,1,1,,
 STAT,31430,0.583,Eric Baer,1.0,Autumn 2025,1,1,,
 STAT,31440,0.583,Eric Baer,1.0,Autumn 2025,1,1,,
-STAT,31470,0.583,Timothy Roberts,1.0,Autumn 2025,1,1,,
 STAT,33612,0.583,Frederic Koehler,1.0,Autumn 2025,1,1,,
 STAT,34300,0.583,Nikolaos Ignatiadis,1.0,Autumn 2025,1,1,,
 STAT,37792,0.583,Yali Amit,1.0,Autumn 2025,1,1,,
 STAT,37830,0.583,Tristan Goodwill,1.0,Autumn 2025,1,1,,
 STAT,41521,0.583,Rina Barber,1.0,Autumn 2025,1,1,,
-TAPS,10700,0.583,Alyssa Mohn,0.38,Winter 2026,9,9,4.37,7.11
-TAPS,21860,0.583,Scott Elmegreen,1.0,Autumn 2025,5,7,4.94,8.94
-TAPS,24450,0.583,Heidi Coleman,0.5,Autumn 2025,1,2,4.33,5.5
-TAPS,28010,0.583,Rasean Johnson,1.0,Autumn 2025,1,3,4.0,9.17
 TBTN,10100,0.583,Karma Ngodup,1.0,Autumn 2025,2,2,4.94,12.5
 TTIC,31080,0.583,Julia Chuzhoy,1.0,Autumn 2025,1,1,,
 TTIC,31150,0.583,Madhur Tulsiani,1.0,Autumn 2025,1,1,,
 TURK,20101,0.583,Kagan Arik,1.0,Autumn 2025,1,1,,
 UKRA,10103,0.583,Erik Houle,1.0,Autumn 2025,1,1,5.0,10.83
 URDU,20100,0.583,Romeena Kureishy,1.0,Autumn 2025,1,1,,
-WRIT,33000,0.583,Ashley Lyons,0.5,Spring 2026,3,3,,
+ARTH,16100,0.5,Wei-Cheng Lin,0.43,Spring 2026,12,15,4.32,4.9
+ARTV,22501,0.5,Jason Salavon,1.0,Autumn 2025,5,7,4.19,5.22
+BIBL,33900,0.5,Jaeseok Heo,0.51,Autumn 2025,3,3,,
+BIOS,10501,0.5,Mark D Osadjan,0.47,Autumn 2025,6,6,4.01,7.01
+CHDV,22580,0.5,Katherine O'doherty,1.0,Autumn 2025,6,8,4.74,4.67
+COGS,22001,0.5,Steven Castro,0.23,Spring 2026,9,13,4.12,5.85
+DATA,21300,0.5,William Trok,0.3,Spring 2026,8,9,4.34,7.56
+EALC,23001,0.5,Kyeong-Hee Choi,1.0,Autumn 2025,5,9,3.74,12.28
+ENGL,13000,0.5,Tracy Weiner,0.25,Spring 2026,16,17,,
+GNSE,15003,0.5,Leah M. Feldman,0.13,Winter 2026,9,60,4.44,5.62
+MAPS,40164,0.5,Sharon Hicks-Bartlett,1.0,Winter 2026,10,12,,
+MATH,21100,0.5,Tristan Goodwill,0.3,Spring 2026,8,13,4.11,10.03
+PSYC,20700,0.5,Steven K Shevell,0.54,Winter 2026,12,17,4.32,6.92
+ARTH,22816,0.458,Federica Caneparo,1.0,Autumn 2025,3,4,4.68,6.35
+BUSN,20600,0.458,John McKinney,0.46,Winter 2026,13,15,3.93,8.97
+COGS,22003,0.458,Si Kai Lee,0.42,Spring 2026,8,12,4.5,6.14
+CRWR,22132,0.458,Benjamin Hoffman,1.0,Autumn 2025,4,4,4.66,7.99
+DATA,24100,0.458,Nicholas Ross,1.0,Autumn 2025,2,2,4.59,8.92
+DATA,25900,0.458,Amanda Kube,0.42,Spring 2026,7,8,3.69,10.15
+FREN,23333,0.458,Nicolas Portugal,0.57,Spring 2026,13,14,4.67,9.19
+HIST,12802,0.458,Robert Kendrick,1.0,Autumn 2025,2,4,3.69,7.95
+LACS,22677,0.458,Ramon Garibaldo Valdez,1.0,Autumn 2025,2,3,4.63,6.5
+ANTH,20511,0.433,Anna-Latifa Mourad-Cizek,1.0,Spring 2026,2,3,4.73,7.5
 ANTH,22079,0.433,Christopher Bloechl,1.0,Spring 2026,2,4,4.53,6.15
+ANTH,29407,0.433,Anna-Marie Sprenger,1.0,Winter 2026,2,3,4.67,4.17
 ANTH,29920,0.433,Joseph Masco,0.38,Winter 2026,4,4,4.65,12.5
+ARCH,22322,0.433,Amber Ginsburg,0.5,Spring 2026,4,9,3.96,9.71
 BIOS,13128,0.433,Alison Hunter,1.0,Winter 2026,9,9,3.53,6.1
-BIOS,14117,0.433,Carolyn Martineau,1.0,Spring 2026,4,5,4.46,3.4
-BPRO,27200,0.433,Amber Ginsburg,0.5,Spring 2026,4,9,3.96,9.71
-BUSN,20231,0.433,Rodrigo Adao,1.0,Winter 2026,5,6,4.22,6.72
-CATA,12200,0.433,Bel Olid,0.61,Spring 2026,3,3,,
-CCTS,22006,0.433,David Kim,1.0,Spring 2026,3,4,4.55,7.35
+CCSG,20900,0.433,Robert Gulotty,0.66,Winter 2026,2,3,4.15,7.2
 CEGU,23517,0.433,Grga Basic,0.5,Winter 2026,4,9,4.12,7.76
+CHST,24700,0.433,Jane G Ramsey,1.0,Spring 2026,2,3,,
 CMSC,22300,0.433,Stuart A Kurtz,0.54,Winter 2026,3,3,4.43,9.54
 CMSC,22400,0.433,Robert Rand,1.0,Winter 2026,4,4,4.26,11.37
 CMSC,23200,0.433,Grant Ho,0.55,Spring 2026,7,14,4.21,15.91
@@ -997,59 +949,41 @@ CMSC,28400,0.433,Aloni Cohen,0.9,Winter 2026,7,7,4.32,13.13
 CRWR,12123,0.433,Jennifer Scappettone,1.0,Spring 2026,2,2,3.9,7.56
 CRWR,12167,0.433,Valer Popa,1.0,Winter 2026,2,2,4.63,4.12
 CRWR,20221,0.433,Benjamin Hoffman,1.0,Winter 2026,3,3,4.6,6.0
-DEMS,15000,0.433,Clifford Ando,0.27,Spring 2026,4,16,4.24,7.09
-ECON,15500,0.433,Srinivasan Vasudevan,1.0,Winter 2026,7,9,4.22,6.7
 ECON,17100,0.433,Timothy Hersey,0.47,Spring 2026,6,8,4.29,9.91
-ECON,17700,0.433,Allyson Root,1.0,Spring 2026,2,2,4.11,7.22
-ECON,19100,0.433,Greg Kaplan,0.41,Winter 2026,5,6,3.91,5.35
-ECON,26040,0.433,Pablo Pena Munoz,1.0,Spring 2026,5,5,4.39,6.83
+EDSO,20400,0.433,Shannon Lee Heald,0.54,Spring 2026,6,10,4.41,6.41
 ENGL,10709,0.433,Christopher Taylor,0.48,Spring 2026,7,8,4.39,6.25
-ENGL,16500,0.433,Ngara Ndiaye,0.52,Spring 2026,4,7,4.46,7.52
-ENGL,17504,0.433,Timothy Harrison,1.0,Winter 2026,2,5,4.81,6.1
-HIST,24407,0.433,Eunhee Park,1.0,Spring 2026,2,3,4.66,7.98
-HIST,25205,0.433,Michael Paul Rossi,1.0,Spring 2026,2,3,4.49,5.28
-HIST,29800,0.433,Peggy Heffington,0.16,Spring 2026,6,22,4.61,8.79
-ISLM,32419,0.433,Yousef Casewit,1.0,Spring 2026,4,10,,
-ISLM,36103,0.433,Yousef Casewit,1.0,Spring 2026,2,4,,
-LING,29407,0.433,Anna-Marie Sprenger,1.0,Winter 2026,2,3,4.67,4.17
-LING,38620,0.433,Craig Thorburn,0.45,Winter 2026,4,5,,
-LLSO,25750,0.433,Nicholas Johnson,1.0,Winter 2026,2,6,4.81,8.61
-LLSO,29702,0.433,Sarah Johnson,1.0,Spring 2026,4,7,4.71,8.52
-MADD,25630,0.433,Ian Jones,1.0,Spring 2026,2,3,4.64,4.34
-MAPS,31801,0.433,Max Smith,1.0,Winter 2026,3,4,,
-MENG,22300,0.433,Savas Tay,1.0,Winter 2026,4,5,4.34,4.48
-MENG,23310,0.433,Nicolas Chevrier,1.0,Winter 2026,4,4,4.51,6.07
-MENG,36600,0.433,Shuolong Yang,0.84,Winter 2026,4,5,,
-MUSI,25422,0.433,Jennifer Iverson,1.0,Spring 2026,3,4,4.33,3.37
-MUSI,26618,0.433,Senem Pirler,0.49,Winter 2026,9,11,4.62,6.2
-NEAA,20511,0.433,Anna-Latifa Mourad-Cizek,1.0,Spring 2026,2,3,4.73,7.5
+HIST,19903,0.433,Nicholas Johnson,1.0,Winter 2026,2,6,4.81,8.61
+MADD,12422,0.433,Jennifer Iverson,1.0,Spring 2026,3,4,4.33,3.37
+MADD,24618,0.433,Senem Pirler,0.49,Winter 2026,9,11,4.62,6.2
 PBPL,22300,0.433,Karlyn Gorski,0.62,Spring 2026,14,18,4.54,9.8
-PBPL,28498,0.433,Maria Bautista,0.7,Spring 2026,6,12,4.28,4.27
-PBPL,28785,0.433,John Burrows,1.0,Winter 2026,3,3,4.42,6.33
-PHIL,25605,0.433,Arnold Brooks,1.0,Spring 2026,2,3,4.59,6.34
-PLSC,20217,0.433,Robert Gulotty,0.66,Winter 2026,2,3,4.15,7.2
 PLSC,28602,0.433,Robert Pape Jr,1.0,Spring 2026,4,5,4.51,10.56
 PLSC,29202,0.433,Austin Carson,1.0,Winter 2026,6,6,4.56,10.92
-PLSC,45678,0.433,Eric Oliver,1.0,Spring 2026,3,4,,
-PPHA,44302,0.433,Gregory Lane,0.51,Winter 2026,2,7,,
-PSYC,20400,0.433,Shannon Lee Heald,0.54,Spring 2026,6,10,4.41,6.41
 PSYC,25280,0.433,Lydia Emery,0.77,Winter 2026,4,4,4.44,4.3
-PSYC,31150,0.433,Kyshia Henderson,1.0,Winter 2026,3,5,,
 PSYC,33165,0.433,Jean Decety,1.0,Spring 2026,4,4,,
 RAME,40200,0.433,William Schultz,1.0,Winter 2026,3,4,,
-RDIN,12300,0.433,Matthew Kruer,0.41,Spring 2026,3,8,4.59,6.5
-RLST,26635,0.433,Alireza Doostdar,1.0,Spring 2026,2,7,3.9,9.24
-SOCI,20005,0.433,Andrew Abbott,0.46,Spring 2026,6,6,4.06,8.54
-SPAN,21905,0.433,Larissa Brewer-Garcia,0.48,Spring 2026,8,17,4.68,5.92
-SPAN,22005,0.433,Danielle Roper,0.36,Spring 2026,10,23,4.42,6.62
-SSAD,64700,0.433,Jane G Ramsey,1.0,Spring 2026,2,3,,
 STAT,27850,0.433,Rina Barber,1.0,Winter 2026,5,5,4.38,11.09
 TAPS,26210,0.433,Kara Brody,1.0,Winter 2026,2,2,4.94,2.5
+BIOS,24136,0.383,Eric Schwartz,1.0,Winter 2026,6,8,3.99,7.4
+ECON,13000,0.383,Rui Zhao,0.52,Winter 2026,15,21,4.23,8.47
+ENGL,20464,0.383,Darrel Chia,1.0,Winter 2026,4,4,4.52,8.45
+RLST,10100,0.383,Richard Rosengarten,0.38,Spring 2026,10,12,4.47,5.34
+AMER,17909,0.333,Rashauna Johnson,1.0,Autumn 2023,1,1,4.42,11.88
+AMER,20120,0.333,Kathryn Walsh,1.0,Autumn 2024,2,3,4.95,7.17
+AMER,21315,0.333,Curtis Evans,0.5,Autumn 2023,1,1,,
+AMER,24599,0.333,Idolly Keels,1.0,Autumn 2024,2,4,3.63,9.83
+AMER,26304,0.333,Emily Crews,1.0,Autumn 2024,1,2,4.83,3.19
+AMER,29024,0.333,Laurie Zoloth,1.0,Autumn 2024,1,1,4.54,4.72
+AMER,29068,0.333,Hannah Ozmun,1.0,Autumn 2024,1,1,4.69,6.59
+AMER,29750,0.333,David Lebow,1.0,Autumn 2024,1,1,4.71,6.67
+AMER,29910,0.333,Jared Berkowitz,1.0,Autumn 2024,1,1,4.54,10.62
+ANTH,20122,0.333,Augusta McMahon,1.0,Autumn 2024,1,1,4.16,6.07
 ANTH,21424,0.333,Kamala Russell,1.0,Autumn 2023,1,1,4.33,5.36
 ANTH,22531,0.333,Julie Chu,1.0,Autumn 2024,1,1,4.49,8.0
 ANTH,22710,0.333,John Kelly,1.0,Autumn 2024,2,2,4.09,12.0
 ANTH,23825,0.333,Alan Kolata,1.0,Autumn 2024,2,3,3.3,11.29
+ANTH,27657,0.333,Bruce Winkelman,1.0,Autumn 2024,1,1,4.64,3.75
 ARAB,20112,0.333,Noha Forster,1.0,Autumn 2024,1,1,,
+ARCH,25119,0.333,Jacobe Huet,1.0,Autumn 2023,1,1,4.58,6.79
 ARTH,10701,0.333,Kate Wagner,1.0,Autumn 2023,1,1,4.45,5.36
 ARTH,16911,0.333,Erez Solomon,1.0,Autumn 2023,1,1,4.66,11.25
 ARTH,17915,0.333,Kindon Mills,1.0,Autumn 2023,2,2,4.05,9.05
@@ -1060,209 +994,192 @@ ARTH,21320,0.333,Ina Blom,1.0,Autumn 2024,1,1,3.95,9.5
 ARTH,21809,0.333,Benjamin Diego,1.0,Autumn 2023,1,1,4.59,7.5
 ARTH,23814,0.333,Jennifer Harris,1.0,Autumn 2024,1,1,4.69,7.5
 ARTH,24255,0.333,Claudia Brittenham,1.0,Autumn 2023,1,1,5.0,10.36
-ARTH,25119,0.333,Jacobe Huet,1.0,Autumn 2023,1,1,4.58,6.79
 ARTH,25402,0.333,Maggie Borowitz,1.0,Autumn 2023,1,1,4.74,4.17
-ARTH,26616,0.333,Andrew Schachman,1.0,Autumn 2023,1,1,4.03,5.5
 ARTH,26705,0.333,Ellen Larson,1.0,Autumn 2023,2,2,4.61,7.0
 ARTH,26807,0.333,Maggie Taft,1.0,Autumn 2024,1,1,4.86,6.25
-ARTV,21900,0.333,Scott Wolniak,1.0,Autumn 2024,3,4,4.66,6.81
+ARTV,20035,0.333,Elizabeth Rogers,1.0,Autumn 2023,1,1,4.82,5.0
+ARTV,20209,0.333,Nathan Rohrer,1.0,Autumn 2024,1,1,4.74,7.5
+ARTV,20700,0.333,Patrick Jagoda,0.5,Autumn 2024,2,5,4.47,6.78
+ARTV,20808,0.333,Evan Carver,1.0,Spring 2025,3,9,4.35,3.61
 ASLG,10400,0.333,David Reinhart,1.0,Autumn 2023,4,4,,
 BIBL,42035,0.333,Margaret Mitchell,1.0,Autumn 2023,1,1,,
 BIOS,23262,0.333,Kenneth Angielczyk,0.5,Autumn 2023,4,4,4.3,7.37
 BIOS,23404,0.333,Andrew Hipp,0.5,Autumn 2023,3,3,4.56,7.36
 BIOS,27711,0.333,Mirta Teichberg,1.0,Autumn 2023,1,1,3.84,14.17
-BIOS,27810,0.333,Diane Lauderdale,1.0,Autumn 2023,4,4,4.49,5.86
 BPRO,22700,0.333,Daniel Brudney,0.5,Autumn 2023,1,1,4.49,5.83
-BPRO,28700,0.333,Patrick Jagoda,0.5,Autumn 2024,2,5,4.47,6.78
 BUSN,20930,0.333,Christina Hachikian,1.0,Autumn 2023,1,1,3.76,9.0
-CAPP,30350,0.333,Nicholas Feamster,1.0,Autumn 2023,3,3,,
-CEGU,20154,0.333,Mary Beth Pudup,1.0,Autumn 2024,1,1,4.95,7.5
+CCCT,22333,0.333,Demetra Kasimis,1.0,Autumn 2023,1,1,4.36,8.0
+CCTS,21022,0.333,Ranana Dine,1.0,Autumn 2023,1,1,4.73,4.38
 CEGU,21800,0.333,Sabina Shaikh,1.0,Autumn 2023,1,1,3.96,8.33
 CEGU,22312,0.333,Sabina Shaikh,1.0,Autumn 2024,1,3,3.69,8.5
-CEGU,22500,0.333,Evan Carver,1.0,Spring 2025,3,9,4.35,3.61
+CEGU,24110,0.333,Daisy Delogu,1.0,Autumn 2023,1,1,4.74,7.5
 CEGU,24600,0.333,Luis Bettencourt,1.0,Autumn 2024,1,3,4.18,5.94
-CHDV,24599,0.333,Idolly Keels,1.0,Autumn 2024,2,4,3.63,9.83
-CHDV,38055,0.333,Eman Abdelhadi,1.0,Autumn 2024,1,4,,
-CHDV,44500,0.333,Terra Edwards,1.0,Autumn 2023,1,1,,
+CEGU,28307,0.333,Isabel Gabel,1.0,Autumn 2023,1,1,4.45,9.17
+CHDV,20175,0.333,Kristen Schilt,1.0,Autumn 2023,2,2,4.67,6.2
+CHDV,24960,0.333,Salikoko Mufwene,1.0,Autumn 2024,1,2,4.6,5.0
+CHDV,28055,0.333,Eman Abdelhadi,1.0,Autumn 2024,1,4,,
 CHIN,23110,0.333,Xiaorong Wang,1.0,Autumn 2024,3,3,4.64,6.39
-CLCV,27320,0.333,Catherine Kearns,1.0,Autumn 2023,1,1,4.79,7.5
+CHSS,36080,0.333,Melanie Jeske,1.0,Autumn 2023,1,1,,
+CLAS,35924,0.333,David Charles,1.0,Autumn 2024,1,2,,
+CLAS,37320,0.333,Catherine Kearns,1.0,Autumn 2023,1,1,4.79,7.5
 CLCV,28524,0.333,Georgios Tsolakis,1.0,Autumn 2024,1,1,4.69,11.07
 CMLT,21810,0.333,David Delbar,1.0,Autumn 2024,1,1,4.76,3.33
 CMLT,21815,0.333,Rana Ghuloom,1.0,Autumn 2024,1,1,4.71,4.04
+CMLT,22501,0.333,Rocco Rubini,1.0,Autumn 2024,1,3,4.14,10.62
+CMLT,24425,0.333,Anna Aizman,1.0,Autumn 2024,2,5,4.74,6.23
+CMLT,25550,0.333,Rocco Rubini,1.0,Autumn 2024,1,3,4.17,19.17
+CMLT,26105,0.333,Olivia Bustion,1.0,Autumn 2023,1,1,4.72,5.68
+CMLT,26702,0.333,James Robinson,1.0,Autumn 2024,1,3,,
+CMLT,26912,0.333,Angelina Ilieva,1.0,Autumn 2023,1,1,4.7,6.39
 CMLT,26994,0.333,Leah M. Feldman,1.0,Autumn 2024,1,1,4.51,9.38
+CMLT,28447,0.333,Marshall Cunningham,1.0,Autumn 2024,1,2,4.71,5.66
+CMLT,29024,0.333,Angelina Ilieva,1.0,Autumn 2024,3,4,4.61,7.3
 CMSC,22000,0.333,Borja Sotomayor Basilio,1.0,Spring 2025,3,4,4.4,10.28
 CMSC,23218,0.333,Blase Ur,1.0,Autumn 2024,3,4,3.92,8.96
 CMSC,23320,0.333,Borja Sotomayor Basilio,1.0,Autumn 2024,5,5,4.66,17.86
 CMSC,23740,0.333,John Reppy,1.0,Autumn 2024,1,1,3.29,28.75
 CMSC,25460,0.333,Lorenzo Orecchia,1.0,Autumn 2024,1,1,3.94,15.83
 CMST,14580,0.333,James F Lastra,1.0,Autumn 2023,1,1,3.43,3.21
-CMST,25602,0.333,Elizabeth Rogers,1.0,Autumn 2023,1,1,4.82,5.0
+CMST,15500,0.333,Patrick Wimp,1.0,Autumn 2023,1,1,4.36,5.83
+CMST,21650,0.333,James K Chandler,1.0,Autumn 2023,1,1,4.69,10.0
+CMST,25025,0.333,Luis Alberto Madrigal Perez,1.0,Autumn 2024,1,3,4.86,6.25
 CMST,25603,0.333,Cassandra Guan,1.0,Autumn 2024,1,2,4.46,8.75
+CMST,27021,0.333,Marc Downie,1.0,Autumn 2023,2,2,,
 CMST,27105,0.333,Gary Kafer,1.0,Autumn 2024,1,1,3.75,2.5
-CMST,67021,0.333,Marc Downie,1.0,Autumn 2023,2,2,,
+CMST,28360,0.333,Daniele Wilmouth,0.83,Autumn 2024,2,3,3.54,6.94
 COGS,20100,0.333,Yu Ji,1.0,Autumn 2023,1,1,4.02,5.36
+COGS,22011,0.333,Anastasia Giannakidou,0.62,Autumn 2023,2,2,4.61,4.88
+COGS,22014,0.333,Itamar Francez,1.0,Autumn 2023,1,1,4.17,5.0
 COGS,25001,0.333,Melinh Lai,1.0,Autumn 2024,1,4,4.65,6.88
-CRWR,12138,0.333,Lina Ferreira Cabeza-Vanegas,1.0,Autumn 2024,1,1,4.52,6.59
 CRWR,12145,0.333,Margaret Ross,1.0,Autumn 2023,3,3,4.46,5.09
-CRWR,12147,0.333,Stephanie Soileau,1.0,Autumn 2023,1,1,4.45,6.07
 CRWR,12154,0.333,Margaret Ross,1.0,Spring 2024,3,3,4.79,4.44
-CRWR,12159,0.333,Julie Iromuanya,1.0,Autumn 2023,1,1,4.43,5.36
 CRWR,12160,0.333,Augustus Rose,1.0,Autumn 2023,1,1,4.03,5.0
 CRWR,20224,0.333,Benjamin Lytal,1.0,Autumn 2023,2,2,4.82,10.0
 CRWR,20412,0.333,Kathleen Blackburn,1.0,Autumn 2023,1,1,4.69,8.5
-CRWR,22140,0.333,Baird Harper,1.0,Winter 2025,3,3,4.79,7.83
 CRWR,22150,0.333,Meghan Lamb,1.0,Autumn 2024,2,2,4.32,4.62
-CRWR,22156,0.333,Sharon Pomerantz,1.0,Autumn 2023,1,1,4.94,8.21
 CRWR,23137,0.333,Edgar Garcia,1.0,Autumn 2023,1,1,5.0,7.5
 CRWR,23141,0.333,Robyn Schiff,1.0,Autumn 2024,1,1,4.8,11.5
 CRWR,23142,0.333,Nathan Hoks,1.0,Autumn 2024,1,1,4.9,8.33
 CRWR,24021,0.333,Dina Peone,1.0,Autumn 2023,2,2,4.97,6.62
 CRWR,24027,0.333,Kathleen Blackburn,1.0,Autumn 2023,1,1,4.93,7.5
+DEMS,21005,0.333,Kathleen Cavanaugh,1.0,Autumn 2023,3,3,4.63,8.32
+DEMS,24901,0.333,John Marc Sianghio,0.5,Autumn 2023,1,1,4.87,6.0
+DVPR,32402,0.333,Brook Ziporyn,1.0,Autumn 2024,1,1,4.7,8.12
 DVPR,33202,0.333,Pauline Lee,1.0,Autumn 2023,1,1,,
 DVPR,33908,0.333,Brook Ziporyn,1.0,Autumn 2024,1,2,,
 DVPR,43830,0.333,Kevin Hector,1.0,Autumn 2024,1,1,,
 EALC,20272,0.333,Haun Saussy,1.0,Autumn 2024,1,1,5.0,7.5
 EALC,23044,0.333,Kyeong-Hee Choi,1.0,Autumn 2024,2,4,4.04,8.64
-EALC,27512,0.333,Haun Saussy,1.0,Autumn 2023,1,1,4.62,7.5
+EALC,24120,0.333,Pauline Lee,1.0,Autumn 2023,1,1,4.9,5.5
 ECMA,31380,0.333,Max Farrell,1.0,Autumn 2024,1,1,,
 ECMA,35550,0.333,Rachel Glennerster,1.0,Autumn 2023,3,3,,
 ECMA,36700,0.333,Derek A Neal,1.0,Autumn 2023,2,3,,
 ECON,11700,0.333,Min Sok Lee,1.0,Autumn 2023,3,5,4.11,8.94
 ECON,25520,0.333,Rachel Glennerster,1.0,Autumn 2023,2,2,4.75,8.43
+ECON,26920,0.333,James A Leitzel,1.0,Autumn 2023,4,4,3.95,6.5
 ENGL,10405,0.333,Cassandra Lerer,1.0,Autumn 2024,1,1,3.98,5.0
 ENGL,10664,0.333,John Chelgren,1.0,Autumn 2024,1,1,4.07,6.25
 ENGL,13580,0.333,Mee-Ju Ro,1.0,Autumn 2023,2,2,4.86,6.32
 ENGL,13582,0.333,Mee-Ju Ro,1.0,Autumn 2023,1,1,4.65,7.12
 ENGL,18108,0.333,Christopher Taylor,1.0,Autumn 2023,1,1,2.5,5.62
-ENGL,18250,0.333,James K Chandler,1.0,Autumn 2023,1,1,4.69,10.0
 ENGL,18252,0.333,James K Chandler,1.0,Autumn 2024,1,1,3.4,6.5
 ENGL,19902,0.333,William L Brown,1.0,Autumn 2023,1,1,5.0,7.5
 ENGL,20148,0.333,Joshua K Scodel,1.0,Autumn 2023,1,1,5.0,5.0
 ENGL,20226,0.333,Timothy Campbell,1.0,Autumn 2023,1,1,4.94,14.17
 ENGL,20304,0.333,John Miller,1.0,Autumn 2023,1,1,4.25,6.94
 ENGL,41360,0.333,Tristan Schweiger,1.0,Autumn 2023,3,3,,
+ENSC,24000,0.333,Jacob Waldbauer,0.85,Autumn 2024,2,3,4.54,3.69
+ENSC,24800,0.333,David Keith,1.0,Autumn 2023,1,1,3.63,7.5
+FNDL,20808,0.333,Mehmetcan Akpinar,1.0,Autumn 2023,1,1,5.0,9.17
 FNDL,21650,0.333,Malynne Sternstein,1.0,Autumn 2023,2,2,4.42,4.59
+FNDL,21700,0.333,Daisy Delogu,1.0,Autumn 2024,1,4,4.74,8.33
+FNDL,21805,0.333,Anton Ford,1.0,Autumn 2023,3,3,4.55,6.09
+FNDL,23600,0.333,William Schweiker,1.0,Autumn 2023,1,1,,
+FNDL,25001,0.333,Larry F Norman,1.0,Autumn 2023,2,2,4.72,7.53
+FNDL,25910,0.333,Larry F Norman,1.0,Autumn 2024,1,3,4.93,11.25
+FNDL,27002,0.333,Richard Miller,1.0,Autumn 2023,2,2,4.7,7.78
+FNDL,27200,0.333,H. Steinberg,1.0,Autumn 2023,1,1,4.37,6.14
+FNDL,28500,0.333,Rocco Rubini,1.0,Autumn 2023,1,1,4.36,12.5
 FREN,13333,0.333,Nicolas Portugal,0.93,Winter 2025,6,6,,
-FREN,21700,0.333,Daisy Delogu,1.0,Autumn 2024,1,4,4.74,8.33
 FREN,23522,0.333,Peadar Kavanagh,1.0,Autumn 2024,2,2,4.66,7.08
-FREN,24100,0.333,Daisy Delogu,1.0,Autumn 2023,1,1,4.74,7.5
-FREN,25000,0.333,Larry F Norman,1.0,Autumn 2023,2,2,4.72,7.53
-FREN,25910,0.333,Larry F Norman,1.0,Autumn 2024,1,3,4.93,11.25
 GEOS,21000,0.333,Dion Heinz,0.73,Autumn 2023,4,4,4.11,3.38
-GEOS,24800,0.333,David Keith,1.0,Autumn 2023,1,1,3.63,7.5
 GEOS,26100,0.333,Graham Slater,1.0,Autumn 2024,2,2,4.2,12.05
-GEOS,26600,0.333,Jacob Waldbauer,0.85,Autumn 2024,2,3,4.54,3.69
 GEOS,28300,0.333,Susan M Kidwell,1.0,Autumn 2023,1,1,4.97,5.5
 GISC,27106,0.333,Yue Lin,1.0,Autumn 2024,1,1,3.94,14.17
-GISC,28300,0.333,Yue Lin,1.0,Autumn 2023,1,1,4.51,11.0
+GLST,22770,0.333,Bel Olid,1.0,Autumn 2023,1,1,4.71,7.5
+GLST,23304,0.333,Olivia Bustion,1.0,Autumn 2024,1,2,4.72,5.83
+GLST,27601,0.333,Maliha Chishti,1.0,Autumn 2023,1,1,4.6,8.21
 GNSE,12123,0.333,Malavika Parthasarathy,1.0,Autumn 2023,1,1,4.51,5.28
 GNSE,13001,0.333,Red Tremmel,1.0,Autumn 2023,1,1,4.59,6.07
+GNSE,20135,0.333,Paula Harper,1.0,Winter 2025,2,4,4.38,7.0
+GNSE,24426,0.333,Malynne Sternstein,1.0,Autumn 2024,1,3,4.18,4.29
 GNSE,29800,0.333,Paula Martin,0.7,Autumn 2023,5,5,4.67,8.0
 GREK,23724,0.333,Emily Austin,1.0,Autumn 2024,1,1,4.8,10.5
 GREK,24523,0.333,Antonios Kaldellis,1.0,Autumn 2023,1,1,4.29,6.25
 GRMN,20100,0.333,Elisabeth Wilhelm,0.49,Spring 2025,6,14,,
 GRMN,34524,0.333,Catriona MacLeod,1.0,Autumn 2024,1,1,,
 HEBR,10101,0.333,Aren Wilson-Wright,0.82,Autumn 2024,2,3,,
-HIJD,36702,0.333,James Robinson,1.0,Autumn 2024,1,3,,
 HIJD,45400,0.333,James Robinson,1.0,Autumn 2023,1,1,,
+HIPS,15005,0.333,Yuting Dong,1.0,Autumn 2023,1,1,4.48,7.5
 HIPS,18301,0.333,Michael Paul Rossi,1.0,Autumn 2023,2,2,4.36,7.31
-HIPS,28307,0.333,Isabel Gabel,1.0,Autumn 2023,1,1,4.45,9.17
 HIPS,29637,0.333,Emma Kitchen,1.0,Autumn 2023,1,1,4.94,11.5
 HIST,12002,0.333,Tristan Sharp,1.0,Autumn 2023,1,1,4.89,8.27
-HIST,15005,0.333,Yuting Dong,1.0,Autumn 2023,1,1,4.48,7.5
-HIST,17908,0.333,Rashauna Johnson,1.0,Autumn 2023,1,1,4.42,11.88
 HIST,20701,0.333,Jonathan Hall,1.0,Autumn 2024,1,1,4.14,7.05
 HIST,23210,0.333,Leora Auslander,1.0,Autumn 2024,2,3,4.87,15.17
-HMRT,20200,0.333,Savitri Kunze,1.0,Autumn 2023,1,1,3.86,9.5
-HMRT,21005,0.333,Kathleen Cavanaugh,1.0,Autumn 2023,3,3,4.63,8.32
-HMRT,28753,0.333,Lindsay Gifford,1.0,Autumn 2023,2,2,4.58,6.54
+HIST,26305,0.333,Marcos Cueto,1.0,Autumn 2023,1,1,5.0,9.17
+HIST,26309,0.333,Aurora Gómez Galvarriato,1.0,Autumn 2024,1,2,4.57,9.17
+HIST,29302,0.333,Savitri Kunze,1.0,Autumn 2023,1,1,3.86,9.5
+HIST,46000,0.333,Cecilia Palombo,1.0,Autumn 2024,1,2,,
 HUMA,10000,0.333,Nichole Fazio-Veigel,0.75,Autumn 2023,2,2,4.28,2.65
 ISLM,32451,0.333,Nariman Aavani,1.0,Autumn 2024,1,1,,
-ITAL,21900,0.333,H. Steinberg,1.0,Autumn 2023,1,1,4.37,6.14
-ITAL,22900,0.333,Rocco Rubini,1.0,Autumn 2024,1,3,4.14,10.62
-ITAL,25550,0.333,Rocco Rubini,1.0,Autumn 2024,1,3,4.17,19.17
-ITAL,28500,0.333,Rocco Rubini,1.0,Autumn 2023,1,1,4.36,12.5
 JAPN,20500,0.333,Tomoko Kern,0.7,Autumn 2024,3,3,4.48,6.79
+KAZK,10501,0.333,Kagan Arik,1.0,Autumn 2023,2,2,,
 KNOW,32204,0.333,Isabel Gabel,1.0,Autumn 2023,2,2,,
-KNOW,36080,0.333,Melanie Jeske,1.0,Autumn 2023,1,1,,
+LACS,21601,0.333,Juliano Saccomani,1.0,Autumn 2024,1,2,4.86,5.83
+LACS,23380,0.333,Sergio Delgado Moya,1.0,Autumn 2024,1,2,4.8,7.5
 LACS,25131,0.333,Joana Monteiro,1.0,Autumn 2023,1,1,3.67,6.94
-LACS,25132,0.333,Marcos Cueto,1.0,Autumn 2023,1,1,5.0,9.17
-LACS,25135,0.333,Aurora Gómez Galvarriato,1.0,Autumn 2024,1,2,4.57,9.17
 LACS,25136,0.333,Cristobal Bellolio Badiola,1.0,Autumn 2024,1,3,4.63,7.0
+LACS,25570,0.333,Sergio Delgado Moya,1.0,Autumn 2024,1,2,4.29,11.07
 LATN,22324,0.333,Peter White,1.0,Autumn 2024,1,1,4.81,10.83
 LATN,26624,0.333,Shadi Bartsch,1.0,Autumn 2024,1,1,4.81,8.33
-LING,24960,0.333,Salikoko Mufwene,1.0,Autumn 2024,1,2,4.6,5.0
-LING,26520,0.333,Jason Bridges,0.33,Autumn 2023,3,3,4.12,7.6
-LING,26810,0.333,Anastasia Giannakidou,0.62,Autumn 2023,2,2,4.61,4.88
-LING,27131,0.333,Itamar Francez,1.0,Autumn 2023,1,1,4.17,5.0
+LING,20320,0.333,Rebecca Hasselbach,1.0,Autumn 2024,1,2,4.19,7.5
 LING,29408,0.333,Tianrang Bu,1.0,Autumn 2023,1,1,4.57,2.5
-LING,41920,0.333,Salikoko Mufwene,1.0,Autumn 2024,3,4,,
 LLSO,28036,0.333,Sarah Johnson,1.0,Autumn 2023,1,1,4.7,5.83
 LLSO,28091,0.333,Giovanni Giorgini,1.0,Autumn 2023,1,1,4.77,6.5
 LLSO,29710,0.333,David Lebow,1.0,Autumn 2023,1,1,4.67,8.5
-LLSO,29750,0.333,David Lebow,1.0,Autumn 2024,1,1,4.71,6.67
-LLSO,29910,0.333,Jared Berkowitz,1.0,Autumn 2024,1,1,4.54,10.62
 MAAD,23645,0.333,Crystal Beiersdorfer,1.0,Autumn 2023,3,3,4.33,7.78
 MAAD,24820,0.333,Michael Shallow,1.0,Autumn 2023,3,3,4.43,4.98
-MAPS,33805,0.333,Andrew Proctor,1.0,Autumn 2023,1,1,,
+MADD,10325,0.333,Ronit Ghosh,1.0,Autumn 2023,1,1,4.67,4.17
+MADD,24817,0.333,Hunter Brown,0.51,Autumn 2024,4,5,4.66,8.27
 MAPS,36035,0.333,Andrew Proctor,1.0,Autumn 2024,1,2,,
-MENG,26500,0.333,Alexander High,1.0,Spring 2025,4,5,4.27,10.45
+MDVL,22604,0.333,Thibaut D'hubert,1.0,Autumn 2023,1,1,4.59,7.5
 MUSI,23804,0.333,Travis Jackson,1.0,Autumn 2024,2,2,4.44,7.12
-MUSI,26817,0.333,Hunter Brown,0.51,Autumn 2024,4,5,4.66,8.27
-MUSI,27200,0.333,Devon Borowski,0.75,Autumn 2024,3,3,4.39,3.67
-MUSI,27423,0.333,Paula Harper,1.0,Winter 2025,2,4,4.38,7.0
-NEAA,20122,0.333,Augusta McMahon,1.0,Autumn 2024,1,1,4.16,6.07
-NEHC,20034,0.333,Stephanie Kraver,0.82,Spring 2025,4,7,4.49,7.86
-NEHC,30022,0.333,Cecilia Palombo,1.0,Autumn 2024,1,2,,
-NELG,20301,0.333,Rebecca Hasselbach,1.0,Autumn 2024,1,2,4.19,7.5
+MUSI,24080,0.333,Scott Elmegreen,1.0,Autumn 2024,1,1,4.71,15.0
+MUSI,24081,0.333,Leslie Buxbaum,1.0,Autumn 2024,1,1,4.86,9.17
 NSCI,21610,0.333,Peggy Mason,1.0,Autumn 2023,3,3,,13.33
-NURB,32400,0.333,Daniel McGehee,1.0,Autumn 2024,1,1,,
+NSCI,23400,0.333,Daniel McGehee,1.0,Autumn 2024,1,1,,
 PBPL,24752,0.333,Christa Velasquez,1.0,Autumn 2023,2,2,4.26,5.62
 PBPL,27818,0.333,Scott Ashworth,1.0,Autumn 2023,3,3,4.45,7.89
-PBPL,28805,0.333,James A Leitzel,1.0,Autumn 2023,4,4,3.95,6.5
-PHIL,21423,0.333,Anton Ford,1.0,Autumn 2023,3,3,4.55,6.09
+PBPL,28829,0.333,Jens Ludwig,0.83,Autumn 2024,4,4,4.46,6.08
+PHIL,20308,0.333,Robert B Pippin,1.0,Autumn 2024,1,1,,
 PLSC,22112,0.333,Joy Wang,1.0,Autumn 2024,1,1,4.81,7.5
-PLSC,22333,0.333,Demetra Kasimis,1.0,Autumn 2023,1,1,4.36,8.0
 PLSC,22355,0.333,Hope Dancy,1.0,Autumn 2024,1,1,4.3,6.67
+PLSC,24302,0.333,Jon Rogowski,1.0,Autumn 2024,1,1,,
 PLSC,29185,0.333,Susan C Stokes,1.0,Autumn 2024,1,1,4.57,6.25
-PLSC,34302,0.333,Jon Rogowski,1.0,Autumn 2024,1,1,,
 PLSC,38813,0.333,Chiara Cordelli,1.0,Autumn 2024,3,3,,
-PORT,21600,0.333,Juliano Saccomani,1.0,Autumn 2024,1,2,4.86,5.83
 PPHA,37820,0.333,Joshua Gottlieb,1.0,Autumn 2023,1,2,,
 PSYC,22220,0.333,Lin Bian,1.0,Autumn 2023,2,2,4.78,4.91
 PSYC,28420,0.333,Shannon Lee Heald,1.0,Autumn 2024,3,3,4.57,7.89
-RAME,41315,0.333,Curtis Evans,0.5,Autumn 2023,1,1,,
 RDIN,22600,0.333,Samah Choudhury,1.0,Autumn 2024,1,2,4.86,11.14
 RDIN,22700,0.333,Samah Choudhury,1.0,Autumn 2024,1,3,4.86,5.83
-REES,24425,0.333,Anna Aizman,1.0,Autumn 2024,2,5,4.74,6.23
-REES,24426,0.333,Malynne Sternstein,1.0,Autumn 2024,1,3,4.18,4.29
-REES,29010,0.333,Angelina Ilieva,1.0,Autumn 2023,1,1,4.7,6.39
-REES,29024,0.333,Angelina Ilieva,1.0,Autumn 2024,3,4,4.61,7.3
-RLST,20808,0.333,Mehmetcan Akpinar,1.0,Autumn 2023,1,1,5.0,9.17
-RLST,22401,0.333,Brook Ziporyn,1.0,Autumn 2024,1,1,4.7,8.12
-RLST,23304,0.333,Olivia Bustion,1.0,Autumn 2024,1,2,4.72,5.83
-RLST,24115,0.333,Pauline Lee,1.0,Autumn 2023,1,1,4.9,5.5
-RLST,24901,0.333,John Marc Sianghio,0.5,Autumn 2023,1,1,4.87,6.0
-RLST,25102,0.333,Richard Miller,1.0,Autumn 2023,2,2,4.7,7.78
-RLST,26105,0.333,Olivia Bustion,1.0,Autumn 2023,1,1,4.72,5.68
-RLST,26304,0.333,Emily Crews,1.0,Autumn 2024,1,2,4.83,3.19
-RLST,26313,0.333,Ranana Dine,1.0,Autumn 2023,1,1,4.73,4.38
-RLST,27601,0.333,Maliha Chishti,1.0,Autumn 2023,1,1,4.6,8.21
-RLST,27657,0.333,Bruce Winkelman,1.0,Autumn 2024,1,1,4.64,3.75
-RLST,28447,0.333,Marshall Cunningham,1.0,Autumn 2024,1,2,4.71,5.66
-RLST,29024,0.333,Laurie Zoloth,1.0,Autumn 2024,1,1,4.54,4.72
-RLST,29068,0.333,Hannah Ozmun,1.0,Autumn 2024,1,1,4.69,6.59
+RDIN,29800,0.333,Maya Singhal,0.43,Spring 2025,4,6,4.75,8.28
 RLST,29800,0.333,Pieter Hoekstra,1.0,Autumn 2024,1,1,4.81,7.5
-SALC,22604,0.333,Thibaut D'hubert,1.0,Autumn 2023,1,1,4.59,7.5
-SALC,25325,0.333,Ronit Ghosh,1.0,Autumn 2023,1,1,4.67,4.17
 SANS,20100,0.333,Lidia Wojtczak,0.63,Autumn 2024,3,3,,
 SCTH,25010,0.333,Andrei Pop,1.0,Autumn 2023,1,1,4.66,7.5
 SCTH,30300,0.333,Nathan Tarcov,1.0,Autumn 2024,1,1,,
-SCTH,30308,0.333,Robert B Pippin,1.0,Autumn 2024,1,1,,
 SCTH,31770,0.333,Nathan Tarcov,1.0,Autumn 2023,1,1,,
-SCTH,35715,0.333,David Charles,1.0,Autumn 2024,1,2,,
+SOCI,20002,0.333,Julian Go III,0.98,Autumn 2024,5,5,4.57,7.26
 SOCI,20103,0.333,Ross M Stolzenberg,1.0,Autumn 2023,4,4,4.06,6.97
-SOCI,20175,0.333,Kristen Schilt,1.0,Autumn 2023,2,2,4.67,6.2
 SOCI,20192,0.333,Ross M Stolzenberg,1.0,Autumn 2023,1,1,3.65,5.17
 SOCI,20253,0.333,Yue Lin,0.9,Autumn 2024,3,5,4.28,6.98
 SOCI,20508,0.333,Andrew Abbott,1.0,Winter 2025,4,4,4.26,11.56
@@ -1270,21 +1187,81 @@ SOSC,19076,0.333,Jennifer Cole,1.0,Autumn 2024,1,1,3.24,14.83
 SOSC,19078,0.333,Khalid Lyamlahy,1.0,Autumn 2024,1,1,4.32,12.05
 SOSC,26006,0.333,Yanyan Sheng,1.0,Autumn 2023,4,4,4.74,7.46
 SPAN,12001,0.333,Darcy Lear,0.91,Autumn 2023,3,3,,
-SPAN,20702,0.333,Veronica Moraga Guerra,1.0,Autumn 2024,1,1,4.26,6.67
-SPAN,22770,0.333,Bel Olid,1.0,Autumn 2023,1,1,4.71,7.5
-SPAN,23380,0.333,Sergio Delgado Moya,1.0,Autumn 2024,1,2,4.8,7.5
-SPAN,25025,0.333,Luis Alberto Madrigal Perez,1.0,Autumn 2024,1,3,4.86,6.25
-SPAN,25770,0.333,Sergio Delgado Moya,1.0,Autumn 2024,1,2,4.29,11.07
-SPAN,29117,0.333,Danielle Roper,1.0,Autumn 2023,1,1,4.33,10.36
 SWAH,25200,0.333,Fidele Mpiranya,1.0,Autumn 2023,3,3,4.51,7.22
 SWAH,26800,0.333,Fidele Mpiranya,1.0,Autumn 2023,1,1,4.62,14.17
 TAML,10100,0.333,Govindarajan Navaneethakrishnan,0.94,Autumn 2023,4,4,,
-TAPS,15500,0.333,Patrick Wimp,1.0,Autumn 2023,1,1,4.36,5.83
-TAPS,20120,0.333,Kathryn Walsh,1.0,Autumn 2024,2,3,4.95,7.17
 TAPS,22900,0.333,Leslie Danzig,0.82,Autumn 2023,3,3,4.54,7.05
-TAPS,24080,0.333,Scott Elmegreen,1.0,Autumn 2024,1,1,4.71,15.0
-TAPS,24081,0.333,Leslie Buxbaum,1.0,Autumn 2024,1,1,4.86,9.17
-TAPS,27520,0.333,Nathan Rohrer,1.0,Autumn 2024,1,1,4.74,7.5
-TAPS,28360,0.333,Daniele Wilmouth,0.83,Autumn 2024,2,3,3.54,6.94
-THEO,33600,0.333,William Schweiker,1.0,Autumn 2023,1,1,,
-TURK,10501,0.333,Kagan Arik,1.0,Autumn 2023,2,2,,
+AASR,39030,0.292,Maliha Chishti,0.87,Autumn 2025,3,6,4.51,5.5
+AMER,23312,0.292,Elizabeth Brocious,1.0,Autumn 2025,1,2,4.76,5.83
+ANTH,21545,0.292,Yasmin Cho,1.0,Autumn 2025,2,4,,
+ANTH,28140,0.292,James Robinson,0.5,Autumn 2025,1,4,,
+ARCH,10336,0.292,Julia Bachrach,0.75,Autumn 2025,2,5,2.71,15.0
+ARCH,24220,0.292,Malynne Sternstein,1.0,Autumn 2025,2,4,4.45,4.61
+ARTV,20038,0.292,Danielle Aubert,1.0,Autumn 2025,1,2,3.87,9.72
+ARTV,27200,0.292,Mari Eastman,0.62,Autumn 2025,4,4,4.48,7.2
+BPRO,22510,0.292,Michael Greenstone,1.0,Autumn 2025,1,4,4.03,7.84
+BUSN,20410,0.292,Constantine Yannelis,0.39,Spring 2026,13,32,4.35,7.23
+BUSN,20710,0.292,Joshua Dean,0.48,Autumn 2025,8,11,4.36,5.35
+CAAM,21470,0.292,Timothy Roberts,1.0,Autumn 2025,1,1,,
+CCSG,20700,0.292,David A Weisbach,1.0,Autumn 2025,1,3,4.6,6.25
+CCSG,22701,0.292,Jordan Bimm,1.0,Autumn 2025,2,6,4.7,4.09
+CEGU,27111,0.292,James A Leitzel,1.0,Autumn 2025,3,9,4.68,8.83
+CEGU,27521,0.292,Fredrik Albritton Jonsson,0.41,Winter 2026,6,22,4.69,7.07
+CHDV,26050,0.292,Salikoko Mufwene,1.0,Autumn 2025,3,5,3.93,4.89
+CHEM,30600,0.292,Wenbin Lin,1.0,Autumn 2025,5,5,,
+CHST,24034,0.292,Rachel Cohen,1.0,Autumn 2025,1,2,4.57,5.83
+CMST,24607,0.292,Paola Iovene,1.0,Autumn 2025,1,2,4.65,8.75
+COGS,22004,0.292,Anastasia Giannakidou,0.67,Autumn 2025,6,11,4.45,5.35
+COGS,22010,0.292,Jason Riggle,1.0,Autumn 2025,6,10,4.35,3.59
+COGS,23530,0.292,Chris Kennedy,1.0,Autumn 2025,1,2,4.34,6.25
+COGS,29001,0.292,Melinh Lai,1.0,Autumn 2025,1,2,4.57,3.75
+CRWR,12170,0.292,Valer Popa,1.0,Autumn 2025,1,1,4.5,5.0
+DATA,20602,0.292,Bernard Koch,1.0,Autumn 2025,2,13,4.34,10.51
+DEMS,29712,0.292,Shamshad Pasarlay,1.0,Autumn 2025,2,3,4.39,7.92
+EALC,24409,0.292,Hannah Park,1.0,Autumn 2025,1,3,4.69,5.83
+ECON,27300,0.292,James A Leitzel,1.0,Autumn 2025,2,4,4.28,5.99
+ENGL,26249,0.292,Kenneth W Warren,1.0,Autumn 2025,2,4,4.31,7.65
+GRMN,21303,0.292,Daniel Pinto,0.81,Autumn 2025,2,2,4.79,5.0
+HIST,18702,0.292,Matthew Briones,1.0,Autumn 2025,4,6,4.77,5.96
+HIST,25604,0.292,Derek Kennet,1.0,Autumn 2025,2,6,4.28,6.3
+HMRT,24638,0.292,Ishani Dasgupta,0.87,Autumn 2025,3,4,4.24,5.32
+LING,26002,0.292,Sharese King,0.84,Autumn 2025,4,4,4.62,6.76
+MADD,22506,0.292,Nicholas Briz,1.0,Autumn 2025,2,4,4.75,6.1
+NSCI,22950,0.292,Brent Doiron,0.5,Autumn 2025,1,1,,8.5
+SOCI,20624,0.292,Kimberly Hoang,1.0,Autumn 2025,2,3,4.78,8.94
+TAPS,10700,0.292,Alyssa Mohn,0.38,Winter 2026,9,9,4.37,7.11
+AASR,36103,0.217,Yousef Casewit,1.0,Spring 2026,2,4,,
+AASR,46635,0.217,Alireza Doostdar,1.0,Spring 2026,2,7,3.9,9.24
+ANTH,12800,0.217,Matthew Kruer,0.41,Spring 2026,3,8,4.59,6.5
+BIOS,14117,0.217,Carolyn Martineau,1.0,Spring 2026,4,5,4.46,3.4
+BIOS,28411,0.217,Savas Tay,1.0,Winter 2026,4,5,4.34,4.48
+BUSN,20231,0.217,Rodrigo Adao,1.0,Winter 2026,5,6,4.22,6.72
+CATA,12200,0.217,Bel Olid,0.61,Spring 2026,3,3,,
+CCTS,22006,0.217,David Kim,1.0,Spring 2026,3,4,4.55,7.35
+CHEM,39300,0.217,Shuolong Yang,0.84,Winter 2026,4,5,,
+CHSS,35205,0.217,Michael Paul Rossi,1.0,Spring 2026,2,3,4.49,5.28
+CHSS,35605,0.217,Arnold Brooks,1.0,Spring 2026,2,3,4.59,6.34
+CLCV,26726,0.217,Clifford Ando,0.27,Spring 2026,4,16,4.24,7.09
+CMST,27840,0.217,Ian Jones,1.0,Spring 2026,2,3,4.64,4.34
+COGS,22015,0.217,Craig Thorburn,0.44,Winter 2026,5,6,4.96,5.0
+EALC,24408,0.217,Eunhee Park,1.0,Spring 2026,2,3,4.66,7.98
+ECON,14020,0.217,Gregory Lane,0.39,Winter 2026,4,9,4.03,8.21
+ECON,15500,0.217,Srinivasan Vasudevan,1.0,Winter 2026,7,9,4.22,6.7
+ECON,17700,0.217,Allyson Root,1.0,Spring 2026,2,2,4.11,7.22
+ECON,19100,0.217,Greg Kaplan,0.41,Winter 2026,5,6,3.91,5.35
+ECON,26040,0.217,Pablo Pena Munoz,1.0,Spring 2026,5,5,4.39,6.83
+ENGL,16500,0.217,Ngara Ndiaye,0.52,Spring 2026,4,7,4.46,7.52
+ENGL,17504,0.217,Timothy Harrison,1.0,Winter 2026,2,5,4.81,6.1
+GLST,24550,0.217,Yousef Casewit,1.0,Spring 2026,4,10,,
+GNSE,20117,0.217,Sarah Johnson,1.0,Spring 2026,4,7,4.71,8.52
+GNSE,20153,0.217,Maria Bautista,0.7,Spring 2026,6,12,4.28,4.27
+HIST,29800,0.217,Peggy Heffington,0.16,Spring 2026,6,22,4.61,8.79
+HMRT,28753,0.217,Lindsay Gifford,0.5,Winter 2026,3,4,4.58,6.54
+LACS,21900,0.217,Larissa Brewer-Garcia,0.48,Spring 2026,8,17,4.68,5.92
+LACS,22005,0.217,Danielle Roper,0.36,Spring 2026,10,23,4.42,6.62
+MAPS,21801,0.217,Max Smith,1.0,Winter 2026,3,4,,
+MENG,23310,0.217,Nicolas Chevrier,1.0,Winter 2026,4,4,4.51,6.07
+PBPL,28785,0.217,John Burrows,1.0,Winter 2026,3,3,4.42,6.33
+PLSC,25678,0.217,Eric Oliver,1.0,Spring 2026,3,4,,
+PSYC,21150,0.217,Kyshia Henderson,1.0,Winter 2026,3,5,,
+SOCI,20005,0.217,Andrew Abbott,0.46,Spring 2026,6,6,4.06,8.54
