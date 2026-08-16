@@ -59,8 +59,9 @@ def setup_database():
         CREATE TABLE program_courses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             program TEXT,
+            section TEXT,
             code TEXT,
-            UNIQUE(program, code)
+            UNIQUE(program, section, code)
         )
     ''')
     conn.commit()
@@ -131,13 +132,17 @@ def scrape_page(conn, url, page_name):
                   parsed['instructors'], parsed['note']))
             n_courses += 1
 
-    # Requirement tables: course codes referenced by this program's plan
+    # Requirement tables: course codes referenced by this program's plan,
+    # tagged with the nearest preceding heading — which is how the catalog
+    # marks tracks/specializations/minors within a program page
     n_reqs = 0
     for cell in soup.find_all('td', class_='codecol'):
+        heading = cell.find_previous(['h2', 'h3', 'h4', 'h5'])
+        section = heading.get_text(' ', strip=True)[:90] if heading else ''
         code = cell.get_text(' ', strip=True).replace('\xa0', ' ')
         for one in re.findall(r'[A-Z]{4}\s+\d{5}', code):
-            cur.execute('INSERT OR IGNORE INTO program_courses (program, code) VALUES (?, ?)',
-                        (page_name, one))
+            cur.execute('INSERT OR IGNORE INTO program_courses (program, section, code) '
+                        'VALUES (?, ?, ?)', (page_name, section, one))
             n_reqs += 1
 
     conn.commit()

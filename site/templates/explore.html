@@ -31,7 +31,7 @@ a GPA-protector and an Honors-Analysis-seeker have different sweet spots.</p>
   {% for score, r in scored %}
   <tr>
     <td class="muted">{{ loop.index }}</td>
-    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:45] }}{% endif %}</a></td>
     <td><b>{{ score }}</b></td>
     <td>{{ '%.2f'|format(r['avg_rating']) }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) }}</td>

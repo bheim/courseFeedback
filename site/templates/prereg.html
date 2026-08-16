@@ -33,7 +33,7 @@ this ranks your candidates, flags the risks, and builds your 4-over-3 hedge.</p>
   {% for e in entries %}{% set r = e['sig'] %}
   <tr>
     <td><b>{{ loop.index }}</b></td>
-    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:45] }}{% endif %}</a></td>
     <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
     <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%</td>

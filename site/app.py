@@ -63,9 +63,33 @@ def q(db, sql, args=()):
 SIGNALS = {(r["dept"], r["course_id"]): dict(r)
            for r in q(SIGNALS_DB, "SELECT * FROM course_signals")}
 
+# Course titles from the catalog, keyed by canonical identity
+TITLES = {}
+for _r in q(CATALOG_DB, "SELECT code, title FROM catalog_courses WHERE title != ''"):
+    _m = CODE_RE.search(_r["code"])
+    if _m:
+        _k = ALIAS.get((_m.group(1), int(_m.group(2))), (_m.group(1), int(_m.group(2))))
+        TITLES.setdefault(_k, _r["title"])
+
+
+def ctitle(dept, cid):
+    return TITLES.get(ALIAS.get((dept, cid), (dept, cid)), "")
+
+
+@app.context_processor
+def _inject_helpers():
+    return dict(ctitle=ctitle)
+
+
 PROGRAM_POOLS = {}          # program -> [canonical course keys]
+PROGRAM_SECTIONS = {}       # program -> {section heading -> [canonical keys]}
 PROGRAMS_BY_COURSE = {}     # canonical course -> [program names]
-for row in q(CATALOG_DB, "SELECT program, code FROM program_courses"):
+try:
+    _rows = q(CATALOG_DB, "SELECT program, section, code FROM program_courses")
+except sqlite3.OperationalError:   # pre-upgrade snapshot without sections
+    _rows = [{"program": r["program"], "section": "", "code": r["code"]}
+             for r in q(CATALOG_DB, "SELECT program, code FROM program_courses")]
+for row in _rows:
     m = CODE_RE.search(row["code"])
     if not m:
         continue
@@ -73,6 +97,10 @@ for row in q(CATALOG_DB, "SELECT program, code FROM program_courses"):
     pool = PROGRAM_POOLS.setdefault(row["program"], [])
     if key not in pool:
         pool.append(key)
+    if row["section"]:
+        sec = PROGRAM_SECTIONS.setdefault(row["program"], {}).setdefault(row["section"], [])
+        if key not in sec:
+            sec.append(key)
     PROGRAMS_BY_COURSE.setdefault(key, [])
     if row["program"] not in PROGRAMS_BY_COURSE[key]:
         PROGRAMS_BY_COURSE[key].append(row["program"])
@@ -142,25 +170,48 @@ def home():
                            majors=MAJORS, core_pages=CORE_PAGES)
 
 
+def rank_keys(keys):
+    rated = [SIGNALS[k] for k in keys if k in SIGNALS
+             and SIGNALS[k].get("goldilocks") is not None]
+    rated.sort(key=lambda s: -s["goldilocks"])
+    unrated = len(keys) - len(rated)
+    return rated, unrated
+
+
 @app.route("/plan")
 def plan():
-    major = request.args.get("major", "")
+    # Any number of paths: majors, second majors, minors-in-waiting — the
+    # multi-select has no restrictions
+    paths = [p for p in request.args.getlist("path") if p in PROGRAM_POOLS]
+    legacy = request.args.get("major", "")
+    if legacy in PROGRAM_POOLS and legacy not in paths:
+        paths.append(legacy)
     core = request.args.get("core", "")
 
-    major_groups = None
-    if major in PROGRAM_POOLS:
-        rated, unrated = ranked_pool(major)
-        groups = {}
-        for sig in rated:
-            level = f"{(sig['course_id'] // 10000) * 10000}s"
-            groups.setdefault(level, []).append(sig)
-        major_groups = {"name": major, "groups": sorted(groups.items()),
-                        "unrated": unrated}
+    path_views = []
+    for program in paths:
+        sections = PROGRAM_SECTIONS.get(program)
+        groups, unrated_total = [], 0
+        if sections:
+            # Requirement-section grouping: tracks, specializations, minors
+            for sec_name, keys in sections.items():
+                rated, unrated = rank_keys(keys)
+                unrated_total += unrated
+                if rated:
+                    groups.append((sec_name, rated))
+        else:
+            rated, unrated_total = ranked_pool(program)
+            by_level = {}
+            for sig in rated:
+                level = f"{(sig['course_id'] // 10000) * 10000}-level"
+                by_level.setdefault(level, []).append(sig)
+            groups = sorted(by_level.items())
+        path_views.append({"name": program, "groups": groups,
+                           "unrated": unrated_total,
+                           "has_sections": bool(sections)})
 
     core_sections = []
     selected_cores = [core] if core in CORE_PAGES else list(CORE_PAGES)
-    if not major:  # core-only view keeps requested core; path view shows all
-        selected_cores = [core] if core in CORE_PAGES else list(CORE_PAGES)
     for page in selected_cores:
         rated, unrated = ranked_pool(page)
         if not rated:
@@ -174,8 +225,8 @@ def plan():
             "median": median,
         })
 
-    return render_template("plan.html", major=major, majors=MAJORS,
-                           major_groups=major_groups, core_sections=core_sections,
+    return render_template("plan.html", paths=paths, majors=MAJORS,
+                           path_views=path_views, core_sections=core_sections,
                            core=core, core_pages=CORE_PAGES,
                            prereqs_by_code=PREREQS)
 

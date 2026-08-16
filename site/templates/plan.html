@@ -2,32 +2,38 @@
 {% block title %}My Plan · Course Copilot{% endblock %}
 {% block content %}
 <h1>Your path</h1>
-<form class="filters" method="get" action="/plan">
-  <div><label>Major</label>
-    <select name="major">
-      <option value="">— choose your major —</option>
-      {% for m in majors %}<option value="{{ m }}" {{ 'selected' if m == major }}>{{ m }}</option>{% endfor %}
-    </select></div>
-  <div><button>Build my view</button></div>
+<div class="card">
+<form method="get" action="/plan">
+  <label class="muted">Pick everything you're considering — major, possible double major,
+  minors. Hold ⌘ (Mac) or Ctrl to select several. No restrictions.</label><br>
+  <select name="path" multiple size="10" style="min-width: min(24rem, 100%); margin-top: .4rem;">
+    {% for m in majors %}<option value="{{ m }}" {{ 'selected' if m in paths }}>{{ m }}</option>{% endfor %}
+  </select>
+  <div style="margin-top: .6rem"><button>Build my view</button></div>
 </form>
+</div>
 
-{% if major_groups %}
-<h2>{{ major_groups['name'] }} — your courses, best options first</h2>
-<p class="muted">Every course the catalog lists in this program's requirements, ranked.
-{{ major_groups['unrated'] }} more appear in the requirements but don't have enough
-feedback history to rank.</p>
-{% for level, rows in major_groups['groups'] %}
-<h2 style="font-size:.95rem">{{ level }} level</h2>
+{% for pv in path_views %}
+<h2>{{ pv['name'] }}</h2>
+{% if not pv['has_sections'] %}
+<p class="muted">Grouped by level — rerun the catalog scrape to unlock this program's
+tracks/specialization grouping. {{ pv['unrated'] }} listed courses lack feedback history.</p>
+{% else %}
+<p class="muted">Grouped by the catalog's own requirement sections (tracks, specializations,
+minor). {{ pv['unrated'] }} listed courses lack feedback history.</p>
+{% endif %}
+{% for sec_name, rows in pv['groups'] %}
+<h2 style="font-size:.95rem; color: var(--muted)">{{ sec_name }}</h2>
 <div class="scroll"><table>
   <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>n</th><th>Prereqs</th>
       <th>Likely Autumn ’26</th><th>Flags</th></tr>
   {% for r in rows %}
   <tr>
-    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+    <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:55] }}{% endif %}</a></td>
     <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
     <td>{{ r['n_sections'] }}</td>
-    <td class="muted">{% for d2, c2 in prereqs_by_code.get(r['dept'] ~ ' ' ~ r['course_id'], []) %}<a href="/course/{{ d2 }}/{{ c2 }}">{{ d2 }} {{ c2 }}</a>{{ ', ' if not loop.last }}{% endfor %}</td>
+    <td class="muted">{% for d2, c2 in prereqs_by_code.get(r['dept'] ~ ' ' ~ r['course_id'], []) %}<a href="/course/{{ d2 }}/{{ c2 }}" title="{{ ctitle(d2, c2) }}">{{ d2 }} {{ c2 }}</a>{{ ', ' if not loop.last }}{% endfor %}</td>
     <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%
         {{ r['likely_instructor'] or '' }}</td>
     <td>
@@ -39,9 +45,7 @@ feedback history to rank.</p>
   {% endfor %}
 </table></div>
 {% endfor %}
-{% elif major %}
-<p class="muted">No requirement data found for “{{ major }}”.</p>
-{% endif %}
+{% endfor %}
 
 <h2 id="core">Core requirements — pick your lotteries</h2>
 <p class="muted">For Hum, Sosc, and Civ you can't see instructor names at pre-registration —
@@ -59,7 +63,7 @@ you're choosing a <i>pool</i>, not a professor. Compare the pools; enter the bes
         <th>Instructors ever</th><th>Likely Autumn ’26</th></tr>
     {% for r in sec['rows'] %}
     <tr>
-      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:55] }}{% endif %}</a></td>
       <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
       <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
       <td>{{ r['n_sections'] }}</td>

@@ -2,13 +2,13 @@
 {% block content %}
 <h1>Start from your path</h1>
 <div class="card">
-  <form class="filters" method="get" action="/plan">
-    <div><label>Your major</label>
-      <select name="major">
-        <option value="">— choose —</option>
-        {% for m in majors %}<option value="{{ m }}">{{ m }}</option>{% endfor %}
-      </select></div>
-    <div><button>See my courses ranked</button></div>
+  <form method="get" action="/plan">
+    <label class="muted">Your intended path — pick as many as apply: major, possible double
+    major, minors. Hold ⌘/Ctrl to multi-select.</label><br>
+    <select name="path" multiple size="8" style="min-width: min(24rem, 100%); margin-top:.4rem">
+      {% for m in majors %}<option value="{{ m }}">{{ m }}</option>{% endfor %}
+    </select>
+    <div style="margin-top:.5rem"><button>See my courses ranked</button></div>
   </form>
   <p class="muted" style="margin-bottom:.2rem">Or jump straight to a Core requirement — each is a
   pool you choose from, ranked:</p>
@@ -36,7 +36,7 @@ by your own quality/lightness/challenge weights.</p>
         <th>Likely Autumn ’26 instructor</th></tr>
     {% for r in results %}
     <tr>
-      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}</a></td>
+      <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:50] }}{% endif %}</a></td>
       <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
       <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
       <td>{{ r['n_sections'] }}</td>
