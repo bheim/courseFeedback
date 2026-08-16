@@ -49,11 +49,15 @@ python scrape_course_links_single_quarter.py "Spring 2026"
 cd ../scrapeFeedback
 python scrapeFeedback.py
 
-# 5. Recompute the precalculated averages (~1 min)
+# 5. Data-quality tripwire (~seconds). If this FAILS, stop and investigate
+#    (paste its output to Claude) before pushing anything.
 cd ..
+python data_quality_check.py
+
+# 6. Recompute the precalculated averages (~1 min)
 python calculate_averages.py
 
-# 6. Copy the updated database to where the backend reads it
+# 7. Copy the updated database to where the backend reads it
 cp course_feedback.db ../courseFeedBackExtensionProduction/course_feedback.db
 ```
 

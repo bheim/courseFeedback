@@ -74,10 +74,9 @@ The regime is detectable from our own data (instructor history + dept lists).
 - **course_feedback.db**: 23,641 sections, 4,528 professors, 36,746
   teaching links; Autumn 2019 – Spring 2026 (COVID quarters excluded).
 - Instructor + quarter data: complete and clean (100% coverage on new rows).
-- Ratings (12 questions) + hours: complete through Winter 2025; the four
-  quarters after the platform migration (Spring 2025 – Spring 2026) are being
-  healed by `repair_rescrape.py` (in-place updates; graduate-form rows stay
-  empty until W6).
+- Ratings (12 questions) + hours: healed through Spring 2026 as of
+  2026-08-16. All rated rows are column-complete with hours; the only gap
+  is ~2,596 graduate-form rows (W6) plus historical pre-2020 hours holes.
 - Known quirks: ~1,378 rows with "Form N" quarter labels (excluded from
   time-based analysis); 77 professor identities split by name variants;
   cross-listed courses fragmented across dept listings (fix in W2/W4).
@@ -99,24 +98,33 @@ Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
 
 ## Workstreams (priority order; check off and date as completed)
 
-### W1. Heal & guard the data — IN PROGRESS
+### W1. Heal & guard the data — DONE 2026-08-16
 - [x] Diagnose post-migration damage (5/12 questions dead, hours dead,
       grad forms never supported)
 - [x] Patch scraper for both question wordings, new image domain, cookies
 - [x] Repair script with preview gate (`repair_rescrape.py`)
-- [ ] Full repair run completes on laptop; push healed DB (running now)
-- [ ] Verify healed data end to end (ratings/hours coverage by quarter)
-- [ ] Add post-scrape data-quality tripwire to the pipeline (principle 6)
-- [ ] Port the expired-session guard (stop worker after 12 consecutive
-      failures; added to repair_rescrape.py) into scrapeFeedback.py
-- [ ] Recompute averages; regenerate predictions on healed data
+- [x] Full repair run completed on laptop (6,800 rows healed across two
+      passes); healed DB pushed
+- [x] Verify healed data end to end: the four damaged quarters now at
+      70-75% coverage (reference quarters 82-84%; gap = grad forms). Of
+      rated rows, 100% have all 12 columns and 100% have hours. 2,596
+      grad-form rows remain empty pending W6. Production copy identical.
+- [x] Post-scrape data-quality tripwire: `data_quality_check.py`
+      (RUNBOOK step 5) — per-column and hours checks that would have
+      caught the migration same-day
+- [x] Expired-session guard ported into scrapeFeedback.py
+- [x] Averages recomputed; Autumn 2026 predictions regenerated on healed
+      data (981 courses at p>=0.5 with rating/hours context attached)
 
 ### W2. Catalog enrichment (public data, no login, ~minutes to run)
 The catalog pages we already scrape for course IDs also contain, per course:
 full **description**, **prerequisites**, **"Terms Offered"**, **"Equivalent
 Course(s)"**, and the requirements lists for each major. Capture all of it.
 - [ ] Extend catalog scraper: descriptions, prereqs, terms, equivalents
-- [ ] Scrape major-requirement course lists per program page
+      (script ready: `getCourseIDs/scrape_catalog_details.py` — run on
+      laptop, ~5 min, no login; then push catalog.db)
+- [ ] Scrape major-requirement course lists per program page (same script,
+      `program_courses` table)
 - [ ] Merge equivalent/cross-listed courses into unified course identities
       (fixes fragmented history; improves forecasts and coverage)
 - [ ] Feed "Terms Offered" into the offering forecaster

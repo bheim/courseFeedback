@@ -565,6 +565,7 @@ def save_to_database(allData):
 def worker(worker_id, driver, url_list):
     """Each driver processes its own list of URLs sequentially"""
     processed = 0
+    consecutive_errors = 0
     for url_tuple in url_list:
         row_id, course_dept, course_id, url = url_tuple
         print(f"[Worker {worker_id}] Processing {course_dept} {course_id}: {url}")
@@ -573,13 +574,21 @@ def worker(worker_id, driver, url_list):
                 allData = processBioLink(driver, url)
             else:
                 allData = processLink(driver, url)
-            
+            consecutive_errors = 0
+
             if allData:
                 save_to_database(allData)
                 processed += 1
         except Exception as e:
             print(f"[Worker {worker_id}] Error processing {url}: {e}")
-    
+            consecutive_errors += 1
+            if consecutive_errors >= 12:
+                print(f"[Worker {worker_id}] {consecutive_errors} failures in a row — this "
+                      f"browser's login session has likely expired. Stopping this worker; "
+                      f"unscraped courses are picked up automatically on the next run "
+                      f"after a fresh getCookies.py.")
+                break
+
     print(f"[Worker {worker_id}] Finished. Processed {processed} courses.")
     return processed
 
