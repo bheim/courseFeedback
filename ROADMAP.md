@@ -184,9 +184,12 @@ course_feedback.db for committing.
 - [ ] Site v3: professor pages, per-sequence lottery detail (variance,
       full instructor pool with ratings), multi-select (major + minor),
       "my remaining requirements" checklist, deploy to PythonAnywhere
-- [ ] Pre-reg list builder: user picks candidate courses -> optimal 10-slot
-      ranked list with per-slot reasoning
-- [ ] Hedged registration mode ("4-over-3"): the system permits 400 units
+- [x] Pre-reg list builder v1 (2026-08-16, /prereg): candidates -> ranked
+      list with risk scores, offering odds, likely instructors,
+      retakeability
+- [x] Hedged registration mode v1 (2026-08-16, part of /prereg; components
+      a-c below all implemented — portfolio pick, trial-load budget, drop
+      order by retakeability): the system permits 400 units
       (4 courses) and drops are penalty-free online until 5pm Friday of
       week 3 (adds/swaps until the same deadline; instructor consent needed
       late in the window) — so register 4 intending to drop 1. Components:
@@ -202,8 +205,9 @@ course_feedback.db for committing.
       so the seat returns to the pool.
 - [ ] Verify current-year hedge mechanics each autumn: exact drop/add
       deadlines, tuition and financial-aid treatment of a 4th course
-- [ ] Add/drop reveal report: names just published -> draw quality +
-      best-available swaps (start manual/on-demand, automate later)
+- [x] Add/drop reveal check v1 (2026-08-16, /reveal): enter your revealed
+      instructor -> rank in the course's historical pool + keep/swap
+      advice (on-demand; automated alerts later)
 - [ ] Extension upgrades: sample sizes in the widget; predicted
       instructor/pool display when the name field is hidden or "Staff";
       keep production extension untouched until the new one is tested
