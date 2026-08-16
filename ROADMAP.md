@@ -26,6 +26,9 @@ allocates, add/drop opens Monday of finals week):
 2. **RANK** (at pre-reg): build the optimal 10-slot ranked list.
 3. **STRIKE** (at add/drop): the moment hidden instructor names publish,
    report the student's draw quality and the best available swap.
+4. **TRIAL** (weeks 1–3): carry a 4-course hedged portfolio, then drop the
+   weakest by the Friday-of-week-3 no-penalty deadline — converting the
+   registration lottery into a three-week test drive (see W5 hedged mode).
 
 ## Regime-aware behavior (the system must adapt per course type)
 
@@ -152,6 +155,22 @@ capture in all future quarterly scrapes:
       sliders, sequence-lottery ranker for Regime B, monopoly warnings
 - [ ] Pre-reg list builder: user picks candidate courses -> optimal 10-slot
       ranked list with per-slot reasoning
+- [ ] Hedged registration mode ("4-over-3"): the system permits 400 units
+      (4 courses) and drops are penalty-free online until 5pm Friday of
+      week 3 (adds/swaps until the same deadline; instructor consent needed
+      late in the window) — so register 4 intending to drop 1. Components:
+      (a) portfolio construction — pair each risky slot (hidden-name Core
+      draw, new/unknown instructor, harsh-grader monopoly) with a hedge
+      course, choosing the 4th course that maximizes expected quality of
+      the best 3-course subset; (b) trial-window workload budget — carrying
+      4 courses for 3 weeks must be survivable per our hours data; (c)
+      week-3 drop advisor — weighs revealed instructors, the student's own
+      impressions, and retakeability asymmetry (drop the course that runs
+      every quarter; keep the rare offering or the rare great-professor
+      pairing, per the forecaster). Etiquette: drop promptly once decided
+      so the seat returns to the pool.
+- [ ] Verify current-year hedge mechanics each autumn: exact drop/add
+      deadlines, tuition and financial-aid treatment of a 4th course
 - [ ] Add/drop reveal report: names just published -> draw quality +
       best-available swaps (start manual/on-demand, automate later)
 - [ ] Extension upgrades: sample sizes in the widget; predicted
