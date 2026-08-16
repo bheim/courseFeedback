@@ -177,8 +177,13 @@ course_feedback.db for committing.
       -> 127.0.0.1:5050): search by code/topic, unified course pages with
       forecasts + comment signals + histories, goldilocks explorer with
       weight controls, regime/monopoly/crowd-pleaser badges
-- [ ] Site v2: professor pages, sequence-lottery ranker detail view for
-      Regime B, deploy to PythonAnywhere
+- [x] Site v2 (2026-08-16): path-first redesign — home starts from "pick
+      your major"; /plan ranks each program's requirement pool (levels,
+      prereq links, flags) and renders every Core area as a ranked
+      lottery with pool medians. Courses show "counts toward" programs.
+- [ ] Site v3: professor pages, per-sequence lottery detail (variance,
+      full instructor pool with ratings), multi-select (major + minor),
+      "my remaining requirements" checklist, deploy to PythonAnywhere
 - [ ] Pre-reg list builder: user picks candidate courses -> optimal 10-slot
       ranked list with per-slot reasoning
 - [ ] Hedged registration mode ("4-over-3"): the system permits 400 units
