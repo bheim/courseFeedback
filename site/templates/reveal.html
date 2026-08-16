@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Reveal check · Course Copilot{% endblock %}
+{% block content %}
+<h1>Add/drop reveal check</h1>
+<p class="muted">Names just published for your hidden-name section? Enter your draw —
+see where it ranks in the course's historical instructor pool and whether a better
+section is worth chasing in add/drop.</p>
+
+<div class="card">
+<form class="filters" method="get" action="/reveal">
+  <div><label>Dept</label><input type="text" name="dept" value="{{ dept }}" style="width:5.5rem" placeholder="SOSC"></div>
+  <div><label>Number</label><input type="text" name="cid" value="{{ cid }}" style="width:6.5rem" placeholder="15100"></div>
+  <div><label>Instructor you got (last name works)</label>
+    <input type="text" name="name" value="{{ name }}" placeholder="Kelly"></div>
+  <div><button>Check my draw</button></div>
+</form>
+</div>
+
+{% if pool is not none %}
+  {% if match %}
+  <div class="card">
+    <h2 style="margin-top:0">Your draw: {{ match['row']['name'] }}</h2>
+    <span class="stat"><b>#{{ match['rank'] }} of {{ match['of'] }}</b><span>in this course's instructor pool</span></span>
+    <span class="stat"><b>{{ match['row']['course_exc'] if match['row']['course_exc'] is not none else '—' }}</b><span>“excellent course” avg with them</span></span>
+    <span class="stat"><b>{{ match['row']['prof_rating'] if match['row']['prof_rating'] is not none else '—' }}</b><span>overall prof rating</span></span>
+    <span class="stat"><b>{{ match['row']['n_sections'] }}</b><span>sections of evidence</span></span>
+    {% if match['rank'] == 1 %}
+      <p><b>Keep it.</b> You drew the top of the pool — do not touch add/drop.</p>
+    {% elif match['rank'] <= (match['of'] / 3)|round(0, 'ceil')|int %}
+      <p><b>Solid draw</b> — top third of the pool. Swapping is probably not worth the schedule churn.</p>
+    {% else %}
+      <p><b>Below the pool's median.</b> Check the table below for who's better — if one of them
+      has an open section at add/drop, that's your move. Act early in the window.</p>
+    {% endif %}
+  </div>
+  {% elif name %}
+  <p class="muted">“{{ name }}” doesn't appear in this course's history — a new instructor.
+  No data beats no data: check their other courses via search, or it's a genuine unknown.</p>
+  {% endif %}
+
+  {% if pool %}
+  <h2>The full pool for {{ course_key[0] }} {{ course_key[1] }}</h2>
+  <div class="scroll"><table>
+    <tr><th>#</th><th>Instructor</th><th>“Excellent course” avg here</th>
+        <th>Overall rating</th><th>Sections</th></tr>
+    {% for row in pool %}
+    <tr {% if match and row['name'] == match['row']['name'] %}style="background:#f6ecd9"{% endif %}>
+      <td class="muted">{{ loop.index }}</td>
+      <td>{{ row['name'] }}</td>
+      <td>{{ row['course_exc'] if row['course_exc'] is not none else '—' }}</td>
+      <td>{{ row['prof_rating'] if row['prof_rating'] is not none else '—' }}</td>
+      <td>{{ row['n_sections'] }}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% else %}
+  <p class="muted">No instructor history found for that course.</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

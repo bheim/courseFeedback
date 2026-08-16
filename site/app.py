@@ -258,6 +258,125 @@ def course(dept, cid):
                            prereqs=prereqs)
 
 
+def risk_profile(sig):
+    """0-100 risk that this pick disappoints, with human-readable reasons."""
+    score, reasons = 0, []
+    if sig["regime"] == "B":
+        score += 30
+        reasons.append("hidden-name Core — your instructor is a lottery draw")
+    elif (sig.get("instructor_conf") or 0) < 0.5:
+        score += 25
+        reasons.append("uncertain instructor forecast")
+    if (sig.get("grading_pct") or 0) >= 15:
+        score += 20
+        reasons.append(f"grading raised in {sig['grading_pct']}% of comments")
+    if sig["monopoly"] and (sig.get("fairness_gap") or 0) <= -0.2:
+        score += 25
+        reasons.append("monopoly with depressed fairness rating")
+    if sig["n_sections"] < 4:
+        score += 15
+        reasons.append("thin history")
+    if sig.get("p_autumn_2026") is not None and sig["p_autumn_2026"] < 0.5:
+        score += 10
+        reasons.append("may not be offered in Autumn")
+    return min(score, 100), reasons
+
+
+def retake_profile(sig):
+    """How costly is it to drop this course and take it later?"""
+    nq = sig["n_quarters"]
+    if nq >= 10:
+        return "runs constantly — cheap to drop", 3
+    if nq >= 5:
+        return "runs regularly", 2
+    return "rare offering — avoid dropping", 1
+
+
+@app.route("/prereg")
+def prereg():
+    raw = request.args.get("candidates", "")
+    keep = int(request.args.get("keep", 3) or 3)
+    try:
+        max_load = float(request.args.get("max_load", 45) or 45)
+    except ValueError:
+        max_load = 45.0
+
+    entries, missing, seen = [], [], set()
+    for m in CODE_RE.finditer(raw.upper()):
+        key = ALIAS.get((m.group(1), int(m.group(2))), (m.group(1), int(m.group(2))))
+        if key in seen:
+            continue
+        seen.add(key)
+        sig = SIGNALS.get(key)
+        if not sig:
+            missing.append(f"{key[0]} {key[1]}")
+            continue
+        risk, reasons = risk_profile(sig)
+        retake_text, retake_score = retake_profile(sig)
+        entries.append({"sig": sig, "risk": risk, "reasons": reasons,
+                        "retake_text": retake_text, "retake_score": retake_score})
+        if len(entries) >= 12:
+            break
+
+    entries.sort(key=lambda e: -(e["sig"]["rating_pctl"] or 0))
+
+    hedge = None
+    if len(entries) > keep:
+        top = entries[:keep]
+        rest = entries[keep:]
+        riskiest = max(top, key=lambda e: e["risk"])
+        hedge_pick = max(rest, key=lambda e: (e["retake_score"],
+                                              e["sig"]["rating_pctl"] or 0,
+                                              -(e["sig"]["avg_hours"] or 99)))
+        trial_load = sum(e["sig"]["avg_hours"] or 0 for e in top) + \
+            (hedge_pick["sig"]["avg_hours"] or 0)
+        drop_order = sorted(top + [hedge_pick],
+                            key=lambda e: -e["retake_score"])
+        hedge = {"riskiest": riskiest, "pick": hedge_pick,
+                 "trial_load": round(trial_load, 1),
+                 "over_budget": trial_load > max_load,
+                 "worth_it": riskiest["risk"] >= 35,
+                 "drop_order": drop_order}
+
+    return render_template("prereg.html", raw=raw, keep=keep, max_load=max_load,
+                           entries=entries, missing=missing, hedge=hedge)
+
+
+@app.route("/reveal")
+def reveal():
+    dept = request.args.get("dept", "").strip().upper()
+    cid_raw = request.args.get("cid", "").strip()
+    name = request.args.get("name", "").strip()
+
+    pool, match, course_key = None, None, None
+    if dept and cid_raw.isdigit():
+        course_key = ALIAS.get((dept, int(cid_raw)), (dept, int(cid_raw)))
+        members = [course_key] + REVERSE_ALIAS.get(course_key, [])
+        placeholders = " OR ".join("(c.dept=? AND c.course_id=?)" for _ in members)
+        params = [x for m in members for x in m]
+        pool = q(FEEDBACK_DB, f"""
+            SELECT p.first_name || ' ' || p.last_name AS name,
+                   COUNT(DISTINCT c.id) AS n_sections,
+                   ROUND(AVG(c.excellence), 2) AS course_exc,
+                   ROUND(MAX(p.avg_professor_rating), 2) AS prof_rating
+            FROM courses c
+            JOIN courses_professors cp ON cp.course_id = c.id
+            JOIN professors p ON p.id = cp.professor_id
+            WHERE ({placeholders})
+            GROUP BY p.id
+            HAVING course_exc IS NOT NULL OR n_sections >= 1
+            ORDER BY (course_exc IS NULL), course_exc DESC""", params)
+        if name and pool:
+            low = name.lower()
+            for i, row in enumerate(pool, 1):
+                if low in row["name"].lower():
+                    match = {"row": row, "rank": i, "of": len(pool)}
+                    break
+
+    return render_template("reveal.html", dept=dept, cid=cid_raw, name=name,
+                           pool=pool, match=match, course_key=course_key)
+
+
 @app.route("/explore")
 def explore():
     def num(name, default):
