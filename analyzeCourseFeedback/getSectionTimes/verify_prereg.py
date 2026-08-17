@@ -77,28 +77,69 @@ def parse_page(text):
     return found
 
 
+def read_frames(driver):
+    """Body text from the page AND every iframe (portal pages nest content)."""
+    texts = []
+    try:
+        texts.append(("main", driver.find_element(By.TAG_NAME, "body").text))
+    except Exception:
+        pass
+    for i, fr in enumerate(driver.find_elements(By.TAG_NAME, "iframe")):
+        try:
+            driver.switch_to.frame(fr)
+            texts.append((f"iframe{i}", driver.find_element(By.TAG_NAME, "body").text))
+            for j, sub in enumerate(driver.find_elements(By.TAG_NAME, "iframe")):
+                try:
+                    driver.switch_to.frame(sub)
+                    texts.append((f"iframe{i}.{j}",
+                                  driver.find_element(By.TAG_NAME, "body").text))
+                except Exception:
+                    pass
+                finally:
+                    driver.switch_to.parent_frame()
+        except Exception:
+            pass
+        finally:
+            driver.switch_to.default_content()
+    return texts
+
+
 def main():
     options = Options()
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
                               options=options)
     driver.get(START_URL)
     print("Browser opened. Log in yourself (Okta/Duo - this script never sees it).")
-    print("Navigate to pre-registration and display a Hum sequence's section list.")
+    print("Then open the PRE-REGISTRATION screen - the one where you rank Hum")
+    print("sections - and expand a sequence so its section list WITH MEETING")
+    print("TIMES is visible on screen. Capture. Then expand the next sequence")
+    print("(Human Being and Citizen, Poetry, Philosophical Perspectives, Media")
+    print("Aesthetics) and capture again - rows accumulate across captures.")
 
     seen = {}
     while True:
-        ans = input("\nPress ENTER to capture this page ('done' to finish): ").strip().lower()
+        ans = input("\nPress ENTER to capture what's on screen ('done' to finish): ").strip().lower()
         if ans == "done":
             break
         time.sleep(1)
-        text = driver.find_element(By.TAG_NAME, "body").text
-        rows = parse_page(text)
+        frames = read_frames(driver)
+        rows = {}
+        hit_frames = []
+        for name, text in frames:
+            r = parse_page(text)
+            if r:
+                hit_frames.append(f"{name}({len(r)})")
+            rows.update(r)
         fresh = {k: v for k, v in rows.items() if k not in seen}
         seen.update(rows)
-        print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)")
+        print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)"
+              + (f"  from: {', '.join(hit_frames)}" if hit_frames else ""))
         if not rows:
-            print("--- nothing parsed; raw page sample (paste to Claude) ---")
-            print(text[:2500])
+            print("--- nothing parsed in any frame; samples (paste to Claude) ---")
+            for name, text in frames:
+                t = (text or "").strip()
+                if t:
+                    print(f"\n[{name}] {t[:700]}")
     driver.quit()
 
     print("\n" + "=" * 64)
