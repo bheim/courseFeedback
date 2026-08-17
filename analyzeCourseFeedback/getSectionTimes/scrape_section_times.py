@@ -27,14 +27,30 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from webdriver_manager.chrome import ChromeDriverManager
 
 START_URL = "https://coursesearch.uchicago.edu/"
 DB_PATH = "times.db"
 
+# Verified via probe 2026-08-17 (page: UC Classes Self-Service, prd92guest)
+SUBJECT_SELECT_ID = "UC_CLSRCH_WRK2_SUBJECT"
+SEARCH_BTN_ID = "UC_CLSRCH_WRK2_SEARCH_BTN"
+
+# The Department dropdown shows names, not codes; option values are usually
+# the codes, so we try select-by-value first and fall back to these names.
+DEPT_NAMES = {
+    "HUMA": "Humanities", "SOSC": "Social Sciences",
+    "BIOS": "Biological Sciences", "MATH": "Mathematics",
+    "LATN": "Latin", "GREK": "Greek", "CMSC": "Computer Science",
+    "ECON": "Economics", "PHIL": "Philosophy", "PHSC": "Physical Sciences",
+    "MENG": "Molecular Engineering", "CLCV": "Classical Civilization",
+    "WRIT": "Writing",
+}
+
 SECTION_RE = re.compile(r"([A-Z]{4})\s+(\d{5})/(\d+)\s*\[(\d+)\]")
+COUNT_RE = re.compile(r"\b(\d+)\s*(?:-|–|to)\s*(\d+)\s+of\s+(\d+)\b")
+RESULTS_RE = re.compile(r"\b(\d+)\s+Results?\b", re.I)
 TIME_RE = re.compile(r"((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)(?:\s+(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun))*)\s*:\s*"
                      r"(\d{1,2}:\d{2}\s*[AP]M)-(\d{1,2}:\d{2}\s*[AP]M)")
 ENROLL_RE = re.compile(r"Section Enrollment:\s*(\d+)/(\d+)")
@@ -88,10 +104,30 @@ def probe(term, subject):
     dump_controls(driver)
     run_search(driver, term, subject, verbose=True)
 
-    rows = parse_results(driver, verbose=True)
+    rows = collect_all_rows(driver, verbose=True)
     print(f"\nBest-effort parse: {len(rows)} rows")
     for r in rows[:8]:
         print("  ", r)
+
+    body = driver.find_element(By.TAG_NAME, "body").text
+    m = COUNT_RE.search(body) or RESULTS_RE.search(body)
+    print(f"\nresult-count text on page: {m.group(0) if m else 'NONE FOUND'}")
+    print("candidate pagination controls:")
+    shown = 0
+    for tag in ("a", "button", "img", "span"):
+        for el in driver.find_elements(By.TAG_NAME, tag):
+            meta = " ".join(filter(None, [el.get_attribute("id") or "",
+                                          el.get_attribute("aria-label") or "",
+                                          el.get_attribute("title") or "",
+                                          el.get_attribute("alt") or "",
+                                          (el.text or "")[:30]]))
+            if any(k in meta.lower() for k in ("hdown", "hup", "hviewall", "view all",
+                                               "show next", "show following", "next set")):
+                print(f"  <{tag}> {meta[:90]!r}")
+                shown += 1
+        if shown >= 12:
+            break
+
     if not rows:
         print("\nNothing parsed — body text after search (first 3500 chars):")
         print(driver.find_element(By.TAG_NAME, "body").text[:3500])
@@ -133,22 +169,35 @@ def dump_controls(driver):
     print(f"--- iframes: {len(frames)} ---")
 
 
-def find_keyword_box(driver):
-    """The guest search page uses a free-text box, not a department dropdown."""
-    candidates = []
-    for el in driver.find_elements(By.TAG_NAME, "input"):
-        if not el.is_displayed():
-            continue
-        itype = (el.get_attribute("type") or "").lower()
-        if itype not in ("text", "search", ""):
-            continue
-        meta = " ".join(filter(None, [el.get_attribute("id") or "",
-                                      el.get_attribute("placeholder") or "",
-                                      el.get_attribute("aria-label") or ""])).lower()
-        score = sum(k in meta for k in ("search", "keyword", "contain", "class"))
-        candidates.append((score, el))
-    candidates.sort(key=lambda t: -t[0])
-    return candidates[0][1] if candidates else None
+def select_subject(driver, subject, verbose=False):
+    """Pick the Department dropdown entry for a subject code or name.
+
+    Keyword search is NOT equivalent — 'HUMA' as a keyword matches every
+    course with 'human' in the title (AASR, ANTH, BIOS...)."""
+    try:
+        sel = Select(driver.find_element(By.ID, SUBJECT_SELECT_ID))
+    except Exception:
+        print("no Department dropdown found on page")
+        return False
+    try:
+        sel.select_by_value(subject)
+        if verbose:
+            print(f"department selected by value: {subject}")
+        return True
+    except Exception:
+        pass
+    want = DEPT_NAMES.get(subject.upper(), subject).lower()
+    for o in sel.options:
+        if o.text.strip().lower().startswith(want):
+            sel.select_by_visible_text(o.text)
+            if verbose:
+                print(f"department selected by name: {o.text}")
+            return True
+    print(f"department {subject!r} not matched. The dropdown offers:")
+    for o in sel.options:
+        if o.text.strip():
+            print(f"  value={o.get_attribute('value')!r} text={o.text!r}")
+    return False
 
 
 def run_search(driver, term, subject, verbose=False):
@@ -162,21 +211,16 @@ def run_search(driver, term, subject, verbose=False):
         except Exception as e:
             print(f"could not select term '{term}': {e}")
 
-    box = find_keyword_box(driver)
-    if not box:
-        print("no keyword box found")
+    if not select_subject(driver, subject, verbose=verbose):
         return
-    box.clear()
-    box.send_keys(subject)
-    time.sleep(1)
-    if verbose:
-        print(f"typed {subject!r} into input id={box.get_attribute('id')!r}")
-    box.send_keys(Keys.ENTER)
-    time.sleep(6)
+    time.sleep(2)
 
-    # If ENTER didn't trigger it (no section rows visible), click anything labeled search
-    if not SECTION_RE.search(driver.find_element(By.TAG_NAME, "body").text):
-        for tag in ("button", "a", "input", "span"):
+    try:
+        driver.find_element(By.ID, SEARCH_BTN_ID).click()
+        if verbose:
+            print("clicked SEARCH")
+    except Exception:
+        for tag in ("a", "button", "input", "span"):
             for el in driver.find_elements(By.TAG_NAME, tag):
                 label = " ".join(filter(None, [el.text,
                                                el.get_attribute("value") or "",
@@ -184,12 +228,84 @@ def run_search(driver, term, subject, verbose=False):
                 if label.strip().lower() == "search" and el.is_displayed():
                     try:
                         el.click()
-                        time.sleep(6)
                         if verbose:
-                            print(f"clicked <{tag}> search control")
+                            print(f"clicked <{tag}> search control (fallback)")
                     except Exception as e:
                         print(f"search click failed: {e}")
-                    return
+                        return
+                    break
+            else:
+                continue
+            break
+    time.sleep(6)
+
+
+def find_next_control(driver):
+    """The results grid pages 25 at a time. PeopleSoft's next-page control
+    carries 'hdown' in its id or a 'next' aria/title/alt."""
+    best, best_score = None, 0
+    for tag in ("a", "button", "img", "span"):
+        for el in driver.find_elements(By.TAG_NAME, tag):
+            if not el.is_displayed():
+                continue
+            eid = (el.get_attribute("id") or "").lower()
+            meta = " ".join(filter(None, [el.get_attribute("aria-label") or "",
+                                          el.get_attribute("title") or "",
+                                          el.get_attribute("alt") or ""])).lower()
+            score = 0
+            if "hdown" in eid:
+                score += 3
+            if meta.startswith("show next") or meta.startswith("next") or meta == "next":
+                score += 2
+            if score > best_score:
+                best, best_score = el, score
+    return best
+
+
+def collect_all_rows(driver, verbose=False):
+    """Parse every results page: View All if offered, else click next-page
+    until the counted total is reached or nothing new appears."""
+    for el in driver.find_elements(By.TAG_NAME, "a"):
+        try:
+            if el.is_displayed() and (el.text.strip().lower() == "view all"
+                                      or "hviewall" in (el.get_attribute("id") or "")):
+                el.click()
+                time.sleep(8)
+                if verbose:
+                    print("clicked View All")
+                break
+        except Exception:
+            continue
+
+    seen, rows = set(), []
+    stale_pages = 0
+    for page in range(80):
+        new = 0
+        for r in parse_results(driver):
+            if r["class_number"] not in seen:
+                seen.add(r["class_number"])
+                rows.append(r)
+                new += 1
+        body = driver.find_element(By.TAG_NAME, "body").text
+        m = COUNT_RE.search(body) or RESULTS_RE.search(body)
+        total = int(m.groups()[-1]) if m else None
+        if verbose:
+            print(f"  page {page + 1}: +{new}, {len(rows)} rows total"
+                  + (f" (page says {total})" if total else ""))
+        if total and len(rows) >= total:
+            break
+        stale_pages = stale_pages + 1 if new == 0 else 0
+        if stale_pages >= 2:
+            break
+        nxt = find_next_control(driver)
+        if nxt is None:
+            break
+        try:
+            nxt.click()
+        except Exception:
+            break
+        time.sleep(4)
+    return rows
 
 
 def parse_results(driver, verbose=False):
@@ -199,11 +315,11 @@ def parse_results(driver, verbose=False):
     (DEPT NNNNN/S [class#] - ... Open/Closed), the title, enrollment,
     instructor line, and 'Days : time-time'."""
     rows = []
-    # Scroll to force lazy loading of all results
+    # Scroll to settle any lazy rendering (grid is paginated, so this is quick)
     last_height = 0
-    for _ in range(30):
+    for _ in range(12):
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(1.2)
+        time.sleep(1.0)
         height = driver.execute_script("return document.body.scrollHeight")
         if height == last_height:
             break
@@ -268,7 +384,7 @@ def main():
             driver.get(START_URL)
             time.sleep(5)
             run_search(driver, term, subject)
-            rows = parse_results(driver)
+            rows = collect_all_rows(driver)
             for r in rows:
                 conn.execute("""INSERT OR REPLACE INTO section_times
                     (term, dept, course_id, section, class_number, instructor,
