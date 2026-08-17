@@ -27,6 +27,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -84,6 +85,7 @@ def probe(term, subject):
             print("  select id=", sel.get_attribute("id"),
                   [o.text for o in Select(sel).options][:6])
 
+    dump_controls(driver)
     run_search(driver, term, subject, verbose=True)
 
     rows = parse_results(driver, verbose=True)
@@ -91,12 +93,62 @@ def probe(term, subject):
     for r in rows[:8]:
         print("  ", r)
     if not rows:
-        print("\nNothing parsed — structure dump of first grid rows:")
-        for el in driver.find_elements(By.CSS_SELECTOR, "tr.ps_grid-row")[:3]:
-            print("-----")
-            print(el.text[:400])
+        print("\nNothing parsed — body text after search (first 3500 chars):")
+        print(driver.find_element(By.TAG_NAME, "body").text[:3500])
+        for i, fr in enumerate(driver.find_elements(By.TAG_NAME, "iframe")):
+            try:
+                driver.switch_to.frame(fr)
+                print(f"\n--- iframe {i} body (first 1500 chars) ---")
+                print(driver.find_element(By.TAG_NAME, "body").text[:1500])
+            except Exception as e:
+                print(f"iframe {i}: {e}")
+            finally:
+                driver.switch_to.default_content()
     driver.quit()
     print("\nPaste ALL of this output to Claude.")
+
+
+def dump_controls(driver):
+    print("\n--- visible inputs ---")
+    for el in driver.find_elements(By.TAG_NAME, "input"):
+        if not el.is_displayed():
+            continue
+        print(f"  input id={el.get_attribute('id')!r} type={el.get_attribute('type')!r} "
+              f"placeholder={el.get_attribute('placeholder')!r} "
+              f"aria={el.get_attribute('aria-label')!r} value={el.get_attribute('value')!r}")
+    print("--- clickables containing 'search' ---")
+    for tag in ("button", "a", "span", "div"):
+        for el in driver.find_elements(By.TAG_NAME, tag):
+            label = " ".join(filter(None, [el.text, el.get_attribute("title") or "",
+                                           el.get_attribute("aria-label") or ""]))
+            if "search" in label.lower() and el.is_displayed():
+                print(f"  <{tag}> id={el.get_attribute('id')!r} label={label[:60]!r}")
+    print("--- selects ---")
+    for sel in driver.find_elements(By.TAG_NAME, "select"):
+        if not sel.is_displayed():
+            continue
+        opts = [o.text for o in Select(sel).options][:5]
+        print(f"  select id={sel.get_attribute('id')!r} options={opts}")
+    frames = driver.find_elements(By.TAG_NAME, "iframe")
+    print(f"--- iframes: {len(frames)} ---")
+
+
+def find_keyword_box(driver):
+    """The guest search page uses a free-text box, not a department dropdown."""
+    candidates = []
+    for el in driver.find_elements(By.TAG_NAME, "input"):
+        if not el.is_displayed():
+            continue
+        itype = (el.get_attribute("type") or "").lower()
+        if itype not in ("text", "search", ""):
+            continue
+        meta = " ".join(filter(None, [el.get_attribute("id") or "",
+                                      el.get_attribute("placeholder") or "",
+                                      el.get_attribute("aria-label") or ""])).lower()
+        score = sum(k in meta for k in ("search", "keyword", "contain", "class"))
+        candidates.append((score, el))
+    candidates.sort(key=lambda t: -t[0])
+    return candidates[0][1] if candidates else None
 
 
 def run_search(driver, term, subject, verbose=False):
@@ -110,36 +162,34 @@ def run_search(driver, term, subject, verbose=False):
         except Exception as e:
             print(f"could not select term '{term}': {e}")
 
-    # Department dropdown: the select whose options include 4-letter subjects
-    dept_sel = None
-    for sel in driver.find_elements(By.TAG_NAME, "select"):
-        if sel == term_sel:
-            continue
-        texts = [o.text for o in Select(sel).options]
-        if any(subject in t for t in texts):
-            dept_sel = sel
-            break
-    if dept_sel:
-        target = next(t for t in [o.text for o in Select(dept_sel).options]
-                      if subject in t)
-        Select(dept_sel).select_by_visible_text(target)
-        time.sleep(2)
-        if verbose:
-            print(f"selected department option: {target!r}")
-    else:
-        print(f"no department dropdown option containing {subject!r} found")
+    box = find_keyword_box(driver)
+    if not box:
+        print("no keyword box found")
+        return
+    box.clear()
+    box.send_keys(subject)
+    time.sleep(1)
+    if verbose:
+        print(f"typed {subject!r} into input id={box.get_attribute('id')!r}")
+    box.send_keys(Keys.ENTER)
+    time.sleep(6)
 
-    # Click the search button
-    for btn in driver.find_elements(By.TAG_NAME, "input") + \
-            driver.find_elements(By.TAG_NAME, "button"):
-        label = (btn.get_attribute("value") or btn.text or "").strip().upper()
-        if label == "SEARCH":
-            btn.click()
-            time.sleep(5)
-            if verbose:
-                print("clicked SEARCH")
-            return
-    print("no SEARCH button found")
+    # If ENTER didn't trigger it (no section rows visible), click anything labeled search
+    if not SECTION_RE.search(driver.find_element(By.TAG_NAME, "body").text):
+        for tag in ("button", "a", "input", "span"):
+            for el in driver.find_elements(By.TAG_NAME, tag):
+                label = " ".join(filter(None, [el.text,
+                                               el.get_attribute("value") or "",
+                                               el.get_attribute("aria-label") or ""]))
+                if label.strip().lower() == "search" and el.is_displayed():
+                    try:
+                        el.click()
+                        time.sleep(6)
+                        if verbose:
+                            print(f"clicked <{tag}> search control")
+                    except Exception as e:
+                        print(f"search click failed: {e}")
+                    return
 
 
 def parse_results(driver, verbose=False):
