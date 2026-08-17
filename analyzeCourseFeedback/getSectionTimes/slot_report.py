@@ -180,9 +180,30 @@ def audit(rows, autumns, course):
 
 
 # ---------------------------------------------------------------- C
-def slot_quality(history_years, autumns, qual, target_year):
-    """Recency-weighted mean rating of a slot's past holders, shrunk
-    toward the overall HBC mean. Returns dict slot -> (q_hat, weight)."""
+def band(start):
+    m = t_minutes(start)
+    if m is None:
+        return "unknown"
+    if m < 11 * 60:
+        return "morning"
+    if m < 14 * 60:
+        return "midday"
+    return "afternoon"
+
+
+# 'Cluster' granularities, finest first. Exact slots may reshuffle while a
+# coarser cluster (all TTh mornings, say) still tilts the draw.
+GRAINS = [
+    ("exact slot", lambda s: (s["days"], s["start"])),
+    ("day x band", lambda s: (s["days"], band(s["start"]))),
+    ("day pattern", lambda s: s["days"]),
+    ("time band", lambda s: band(s["start"])),
+]
+
+
+def slot_quality(history_years, autumns, qual, target_year, keyf):
+    """Recency-weighted mean rating of a cluster's past holders, shrunk
+    toward the overall HBC mean. Returns dict key -> (q_hat, weight)."""
     all_r = [r for y in history_years for s in autumns[y]
              for r in [rate(s["who"], qual)] if r is not None]
     prior = sum(all_r) / len(all_r) if all_r else None
@@ -193,11 +214,11 @@ def slot_quality(history_years, autumns, qual, target_year):
             r = rate(s["who"], qual)
             if r is None:
                 continue
-            acc[s["slot"]][0] += w_year * r
-            acc[s["slot"]][1] += w_year
+            acc[keyf(s)][0] += w_year * r
+            acc[keyf(s)][1] += w_year
     out = {}
-    for slot, (num, den) in acc.items():
-        out[slot] = ((num + SHRINK_K * prior) / (den + SHRINK_K), den)
+    for key, (num, den) in acc.items():
+        out[key] = ((num + SHRINK_K * prior) / (den + SHRINK_K), den)
     return out, prior
 
 
@@ -227,33 +248,7 @@ def spearman(pairs):
     return sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / (sx * sy)
 
 
-def backtest(autumns, qual):
-    print("\n" + "=" * 72)
-    print("C. WALK-FORWARD BACKTEST: predicted slot quality vs what you got")
-    years = sorted(y for y in autumns if y < 2026)
-    by_year = {}
-    pooled = []
-    for y in years[1:]:
-        hist = [h for h in years if h < y]
-        pred, _ = slot_quality(hist, autumns, qual, y)
-        pairs = []
-        for s in autumns[y]:
-            r = rate(s["who"], qual)
-            if r is None or s["slot"] not in pred:
-                continue
-            pairs.append((pred[s["slot"]][0], r))
-        if len(pairs) >= 5:
-            rho = spearman(pairs)
-            by_year[y] = (rho, len(pairs))
-            pooled.extend((y, p, r) for p, r in pairs)
-    for y, (rho, n) in sorted(by_year.items()):
-        print(f"  {y}: rank corr {rho:+.2f} over {n} sections")
-
-    if len(pooled) < 10:
-        print("  not enough rateable section-years to score the claim")
-        return 0.0, 1.0
-
-    rho_pool = spearman([(p, r) for _, p, r in pooled])
+def perm_pval(pooled, rho_pool):
     rng = random.Random(43)
     year_groups = defaultdict(list)
     for y, p, r in pooled:
@@ -261,39 +256,85 @@ def backtest(autumns, qual):
     count = 0
     for _ in range(PERMS):
         shuffled = []
-        for y, pr in year_groups.items():
+        for pr in year_groups.values():
             rs = [r for _, r in pr]
             rng.shuffle(rs)
             shuffled.extend((p, r) for (p, _), r in zip(pr, rs))
         if spearman(shuffled) >= rho_pool:
             count += 1
-    pval = count / PERMS
-    print(f"\n  POOLED ({len(pooled)} section-years): rank corr {rho_pool:+.2f}, "
-          f"permutation p = {pval:.3f}")
-    print("  (p < .05 means slot history genuinely tilts your draw;")
-    print("   p >= .05 means the tilt is indistinguishable from shuffling)")
-    return rho_pool, pval
+    return count / PERMS
+
+
+def backtest(autumns, qual):
+    print("\n" + "=" * 72)
+    print("C. WALK-FORWARD BACKTEST: does a time's past CLUSTER of instructors")
+    print("   predict the quality of who you draw? (four granularities)")
+    years = sorted(y for y in autumns if y < 2026)
+    results = {}
+    for name, keyf in GRAINS:
+        pooled = []
+        per_year = {}
+        for y in years[1:]:
+            hist = [h for h in years if h < y]
+            pred, _ = slot_quality(hist, autumns, qual, y, keyf)
+            pairs = []
+            for s in autumns[y]:
+                r = rate(s["who"], qual)
+                k = keyf(s)
+                if r is None or k not in pred:
+                    continue
+                pairs.append((pred[k][0], r))
+            if len(pairs) >= 5:
+                per_year[y] = (spearman(pairs), len(pairs))
+                pooled.extend((y, p, r) for p, r in pairs)
+        if name == "exact slot":
+            for y, (rho, n) in sorted(per_year.items()):
+                print(f"    {y}: rank corr {rho:+.2f} over {n} sections")
+        if len(pooled) < 10:
+            results[name] = (0.0, 1.0, len(pooled))
+            continue
+        rho_pool = spearman([(p, r) for _, p, r in pooled])
+        results[name] = (rho_pool, perm_pval(pooled, rho_pool), len(pooled))
+
+    print(f"\n  {'cluster':<12} {'rank corr':>9} {'perm p':>7} {'n':>5}")
+    for name, (rho, p, n) in results.items():
+        mark = "  <-- significant" if p < 0.05 and n >= 10 else ""
+        print(f"  {name:<12} {rho:>+9.2f} {p:>7.3f} {n:>5}{mark}")
+    print("  (p < .05: that clustering genuinely tilts your draw; p >= .05:")
+    print("   indistinguishable from shuffling instructors within each year)")
+    return results
+
+
+def choose_grain(results):
+    for name, keyf in GRAINS:
+        rho, p, n = results.get(name, (0.0, 1.0, 0))
+        if p < 0.05 and n >= 10:
+            return name, keyf, rho, p, False
+    name, keyf = GRAINS[0][0], GRAINS[0][1]
+    rho, p, _ = results.get(name, (0.0, 1.0, 0))
+    return name, keyf, rho, p, True
 
 
 # ---------------------------------------------------------------- D
-def ballot(autumns, qual, rho, pval):
+def ballot(autumns, qual, results):
     target = autumns.get(2026, [])
     if not target:
         print("\nNo Autumn 2026 rows - scrape Autumn 2026 first.")
         return
+    name, keyf, rho, pval, weak = choose_grain(results)
     print("\n" + "=" * 72)
-    print("D. AUTUMN 2026 BALLOT (trust level: rank corr "
-          f"{rho:+.2f}, p={pval:.3f} - "
-          + ("usable tilt" if pval < 0.05 else
-         "WEAK: order by schedule fit, not slot history"))
+    print(f"D. AUTUMN 2026 BALLOT - ranked by '{name}' history "
+          f"(rank corr {rho:+.2f}, p={pval:.3f}: "
+          + ("usable tilt)" if not weak else
+             "WEAK - order by schedule fit, not slot history)"))
     hist_years = sorted(y for y in autumns if y < 2026)
-    pred, prior = slot_quality(hist_years, autumns, qual, 2026)
+    pred, prior = slot_quality(hist_years, autumns, qual, 2026, keyf)
     print(f"HBC average instructor rating (the blind-draw baseline): "
           f"{prior:.2f}\n" if prior else "")
 
     scored = []
     for s in target:
-        q, den = pred.get(s["slot"], (prior, 0.0))
+        q, den = pred.get(keyf(s), (prior, 0.0))
         holders = Counter()
         for y in hist_years:
             for h in autumns[y]:
@@ -342,8 +383,8 @@ def main():
     if blind:
         print(f"  no feedback data (blind draws): {', '.join(b.title() for b in blind)}")
 
-    rho, pval = backtest(autumns, qual)
-    ballot(autumns, qual, rho, pval)
+    results = backtest(autumns, qual)
+    ballot(autumns, qual, results)
 
 
 if __name__ == "__main__":
