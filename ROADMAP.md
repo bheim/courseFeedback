@@ -219,6 +219,16 @@ course_feedback.db for committing.
       (needs a mapping decision — its questions differ semantically)
 - [ ] Backfill the ~2,500 grad-form rows across recent quarters
 
+### Coverage map (verified dark zones — display honestly, don't imply absence = bad)
+- Intro MATH (13100-15300, 19620): the feedback site publishes essentially
+  no reports for these sections (35 links in the whole 15xxx band, 33 of
+  them 15910). Not a parser gap — the reports don't exist. Site should
+  label these "not surveyed," never blank.
+- WRIT 10100: zero reports (writing seminars don't run the survey).
+- Language courses (LATN etc.): reports exist but use a form without the
+  numeric tables our parser reads — comments capture works, ratings don't.
+- SOSC-primary sections: numeric extraction sparse — form variant, queued.
+
 ### W7. Later / exploratory
 - [ ] Section meeting times from course search -> conflict-free schedule
       optimizer ("maximize quality per hour that fits my calendar")
