@@ -230,8 +230,17 @@ course_feedback.db for committing.
 - SOSC-primary sections: numeric extraction sparse — form variant, queued.
 
 ### W7. Later / exploratory
-- [ ] Section meeting times from course search -> conflict-free schedule
-      optimizer ("maximize quality per hour that fits my calendar")
+- [ ] PROMOTED to near-term (2026-08-17, from live pre-reg use): section
+      meeting times. The feedback reports never carry times — a real gap
+      hit during actual registration ("which time slot likely gets the
+      good professor" was unanswerable from our data). Design: (a) a
+      quarterly Class Search scrape (login, like feedback runs) capturing
+      every section's time + instructor once assignments are final; after
+      2-3 quarters this powers a time-slot/instructor recurrence model
+      that automates the archived-schedule play for hidden-name Hum/Sosc;
+      (b) then the conflict-free schedule optimizer ("maximize quality
+      per hour that fits my calendar"). Until then: manual archive lookup
+      (e.g., prior-year schedules) is the stopgap.
 - [ ] Professor trajectory (improving/declining over quarters)
 - [ ] Score Autumn 2026 predictions against reality when its feedback drops
       (~Dec 2026) — the first true out-of-sample test
