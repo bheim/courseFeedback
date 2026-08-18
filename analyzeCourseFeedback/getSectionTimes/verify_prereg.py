@@ -105,14 +105,22 @@ def parse_page(text):
 
 
 def read_frames(driver):
-    """Body text from the page AND every iframe (portal pages nest content)."""
+    """Body text from the page AND every visible iframe, narrating progress
+    so a slow portal page never looks like a hang."""
     texts = []
     try:
+        print("  reading main page...", flush=True)
         texts.append(("main", driver.find_element(By.TAG_NAME, "body").text))
-    except Exception:
-        pass
-    for i, fr in enumerate(driver.find_elements(By.TAG_NAME, "iframe")):
+    except Exception as e:
+        print(f"  main page unreadable: {e}", flush=True)
+    frames = driver.find_elements(By.TAG_NAME, "iframe")
+    if frames:
+        print(f"  {len(frames)} iframes found", flush=True)
+    for i, fr in enumerate(frames):
         try:
+            if not fr.is_displayed():
+                continue
+            print(f"  reading iframe {i}...", flush=True)
             driver.switch_to.frame(fr)
             texts.append((f"iframe{i}", driver.find_element(By.TAG_NAME, "body").text))
             for j, sub in enumerate(driver.find_elements(By.TAG_NAME, "iframe")):
@@ -124,8 +132,8 @@ def read_frames(driver):
                     pass
                 finally:
                     driver.switch_to.parent_frame()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"  iframe {i} unreadable: {e}", flush=True)
         finally:
             driver.switch_to.default_content()
     return texts
@@ -156,35 +164,23 @@ def main():
                 break
         time.sleep(1)
         rows = {}
-        hit_frames = []
-        stale = 0
-        for sweep in range(40):
-            for name, text in read_frames(driver):
-                r = parse_page(text)
-                if r and sweep == 0:
-                    hit_frames.append(f"{name}({len(r)})")
-                rows.update(r)
-            before = len(rows)
-            driver.execute_script("window.scrollBy(0, Math.round(window.innerHeight * 0.8));")
-            time.sleep(0.7)
-            for name, text in read_frames(driver):
-                rows.update(parse_page(text))
-            if len(rows) == before:
-                stale += 1
-                if stale >= 4:
-                    break
-            else:
-                stale = 0
+        frames = read_frames(driver)
+        for name, text in frames:
+            r = parse_page(text)
+            print(f"  {name}: {len(text or '')} chars -> {len(r)} section rows", flush=True)
+            rows.update(r)
         fresh = {k: v for k, v in rows.items() if k not in seen}
         seen.update(rows)
-        print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)"
-              + (f"  first hit in: {', '.join(hit_frames)}" if hit_frames else ""))
+        print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)")
+        if rows and len(seen) < 110:
+            print("  (if the page says 118 rows, scroll the list in the browser "
+                  "and press ENTER again - captures accumulate)")
         if not rows:
             print("--- nothing parsed in any frame; samples (paste to Claude) ---")
-            for name, text in read_frames(driver):
+            for name, text in frames:
                 t = (text or "").strip()
                 if t:
-                    print(f"\n[{name}] {t[:700]}")
+                    print(f"\n[{name}] {t[:900]}")
     driver.quit()
 
     print("\n" + "=" * 64)
