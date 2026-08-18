@@ -197,6 +197,44 @@ fairness/hours are proxies), assignment-constraint modeling (marginal
 probabilities only), threshold brittleness (4.40/4.25 cutoffs,
 unshrunk small-n ratings), and any social/peer-composition claims.
 
+## 5c. Second validation round (2026-08-19): within-sequence power,
+uncertainty propagation, robustness
+
+- Within-sequence walk-forward (ranks computed inside each
+  sequence-year): GOOD spreads top-vs-bottom third are directional but
+  not significant - Poetry +29pts (p=.086, n=51), PhilPer +20pts
+  (p=.075, n=83), HBC +11pts (p=.225). CONSEQUENCE: the model reliably
+  picks SEQUENCES and excludes tails; its ordering WITHIN a sequence is
+  a plausible tilt only, so section order below rank 1 follows the
+  student's schedule preference.
+- Sequence-level gaps among rated draws are large and solid: Poetry
+  baseline 55% GOOD / 4% AVOID vs PhilPer 36% / 29% vs HBC 38% / 37%.
+- Newcomer denominators: Poetry 8/32 AVOID (95% CI 13-42%), PhilPer
+  22/56 (27-52%); P(Poetry newcomer pool safer) = 92%. Coverage audit:
+  every autumn newcomer since 2021 in schedule data has rated feedback
+  (0% gap) - the unrated-newcomer worst case is empirically empty.
+  Propagated head-to-head: P(Poetry /11 lower corrected downside than
+  a PhilPer 11:00 section) ~ 100% (Poetry /11's unknown share is ~6%,
+  so the comparison is insensitive to newcomer-rate uncertainty).
+- Robustness: 17,496 specifications (pseudo-count x lapsed hazard x
+  recency weight x both thresholds x mass cap x newcomer shrinkage x
+  ease-rule on/off x leave-one-out dropping Broughton/Morrissey/
+  Saltzman/Torres/Gabel and none): Poetry's best section beats
+  PhilPer's best in 100.0% of specs; Poetry /11 is top-2 within Poetry
+  in 93.3% (it is #1 in 91%; /7 or /12 lead otherwise).
+- FINAL SUBMITTED ORDER (same 14 sections as section 1; only the
+  order changed, so verifier targets and all conflict checks stand):
+  Poetry /11 -> /12 -> /9 -> /10 -> /7 -> /8 -> PhilPer /11 -> /12 ->
+  /13 -> /14 -> PhilPer /4 -> /5 -> HBC /13 -> /14. Rank 1 is the
+  robust pick; ranks 2-6 are ordered by the student's schedule
+  preference (protect mornings) per the within-sequence result;
+  PhilPer stays as the content-bearing middle block with honestly
+  stated ~60/32 corrected odds.
+- Still open (post-deadline): 250-row-cap term backfill; constrained
+  assignment simulation; grade-outcome validation (no grade data yet -
+  all claims are about instructor experience and grading friction, not
+  GPA directly).
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
