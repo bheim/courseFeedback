@@ -230,17 +230,26 @@ course_feedback.db for committing.
 - SOSC-primary sections: numeric extraction sparse — form variant, queued.
 
 ### W7. Later / exploratory
-- [ ] PROMOTED to near-term (2026-08-17, from live pre-reg use): section
-      meeting times. The feedback reports never carry times — a real gap
-      hit during actual registration ("which time slot likely gets the
-      good professor" was unanswerable from our data). Design: (a) a
-      quarterly Class Search scrape (login, like feedback runs) capturing
-      every section's time + instructor once assignments are final; after
-      2-3 quarters this powers a time-slot/instructor recurrence model
-      that automates the archived-schedule play for hidden-name Hum/Sosc;
-      (b) then the conflict-free schedule optimizer ("maximize quality
-      per hour that fits my calendar"). Until then: manual archive lookup
-      (e.g., prior-year schedules) is the stopgap.
+- [x] SHIPPED (2026-08-18): section times. Class Search has a PUBLIC guest
+      portal with terms back to Autumn 2016 — no login needed. Built in
+      `analyzeCourseFeedback/getSectionTimes/`:
+      `scrape_section_times.py` (dept-dropdown + pagination; times.db has
+      HUMA 2016-2026 + BIOS/LATN Autumn 2026), `backtest_times.py`
+      (verdict: slot->instructor NAMING is chance level, 8-10% vs a 62%
+      returner ceiling), `slot_report.py` (cluster-quality tilt at four
+      granularities: NOT significant, best p=.077 — ballots must not
+      pretend otherwise; only sticky individuals matter: Fenno TTh 11
+      x7yr, Martinez TTh 9:30 x4, Williams TTh 3:30 x3, Davey PhilPer
+      9:30 x3), `verify_prereg.py` (user-driven browser, reads every
+      tab/frame, confirmed the final Autumn 2026 ballot 11/11 against the
+      live pre-reg system on 2026-08-18). Learned the hard way: the
+      portal caps results at exactly 250 rows (8 terms incomplete —
+      weekday-partitioned re-scrape queued), keyword search is NOT a dept
+      filter, and pre-reg opens components in a second browser tab.
+- [ ] Backfill the 8 terms clipped by the 250-row cap (partition queries
+      by weekday checkboxes); then SOSC/PHIL/ECON times for winter tools.
+- [ ] Conflict-free schedule optimizer ("maximize quality per hour that
+      fits my calendar") — times.db + signals.db now make this buildable.
 - [ ] Professor trajectory (improving/declining over quarters)
 - [ ] Score Autumn 2026 predictions against reality when its feedback drops
       (~Dec 2026) — the first true out-of-sample test
