@@ -27,14 +27,18 @@ from webdriver_manager.chrome import ChromeDriverManager
 START_URL = "https://my.uchicago.edu/"
 DB_PATH = "times.db"
 
-# The final ballot: (course_id, section) -> expected meeting
+# The final ballot (PhilPer-forward, Loeffler/Ford/Davey-free), rank order:
+# PhilPer 11-14 -> Poetry 11 -> Poetry 7, 8 -> Poetry 12 -> Poetry 9, 10
+# -> PhilPer 4, 5 -> HBC 13, 14.  (course_id, section) -> expected meeting
 TARGETS = {
-    (12300, "13"): ("Tue Thu", "12:30 PM"), (12300, "14"): ("Tue Thu", "12:30 PM"),
-    (12300, "15"): ("Tue Thu", "12:30 PM"), (12300, "16"): ("Tue Thu", "12:30 PM"),
+    (11500, "11"): ("Tue Thu", "11:00 AM"), (11500, "12"): ("Tue Thu", "11:00 AM"),
+    (11500, "13"): ("Tue Thu", "11:00 AM"), (11500, "14"): ("Tue Thu", "11:00 AM"),
     (18000, "11"): ("Tue Thu", "12:30 PM"),
-    (11500, "15"): ("Tue Thu", "12:30 PM"), (11500, "16"): ("Tue Thu", "12:30 PM"),
-    (11500, "17"): ("Tue Thu", "12:30 PM"), (11500, "18"): ("Tue Thu", "12:30 PM"),
-    (16000, "14"): ("Tue Thu", "12:30 PM"), (16000, "15"): ("Tue Thu", "12:30 PM"),
+    (18000, "7"): ("Tue Thu", "09:30 AM"), (18000, "8"): ("Tue Thu", "09:30 AM"),
+    (18000, "12"): ("Tue Thu", "02:00 PM"),
+    (18000, "9"): ("Tue Thu", "11:00 AM"), (18000, "10"): ("Tue Thu", "11:00 AM"),
+    (11500, "4"): ("Mon Wed", "01:30 PM"), (11500, "5"): ("Mon Wed", "01:30 PM"),
+    (12300, "13"): ("Tue Thu", "12:30 PM"), (12300, "14"): ("Tue Thu", "12:30 PM"),
 }
 
 SECTION_RE = re.compile(r"([A-Z]{4})\s+(\d{5})/(\d+)\s*(?:\[(\d+)\])?")
