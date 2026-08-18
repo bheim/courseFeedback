@@ -168,16 +168,32 @@ def main():
         for h in driver.window_handles:
             try:
                 driver.switch_to.window(h)
-                print(f"  tab: {driver.title[:55]!r}", flush=True)
+                title, url = driver.title, driver.current_url
+                print(f"  tab: {title[:55]!r}", flush=True)
             except Exception as e:
                 print(f"  tab unreadable: {e}", flush=True)
                 continue
+            if "PREREG" in url.upper() or "pre-registration" in title.lower():
+                try:
+                    with open("prereg_page.html", "w", encoding="utf-8") as f:
+                        f.write(driver.page_source)
+                except Exception:
+                    pass
             for name, text in read_frames(driver):
                 r = parse_page(text)
                 print(f"    {name}: {len(text or '')} chars -> {len(r)} section rows",
                       flush=True)
                 rows.update(r)
-                all_frames.append((driver.title[:40], name, text))
+                all_frames.append((title[:40], url[:100], name, text))
+        try:
+            with open("prereg_dump.txt", "a", encoding="utf-8") as f:
+                f.write(f"\n\n########## capture {time.strftime('%H:%M:%S')} ##########\n")
+                for title, url, name, text in all_frames:
+                    f.write(f"\n===== tab {title!r} | {name} | {url} =====\n")
+                    f.write((text or "") + "\n")
+            print("  raw text of every tab/frame appended to prereg_dump.txt")
+        except Exception as e:
+            print(f"  could not write dump: {e}")
         fresh = {k: v for k, v in rows.items() if k not in seen}
         seen.update(rows)
         print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)")
@@ -185,10 +201,12 @@ def main():
             print("  (if the page says 118 rows, scroll the list in the browser "
                   "and press ENTER again - captures accumulate)")
         if not rows:
-            print("--- nothing parsed in any tab; samples (paste to Claude) ---")
+            print("--- nothing parsed in any tab; samples below ---")
             print("--- IMPORTANT: the pre-reg list must be open in THIS script's")
             print("--- Chrome window (any tab), not your everyday browser.")
-            for title, name, text in all_frames:
+            print("--- Full ground truth is in prereg_dump.txt - upload that")
+            print("--- file to Claude and the parser gets built from it directly.")
+            for title, url, name, text in all_frames:
                 t = (text or "").strip()
                 if t:
                     print(f"\n[{title} | {name}] {t[:600]}")
