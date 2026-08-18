@@ -58,8 +58,19 @@ def norm_time(hhmm, ampm):
     return f"{h:02d}:{m} {suffix}"
 
 
+DETAIL_RE = re.compile(
+    r"Section Enrollment:\s*\d+\s*/\s*\d+.{0,160}?"
+    r"((?:Mon|Tue|Wed|Thu|Fri)(?:\s+(?:Mon|Tue|Wed|Thu|Fri))*)\s*:\s*"
+    r"(\d{1,2}:\d{2})\s*([AP]M)", re.S)
+
+
 def parse_page(text):
-    """Return {(course_id, section): (days, start)} for every row visible."""
+    """Return {(course_id, section): (days, start)} for every row visible.
+
+    Handles both layouts: header immediately followed by its details
+    (Class Search style), and the pre-reg grid's split rendering where
+    all header lines come first and the detail blocks follow in the
+    same order (seen in the user's print of First-Year Pre-Registration)."""
     found = {}
     blocks = SECTION_RE.split(text)
     for i in range(1, len(blocks) - 4, 5):
@@ -74,6 +85,22 @@ def parse_page(text):
         m = TIME_SHORT.search(tail)
         if m and m.group(1) in DAYMAP:
             found[(int(num), sec.lstrip("0") or "0")] = (DAYMAP[m.group(1)], norm_time(m.group(2), m.group(3)))
+
+    heads = [(h.group(1), h.group(2), h.group(3)) for h in SECTION_RE.finditer(text)]
+    huma_heads = [(int(n), s.lstrip("0") or "0") for d, n, s in heads if d == "HUMA"]
+    if huma_heads and len(found) < len(huma_heads) // 2:
+        # Separated layout: headers first, detail blocks after. Whatever the
+        # adjacency pass matched here is an artifact (a header's 'tail' is
+        # just the next header) - discard it and pair positionally instead,
+        # which is only safe when every header has exactly one detail block.
+        details = [(m.group(1), norm_time(m.group(2), m.group(3)))
+                   for m in DETAIL_RE.finditer(text)]
+        if details and len(details) == len(huma_heads):
+            return dict(zip(huma_heads, details))
+        if details:
+            print(f"  (layout note: {len(huma_heads)} headers vs {len(details)} "
+                  "detail blocks - scroll so the full list loads, then capture again)")
+        return {}
     return found
 
 
@@ -110,33 +137,45 @@ def main():
                               options=options)
     driver.get(START_URL)
     print("Browser opened. Log in yourself (Okta/Duo - this script never sees it).")
-    print("Then open the PRE-REGISTRATION screen - the one where you rank Hum")
-    print("sections - and expand a sequence so its section list WITH MEETING")
-    print("TIMES is visible on screen. Capture. Then expand the next sequence")
-    print("(Human Being and Citizen, Poetry, Philosophical Perspectives, Media")
-    print("Aesthetics) and capture again - rows accumulate across captures.")
+    print("Then open the First-Year Pre-Registration page - the flat list of")
+    print("sections with ADD buttons ('118 rows'). No expanding needed: press")
+    print("ENTER once and the script auto-scrolls the whole list. If it parses")
+    print("fewer rows than the page's row count, scroll manually and press")
+    print("ENTER again - rows accumulate across captures.")
 
     seen = {}
     while True:
-        ans = input("\nPress ENTER to capture what's on screen ('done' to finish): ").strip().lower()
+        ans = input("\nPress ENTER to capture ('done' to finish): ").strip().lower()
         if ans == "done":
             break
         time.sleep(1)
-        frames = read_frames(driver)
         rows = {}
         hit_frames = []
-        for name, text in frames:
-            r = parse_page(text)
-            if r:
-                hit_frames.append(f"{name}({len(r)})")
-            rows.update(r)
+        stale = 0
+        for sweep in range(40):
+            for name, text in read_frames(driver):
+                r = parse_page(text)
+                if r and sweep == 0:
+                    hit_frames.append(f"{name}({len(r)})")
+                rows.update(r)
+            before = len(rows)
+            driver.execute_script("window.scrollBy(0, Math.round(window.innerHeight * 0.8));")
+            time.sleep(0.7)
+            for name, text in read_frames(driver):
+                rows.update(parse_page(text))
+            if len(rows) == before:
+                stale += 1
+                if stale >= 4:
+                    break
+            else:
+                stale = 0
         fresh = {k: v for k, v in rows.items() if k not in seen}
         seen.update(rows)
         print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)"
-              + (f"  from: {', '.join(hit_frames)}" if hit_frames else ""))
+              + (f"  first hit in: {', '.join(hit_frames)}" if hit_frames else ""))
         if not rows:
             print("--- nothing parsed in any frame; samples (paste to Claude) ---")
-            for name, text in frames:
+            for name, text in read_frames(driver):
                 t = (text or "").strip()
                 if t:
                     print(f"\n[{name}] {t[:700]}")
