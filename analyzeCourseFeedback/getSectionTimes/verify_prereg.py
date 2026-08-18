@@ -145,9 +145,15 @@ def main():
 
     seen = {}
     while True:
-        ans = input("\nPress ENTER to capture ('done' to finish): ").strip().lower()
+        ans = input("\nWith the section list visible in the browser, press ENTER "
+                    "(type nothing) to capture - or type 'done' to finish: ").strip().lower()
         if ans == "done":
-            break
+            if seen:
+                break
+            again = input("Nothing has been captured yet. Press ENTER to capture "
+                          "the current page, or type 'done' again to quit empty: ").strip().lower()
+            if again == "done":
+                break
         time.sleep(1)
         rows = {}
         hit_frames = []
