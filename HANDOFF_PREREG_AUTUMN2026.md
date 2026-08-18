@@ -1,0 +1,178 @@
+# Handoff: Autumn 2026 First-Year Pre-Registration — Final Entry and Evidence
+
+Written 2026-08-18 for any agent continuing this work. The student is
+Christian Bricker, incoming UChicago first-year (Business Economics major
+planned, METI + Classical Studies minors). Pre-registration closes
+Friday 2026-08-21 5:00 PM CT; the entry below was verified against the
+live system on 2026-08-18 and is being submitted.
+
+## 1. The final entry
+
+Humanities, ranked (all verified present at these times in the live
+First-Year Pre-Registration system, 118 rows):
+
+| Rank | Section | Course | Meets |
+|---|---|---|---|
+| 1-4 | HUMA 11500 /11 /12 /13 /14 | Philosophical Perspectives | TTh 11:00-12:20 |
+| 5 | HUMA 18000 /11 | Poetry and the Human | TTh 12:30-1:50 |
+| 6-7 | HUMA 18000 /7 /8 | Poetry and the Human | TTh 9:30-10:50 |
+| 8 | HUMA 18000 /12 | Poetry and the Human | TTh 2:00-3:20 |
+| 9-10 | HUMA 18000 /9 /10 | Poetry and the Human | TTh 11:00-12:20 |
+| 11-12 | HUMA 11500 /4 /5 | Philosophical Perspectives | MW 1:30-2:50 |
+| 13-14 | HUMA 12300 /13 /14 | Human Being and Citizen | TTh 12:30-1:50 |
+
+Language: LATN 10100 (Introduction to Classical Latin I) section 3,
+Radding, MWF 10:30 — first; section 2 (MWF 9:30) alternate.
+BioSci: BIOS 11144 (The Genetic Basis for Human Disorders, Gifford,
+MWF 12:30) first; BIOS 13140 (The Public and Private Lives of Insects,
+Larsen, MW 1:30) second. WRIT: answered Yes (College auto-places the
+section). Math: skipped (AP Statistics).
+
+Requirement satisfied: >= 8 sections from >= 3 sequences.
+
+## 2. The student's binding rules (set explicitly, in his words or by
+his confirmation)
+
+- GPA protection is the optimization target; workload fear is real
+  ("I can't get stuck with so much reading").
+- No 3:30 classes. Prefers no class before 10:30 (Latin at 10:30 opens
+  MWF); the rank-6/7 Poetry 9:30 sections are a knowingly accepted
+  exception, insurance against administrative placement.
+- Never enter/request/handle his password or second factor. He drives
+  all logged-in browser work himself.
+- Raw student comments never get committed/pushed to the public repo
+  (comments.db and prereg dumps are gitignored; they travel by chat
+  upload only).
+- Never plan below 300 units. The 4th course is a hedge with the
+  October 16 5:00 PM clean-drop as the exit.
+- Communication: matter-of-fact, course NAMES not just numbers, no
+  unsupported "easy A" labels, evidence never accusations.
+
+## 3. Why this ballot (the decision chain)
+
+1. Original desire: Human Being and Citizen — great books + antiquity.
+   A fully verified HBC-forward ballot was built first (HBC 12:30
+   sections 13-16 etc., 11/11 live-verified).
+2. Workload evidence surfaced: HBC is the heaviest Hum sequence
+   (7.0 hrs/wk; 20% of students report 10+ hrs — highest tail among his
+   options). He balked at the reading volume.
+3. A Poetry-maximizing "easiest" ballot was built (Poetry 5.8 hrs, 59%
+   of students <= 5 hrs — lightest sequence in the College), but content
+   analysis showed Poetry contains essentially none of what he wanted
+   (in >1,000 Poetry comments, Homer appears once; catalog confirms it
+   is a form/close-reading sequence).
+4. Resolution: Philosophical Perspectives — autumn is Plato, Aristotle,
+   and the Greek tragedians (catalog text; student comments mention
+   Aristotle 70x, Plato 61x), at 6.2 hrs/wk with 46% of students
+   <= 5 hrs. "Plato without the page count." Winter/spring pivot to
+   Descartes/Hume/Kant — flagged to him explicitly; he accepted.
+   Poetry stays as the ease-insurance block; HBC as token third
+   sequence (and a welcome outcome if reached).
+
+## 4. Evidence base (what was measured, where it lives)
+
+Data: `analyzeCourseFeedback/getSectionTimes/times.db` (3,904 HUMA
+sections 2016-2026 + BIOS/LATN Autumn 2026, scraped from the PUBLIC
+Class Search guest portal; NOTE: 8 terms are truncated at the portal's
+250-row cap — see ROADMAP W7), `analyzeCourseFeedback/course_feedback.db`
+(ratings, 12 dimensions, per-instructor hours), comments.db (342,767
+raw comments, LOCAL/gitignored), `forecasting/signals.db`,
+`analyzeCourseFeedback/getCourseIDs/catalog.db`.
+
+Tools (all in `analyzeCourseFeedback/getSectionTimes/`):
+`scrape_section_times.py`, `backtest_times.py`, `slot_report.py`,
+`verify_prereg.py` (user-driven browser; reads every tab/frame; TARGETS
+currently set to the 14 ranked sections).
+
+Established findings, all walk-forward / out-of-sample where applicable:
+
+- Predicting the instructor NAME from a time slot is chance level:
+  best rule 10% over 143 predictions across 10 autumns, against a 62%
+  ceiling (share of returning instructors at all).
+- Slot-cluster quality tilts are NOT statistically significant at any
+  of four granularities (best: day x band, rho +0.11, permutation
+  p = 0.077, n = 112). Ballots must not pretend otherwise.
+- The real structure is individual stickiness plus turnover: only 49%
+  of each autumn's Hum instructors taught the prior autumn; returners
+  keep their exact time 34% (same days 68%, same band 78%); median
+  career is 1-2 autumns (23 of 54 HBC instructors taught exactly one).
+- Measured return hazards used in all odds: taught Autumn 25 AND Winter
+  26 -> 48%; Winter-only -> 37%; Autumn-only -> 28%; lapsed -> ~15%,
+  blended with per-person streaks (shrunk, pseudo-count 2).
+- Sticky individuals that drive every recommendation:
+  GOOD - Broughton (Poetry 9:30/11:00, 7 straight autumns, strongest
+  ease testimony in the corpus), Morrissey (Poetry, 4.57 at 4.9 hrs,
+  6 straight), Saltzman (Poetry 12:30 both recent years, gentlest
+  grading testimony), Nooter, Hofmann, Klinger; PhilPer 11:00 2025 crew
+  (Proios 4.55, Grosser 4.50, Finkelstein, Briggs 4.40 at 4.6 hrs),
+  Kaspers (MW 1:30/3:00, 4.45 at 4.9 hrs, largest easy-mention count
+  in PhilPer), Zimmer (fairness 4.72), Ferguson (4.72 — best teacher,
+  NOT lightest: 6.9 hrs).
+  AVOID - Loeffler (PhilPer 12:30 four straight autumns + 2:00;
+  fairness 4.21, hard-mentions 15 vs easy 9) — this is why NO PhilPer
+  12:30 or 2:00 section is ranked; Davey (PhilPer 9:30, six straight
+  autumns, 4.03); Ford (PhilPer 2:00 both recent years, fairness 3.59,
+  worst in either sequence); Kates (MW 4:30); Poetry MW belt (Rokem
+  MW 3:00 sticky at 4.22; Gabel fairness 3.56, winter-active).
+- Final per-section model (hazard x recency-weighted slot affinity /
+  section count; good = rating >= 4.40 & fairness >= 4.35 or dominant
+  ease evidence; avoid = rating <= 4.25 or fairness <= 4.25):
+  ranks 1-4 ~40% good / 14% avoid-tail; rank 5 ~81% good with a
+  ~10-13% Torres (4.17) tail; ranks 6-7 73% good / 0% avoid; rank 8
+  75/8; ranks 9-10 57% good with an ~18% Gabel tail (upper bound —
+  his hazard is inflated by a pre-2020 streak); ranks 11-12 37/14
+  (Kaspers 33%). Known model caveats: cluster-level non-significance
+  means these are tilts with wide error bars, not guarantees; ~40-60%
+  of every slot is a no-history newcomer who lands at the sequence
+  mean (~4.34).
+- Verification: the live pre-reg page (First-Year Pre-Registration,
+  one flat 118-row grid, opens in a second browser tab) was captured
+  in full; earlier ballot verified 11/11, times drift was caught
+  (11500/21 moved TTh 3:30 -> MW 3:00 between scrape and live), so the
+  LIVE page is always the authority. Conflict matrix: all 7 possible
+  Hum landings clear all 3 Latin sections; BIOS 11144 clears every
+  landing; BIOS 13140 conflicts only with the rank-11/12 landing
+  (accepted; fixable at add/drop); BIOS 11140 (Biotechnology, TTh
+  11:00) conflicts with the modal landings and is deliberately
+  excluded from the ballot — see §5.
+
+BIOS eliminations for the record: 15113 (Gifford's viruses course,
+4.66, MWF 9:30) violates the morning rule -> moved to the winter plan;
+11136 (Complex Trait Genetics, 3.0 hrs) sits exactly on Radding's
+Latin and was full; 15127 (Butler) is not offered this autumn despite
+the catalog's claim.
+
+## 5. The playbook from here (dates are the contract)
+
+- Sept 4: schedule + WRIT placement publish. Check WRIT landed in an
+  open window (it must — fixed courses occupy only two midday bands).
+- Sept 8: results. He pastes instructor names; deliver keep-or-act
+  verdicts from the GOOD/AVOID lists above the same day. Include the
+  Biotechnology decision: if his Hum landed anywhere OTHER than TTh
+  11:00 and he still wants to try it, swap BIOS 11144 -> 11140 at
+  add/drop (Sept 10); if Hum landed at 11:00 the question is moot.
+- Weeks 1-3: four courses carried (Hum + Latin + BIOS + WRIT). The
+  BIOS seat is the designated drop; October 16 5:00 PM is the free
+  exit. Rush, if it happens, counts as a phantom 10 hr/wk course.
+- Late autumn: winter registration has VISIBLE instructors and times —
+  no forecasting needed. Winter BIOS bench, best first: BIOS 11125
+  (Life Through a Genomic Lens, 4.50 @ 3.4 hrs), BIOS 13134 (It's Not
+  Easy Being Green, 4.58 @ 4.0), BIOS 15127 (Butler, 4.66 @ 4.7, if it
+  appears), BIOS 15113 (Gifford, 4.66 @ 5.1). Beware 000-unit traps
+  (Pizza with the PIs, Collaborative Learning — zero credit).
+  Winter shape: Hum II + Latin 10200 + WRIT-if-deferred + winter BIOS;
+  ECON 10000 (8.6 hrs, heaviest in his set) goes in a non-pledge
+  quarter.
+- Data debts (ROADMAP W7): 250-row-cap backfill via weekday-partitioned
+  queries; SOSC/PHIL/ECON times; my_slate_comments.py still joins by
+  surname (use professor ids); LATN ratings unreadable (form variant).
+
+## 6. Working protocol with this student
+
+He runs everything requiring UChicago auth or network on his laptop
+(this cloud environment cannot reach *.uchicago.edu at all) and pushes
+databases; code/analysis happens on branch
+`claude/explore-code-data-x8tkpa` (never touch main). He responds best
+to: direct verdicts first, numbers attached, honest caveats stated
+once, options collapsed to a recommendation. When he says "no
+shortcuts," he means recompute from raw data and show the sweep.
