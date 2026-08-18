@@ -164,11 +164,20 @@ def main():
                 break
         time.sleep(1)
         rows = {}
-        frames = read_frames(driver)
-        for name, text in frames:
-            r = parse_page(text)
-            print(f"  {name}: {len(text or '')} chars -> {len(r)} section rows", flush=True)
-            rows.update(r)
+        all_frames = []
+        for h in driver.window_handles:
+            try:
+                driver.switch_to.window(h)
+                print(f"  tab: {driver.title[:55]!r}", flush=True)
+            except Exception as e:
+                print(f"  tab unreadable: {e}", flush=True)
+                continue
+            for name, text in read_frames(driver):
+                r = parse_page(text)
+                print(f"    {name}: {len(text or '')} chars -> {len(r)} section rows",
+                      flush=True)
+                rows.update(r)
+                all_frames.append((driver.title[:40], name, text))
         fresh = {k: v for k, v in rows.items() if k not in seen}
         seen.update(rows)
         print(f"captured {len(rows)} HUMA rows ({len(fresh)} new; {len(seen)} total)")
@@ -176,11 +185,13 @@ def main():
             print("  (if the page says 118 rows, scroll the list in the browser "
                   "and press ENTER again - captures accumulate)")
         if not rows:
-            print("--- nothing parsed in any frame; samples (paste to Claude) ---")
-            for name, text in frames:
+            print("--- nothing parsed in any tab; samples (paste to Claude) ---")
+            print("--- IMPORTANT: the pre-reg list must be open in THIS script's")
+            print("--- Chrome window (any tab), not your everyday browser.")
+            for title, name, text in all_frames:
                 t = (text or "").strip()
                 if t:
-                    print(f"\n[{name}] {t[:900]}")
+                    print(f"\n[{title} | {name}] {t[:600]}")
     driver.quit()
 
     print("\n" + "=" * 64)
