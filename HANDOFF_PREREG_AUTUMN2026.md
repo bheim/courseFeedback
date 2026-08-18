@@ -167,6 +167,36 @@ the catalog's claim.
   queries; SOSC/PHIL/ECON times; my_slate_comments.py still joins by
   surname (use professor ids); LATN ratings unreadable (form variant).
 
+## 5b. Post-critique validation (2026-08-19, prompted by an external
+review): two tests the original file lacked
+
+Newcomer quality distributions (first 3 quarters of first-time
+instructors, 2019+ starters, n in parens): Poetry 50% GOOD / 25% AVOID
+(32), first-year mean 4.42; PhilPer 43% / 39% (56), mean 4.32; HBC
+40% / 46% (52). CONSEQUENCE: "0% avoid" claims were wrong as
+realized-risk statements. Correct language: "0% IDENTIFIED-avoid mass";
+every section's realized avoid risk includes its unknown share times
+the sequence newcomer-avoid rate. This widens Poetry's advantage
+(corrected top-Poetry sections ~83-86% good / 7-12% avoid vs corrected
+PhilPer 11:00 ~60% / ~32%).
+
+End-to-end walk-forward of the actual ranking model (hazard x load x
+slot affinity + GOOD/AVOID), 2021-2025, all three sequences, 221
+rated section-years: the GOOD side is real and monotonically
+calibrated (predicted <15% -> realized 31% good; 15-35% -> 42%;
+35-60% -> 52%; top third of sections 52% realized good vs bottom third
+33%). The AVOID side does NOT discriminate (realized avoid 22-26%
+regardless of prediction; sections with 0-5% identified avoid realized
+24% avoid) because realized bad draws come mostly from newcomers the
+model cannot see. CONSEQUENCE: the ballot genuinely raises the chance
+of a good draw; it cannot lower the ~quarter baseline chance of a bad
+one except by (a) avoiding sticky-bad slots and (b) choosing the
+sequence with the gentlest newcomer pool - which is Poetry on both
+counts. Conceded as unproven: GPA effects (no grade data; ratings/
+fairness/hours are proxies), assignment-constraint modeling (marginal
+probabilities only), threshold brittleness (4.40/4.25 cutoffs,
+unshrunk small-n ratings), and any social/peer-composition claims.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
