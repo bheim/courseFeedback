@@ -365,6 +365,27 @@ and URL-duplicated course rows (2-3x) inflate comment counts corpus-
 wide. ALL session comment counts are upper bounds. DATA DEBT: dedupe
 comments by (report URL, comment text) and course rows by URL.
 
+## 5h. SUBMISSION STATE (2026-08-20, final)
+
+- Humanities finalized to the mornings-protected order: Poetry /11 ->
+  /12 -> /7 -> /8 -> /9 -> /10 -> PhilPer /11-14 -> HBC /13-14 ->
+  PhilPer /4-5.
+- Known, intentional compromise: PHIL 21013 (Vogler) coexists ONLY
+  with BIOS 11144 among the three Biology entries (her Fri 1:30
+  discussion collides with BIOS 15128; her TTh 11:00 lecture with BIOS
+  11140). Biology order stays 11144 -> 15128 -> 11140: Vogler is the
+  ideal landing, Briggs (PHIL 23000) the realistic net. Alternative
+  orders if priorities change: maximize-Vogler = 11144 -> 15113 ->
+  15128; max capacity = 11144 -> 15128 -> 13128.
+- Autumn Math: skip; MATH 15250 planned for Winter or Spring (not
+  abandoning math).
+- Dates: submit by Fri 2026-08-21 5:00 PM CT; results expected Mon
+  2026-09-07 per College FAQ (verify portal banner that morning);
+  first-year add/drop Sept 10; clean drop Fri of week 3.
+- WRIT branch logic: Poetry -> Grey track (HUMA 19100 winter);
+  PhilPer/HBC -> Maroon WRIT. The PHIL ladder exists only in the
+  Poetry branch.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
