@@ -365,6 +365,19 @@ and URL-duplicated course rows (2-3x) inflate comment counts corpus-
 wide. ALL session comment counts are upper bounds. DATA DEBT: dedupe
 comments by (report URL, comment text) and course rows by URL.
 
+## 5h-CORRECTION (2026-08-20, live portal): PHIL is NOT in First-Year
+Pre-Registration. The student searched the "Other" group by class
+number (81851) and name - not offered. The first-year portal is a
+curated subset; departmental electives are excluded. CONSEQUENCE: the
+pre-reg card is Hum + Latin + BIOS + WRIT-answer only (3 courses in
+the Poetry branch). The entire PHIL ladder (5g) executes at ADD/DROP
+(first-year add/drop, expected Sept 10; continuing students Sept 8 -
+so seats can move first). Ladder unchanged: 21013 if seats + schedule
+allow, else 23000, else 22951, chosen with the landed schedule in
+hand - the conflict gymnastics in 5g become simple lookups. Seat risk
+on 21013 (~3 nominal) is real and accepted; Briggs/Zimmer are the
+nets.
+
 ## 5h. SUBMISSION STATE (2026-08-20, final)
 
 - Humanities finalized to the mornings-protected order: Poetry /11 ->
