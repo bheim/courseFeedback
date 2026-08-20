@@ -312,6 +312,22 @@ environment, accepted on citation + known coverage gaps):
 - Winter-2027 registrar schedule publishes ~Nov 9; until then all
   winter listings are Tentative.
 
+## 5f. FINAL BIOS ORDER (2026-08-20, after coverage audit)
+
+Submitted BioSci ranking: BIOS 11144 (Genetic Basis for Human
+Disorders, Gifford, MWF 12:30) -> BIOS 15128 (Outbreak, Feeney - no
+evaluation record anywhere, chosen for capacity and complementary
+conflict pattern) -> BIOS 11140 (Biotechnology, Bhasin 3.86
+exam-heavy, covers the MW 1:30 hole 15128 leaves). This set gives >=2
+time-compatible options in every (Latin section x HUMA landing) cell;
+the previously recommended {11144, 15113, 15128} left a single point
+of failure at (Latin /2, PhilPer MW 1:30). BIOS 15113 (Life in the
+Viral World, Gifford 4.66/fair 4.66, MWF 9:30) is the FIRST add/drop
+target if Latin lands /3 - best-evidenced alternative, priced at 9:30
+mornings and a 10-minute transition into Latin. 13128/13132 (A.
+Hunter) stay off: 3.2-3.5 across 40+ deduped reports. Max-seat-security
+fallback if ever needed: 11144 -> 15128 -> 13128.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
