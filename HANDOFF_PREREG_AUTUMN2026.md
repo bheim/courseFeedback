@@ -328,6 +328,43 @@ mornings and a 10-minute transition into Latin. 13128/13132 (A.
 Hunter) stay off: 3.2-3.5 across 40+ deduped reports. Max-seat-security
 fallback if ever needed: 11144 -> 15128 -> 13128.
 
+## 5g. Philosophy fourth course (Poetry branch) — FINAL (2026-08-20)
+
+Ladder (exact entries incl. class numbers, live-verified externally):
+1. PHIL 21013/1 [81851] Neo-Aristotelian Moral Philosophy, Vogler,
+   TTh 11:00 + Fri 1:30 discussion 1D02 [81853] - the deliberate
+   rigorous audition. Only candidate with same-course same-instructor
+   evidence (one Autumn 2025 section: 4.60, fairness 4.75, feedback
+   4.75, 7.5 hrs, all respondents 5-10h band; 6 comment-answer rows).
+   BizEcon Perspective. Thin evidence = purposeful experiment, not
+   guarantee.
+2. PHIL 23000/1 [81889] M&E, Briggs, TTh 2:00 + Fri discussions
+   1D04 [81893] -> 1D03 [81892] -> 1D02 [81891]. Course history
+   (Callard era) light-and-fair; Briggs unobserved in this course but
+   4.81/org 4.89 elsewhere.
+3. PHIL 22951/1 [81883] Egalitarianism, Zimmer, TTh 11:00 +
+   discussions 1D02 [81885] -> 1D01 [81884]. Strongest fairness file
+   (12 reports, 4.6-5.0). BizEcon Perspective.
+Ladder covers every Poetry x BIOS combination (21013 conflicts TTh 11
+Poetry sections + BIOS 15128; 23000/22951 cover those corners).
+In the Maroon/HBC branch WRIT replaces this course entirely.
+
+Week-1/2 experiment: do the reading honestly + time it; write one
+argument reconstruction (claim, argument, objection, reply) and take
+it to office hours; audit syllabus for weights/curve/revisions.
+KEEP if energizing and 4-course load sustainable; DROP-RETURN if
+material yes but load no; LEAN-CLASSICS only if instruction is clear
+and fair yet argument work leaves you cold. Week-3 Friday clean drop
+is the backstop. No grade distributions exist for any candidate -
+"GPA-safe" claims are structurally unavailable.
+
+VERIFIED DATA CORRECTIONS (2026-08-20): PHIL 23000's 104 comments all
+come from ONE Spring 2026 section; Zimmer's 182 rows = 69 distinct
+comments. Root cause found: comment capture stored rows per course-row
+and URL-duplicated course rows (2-3x) inflate comment counts corpus-
+wide. ALL session comment counts are upper bounds. DATA DEBT: dedupe
+comments by (report URL, comment text) and course rows by URL.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
