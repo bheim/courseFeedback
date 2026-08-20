@@ -235,6 +235,52 @@ uncertainty propagation, robustness
   all claims are about instructor experience and grading friction, not
   GPA directly).
 
+## 5d. Final external audit (2026-08-19) — accepted corrections and
+STATUS RELABEL
+
+An external auditor (working directly against the raw databases)
+accepted Poetry-first, Radding, and the BIOS ordering, and issued
+corrections that are all accepted:
+
+- RELABEL, applying to every number in 5/5b/5c and this file: all
+  assignment distributions and downside percentages are HEURISTIC
+  SCENARIO WEIGHTS for decision support - not calibrated probabilities.
+  No held-out Brier/log score, candidate-universe audit, or
+  assignment-constraint model exists. The only calibration evidence is
+  the coarse GOOD-side bucket table in 5b.
+- Torres meets the stated AVOID rule (4.17); counting her mass puts
+  Poetry /11 downside near 10% (not 2%) and /12 near 16%. Poetry /7-8
+  therefore carry the LOWEST modeled downside (~6%); /11 stays rank 1
+  on expected quality and preference, not downside minimization.
+- Named-but-unrated candidates are priced in neither direction; treat
+  their mass as interval-widening. Newcomer estimates may double-count
+  dept-split professor identities (e.g. multi-id instructors) and lack
+  person/year clustering.
+- HBC does NOT rise to ranks 5-6 despite its high E[rating]: ballot
+  order encodes the student's deliberate content/workload/writing-track
+  decision, and all Poetry sections stay above HBC by preference.
+- Radding: evidence = ONE evaluated Autumn 2025 section, 11
+  respondents (50 answer-rows, not 50 students); one mild downside
+  (classmates with prior Latin can intimidate in whole-class
+  exercises). Verdict: strong first choice, not "unconditional."
+- BIOS: Gifford evidence is transferred (zero exact-course); the
+  Gifford-vs-Hunter Principles comparison is cross-year; the weak
+  Gifford upper-level datapoint was co-taught (Pineda-Catalan) and is
+  not cleanly attributable. Hunter: one of the lowest-rated heavily
+  observed BIOS instructors (not "categorically weakest"). Keep 13128
+  last as capacity insurance (11144 39/40, 15128 8/35, 13128 19/60,
+  13140 closed - auditor-supplied counts).
+
+FINAL WORKING BALLOT (consensus): Poetry /11 -> (/7 -> /8 -> /12 or
+/12 -> /7 -> /8 per the student's 9:30 preference) -> /9 -> /10 ->
+PhilPer /11-14 -> HBC /13-14 and PhilPer /4-5 as lower preferences.
+Latin: Radding /3 first. BIOS: 11144 -> 15128 -> 13128. WRIT yes.
+
+Post-deadline debt (ROADMAP W7): a one-command reproducible artifact
+(pinned constants, data hashes, deduplicated newcomer treatment,
+leakage-free walk-forward, Brier/calibration) before this machinery is
+reused for winter registration.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
