@@ -281,6 +281,37 @@ Post-deadline debt (ROADMAP W7): a one-command reproducible artifact
 leakage-free walk-forward, Brier/calibration) before this machinery is
 reused for winter registration.
 
+## 5e. Winter-planning corrections (2026-08-20, external audit) — and a
+named fallacy
+
+THE COVERAGE FALLACY (second offense, do not repeat): absence from our
+databases was twice presented as absence from the world ("0% avoid",
+then "MATH 15250 has never been taught" / "PHIL 20216 is new").
+N=0 in course_feedback.db means NO COVERAGE, nothing more. Our own
+corpus proved it: 21 comments mention MATH 15250 while the evaluation
+tables hold zero sections of it (MATH 15xxx coverage = only 15300 and
+15910 - the known intro-math dark zone). Every future "X doesn't
+exist / is new" claim must be phrased "X is absent from our coverage."
+
+Accepted corrections (externally sourced, unverifiable from this
+environment, accepted on citation + known coverage gaps):
+- MATH 15250: offered Autumn AND Winter AND Spring per the current
+  catalog (our scrape's 'Autumn' was stale or truncated); taught
+  repeatedly since ~2022; explicitly item 52 on the official BizEcon
+  Perspective list. A legitimate flexible Perspective option; zero
+  instructor/workload evidence in our data.
+- PHIL 20216 (Proios): previously taught Spring 2023 - not new;
+  planned Winter with Proios. Strong transferred instructor evidence.
+- PHIL 25105: co-taught Agnes Callard + Arnold Brooks, TTh 5:00-6:20;
+  Brooks's HBC record alone cannot predict a co-taught course.
+- PHIL 21000: the 4.66 sections are BENJAMIN Callard; planned Spring
+  2027 instructor is Candace Vogler (3.96, hours ~7.3 per-instructor).
+  Fallback, not default.
+- PHIL 24098: exists historically, not planned 2026-27 - off the
+  operational list unless added.
+- Winter-2027 registrar schedule publishes ~Nov 9; until then all
+  winter listings are Tentative.
+
 ## 6. Working protocol with this student
 
 He runs everything requiring UChicago auth or network on his laptop
