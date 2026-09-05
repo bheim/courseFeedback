@@ -2,12 +2,12 @@
 {% block title %}Reveal check · Course Copilot{% endblock %}
 {% block content %}
 <h1>Add/drop reveal check</h1>
-<p class="muted">Names just published for your hidden-name section? Enter your draw —
-see where it ranks in the course's historical instructor pool and whether a better
-section is worth chasing in add/drop.</p>
+<p class="muted">Names just published for your hidden-name section? Enter your draw to
+compare exact-course evidence in our covered historical instructor pool. This does not
+check live seats or predict whether a swap will succeed.</p>
 
 <div class="card">
-<form class="filters" method="get" action="/reveal">
+<form class="filters" method="post" action="/reveal">
   <div><label>Dept</label><input type="text" name="dept" value="{{ dept }}" style="width:5.5rem" placeholder="SOSC"></div>
   <div><label>Number</label><input type="text" name="cid" value="{{ cid }}" style="width:6.5rem" placeholder="15100"></div>
   <div><label>Instructor you got (last name works)</label>
@@ -16,40 +16,56 @@ section is worth chasing in add/drop.</p>
 </form>
 </div>
 
+{% if input_error %}
+<p class="muted">{{ input_error }}</p>
+{% endif %}
+
 {% if pool is not none %}
   {% if match %}
   <div class="card">
     <h2 style="margin-top:0">Your draw: {{ match['row']['name'] }}</h2>
-    <span class="stat"><b>#{{ match['rank'] }} of {{ match['of'] }}</b><span>in this course's instructor pool</span></span>
+    {% if match['rank'] is not none %}
+    <span class="stat"><b>#{{ match['rank'] }} of {{ match['of'] }}</b><span>by exact-course rating in the covered pool</span></span>
+    {% endif %}
     <span class="stat"><b>{{ match['row']['course_exc'] if match['row']['course_exc'] is not none else '—' }}</b><span>“excellent course” avg with them</span></span>
-    <span class="stat"><b>{{ match['row']['prof_rating'] if match['row']['prof_rating'] is not none else '—' }}</b><span>overall prof rating</span></span>
-    <span class="stat"><b>{{ match['row']['n_sections'] }}</b><span>sections of evidence</span></span>
-    {% if match['rank'] == 1 %}
-      <p><b>Keep it.</b> You drew the top of the pool — do not touch add/drop.</p>
+    <span class="stat"><b>{{ match['row']['n_scored_reports'] }}</b><span>numeric reports (of {{ match['row']['n_reports'] }} captured)</span></span>
+    {% if match['rank'] is none %}
+      <p><b>No numeric exact-course rating is available.</b> The captured report count alone
+      cannot support a keep-or-swap recommendation.</p>
+    {% elif match['thin'] %}
+      <p><b>Very thin evidence.</b> This position is based on fewer than three distinct
+      exact-course reports; do not treat the rank as a decision rule.</p>
+    {% elif match['rank'] == 1 %}
+      <p><b>Top observed rating in this covered pool.</b> Treat that as one historical input,
+      alongside the live schedule and your own constraints.</p>
     {% elif match['rank'] <= (match['of'] / 3)|round(0, 'ceil')|int %}
-      <p><b>Solid draw</b> — top third of the pool. Swapping is probably not worth the schedule churn.</p>
+      <p><b>Within the top third of this covered historical pool.</b> Treat that as one
+      historical input, not a prediction of your experience.</p>
     {% else %}
-      <p><b>Below the pool's median.</b> Check the table below for who's better — if one of them
-      has an open section at add/drop, that's your move. Act early in the window.</p>
+      <p><b>Outside the top third of this covered historical pool.</b> Use the table as one
+      input, then check the live schedule, seats, and same-instructor evidence before acting.</p>
     {% endif %}
   </div>
+  {% elif ambiguous %}
+  <p class="muted">“{{ name }}” matches more than one person in this pool:
+  {{ ambiguous|join(', ') }}. Enter a fuller name.</p>
   {% elif name %}
-  <p class="muted">“{{ name }}” doesn't appear in this course's history — a new instructor.
-  No data beats no data: check their other courses via search, or it's a genuine unknown.</p>
+  <p class="muted">“{{ name }}” is absent from this exact-course coverage. They may be a
+  first-time instructor for the course or may have evidence elsewhere; no conclusion follows
+  from this absence.</p>
   {% endif %}
 
   {% if pool %}
   <h2>The full pool for {{ course_key[0] }} {{ course_key[1] }}</h2>
   <div class="scroll"><table>
-    <tr><th>#</th><th>Instructor</th><th>“Excellent course” avg here</th>
-        <th>Overall rating</th><th>Sections</th></tr>
+    <tr><th>Evidence rank</th><th>Instructor</th><th>“Excellent course” avg here</th>
+        <th>Distinct reports</th></tr>
     {% for row in pool %}
     <tr {% if match and row['name'] == match['row']['name'] %}style="background:#f6ecd9"{% endif %}>
-      <td class="muted">{{ loop.index }}</td>
+      <td class="muted">{{ row['rating_rank'] if row['rating_rank'] is not none else '—' }}</td>
       <td>{{ row['name'] }}</td>
       <td>{{ row['course_exc'] if row['course_exc'] is not none else '—' }}</td>
-      <td>{{ row['prof_rating'] if row['prof_rating'] is not none else '—' }}</td>
-      <td>{{ row['n_sections'] }}</td>
+      <td>{{ row['n_reports'] }}</td>
     </tr>
     {% endfor %}
   </table></div>

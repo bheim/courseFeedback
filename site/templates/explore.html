@@ -2,22 +2,23 @@
 {% block title %}Explorer · Course Copilot{% endblock %}
 {% block content %}
 <h1>Goldilocks explorer</h1>
-<p class="muted">Percentile-ranked across all established courses. Set your own weights —
-a GPA-protector and an Honors-Analysis-seeker have different sweet spots.</p>
+<p class="muted">Percentile-ranked across covered established courses. Set your own weights —
+a lighter-workload preference and a high-challenge preference have different sweet spots.
+No grade-distribution data are available.</p>
 
 <form class="filters" method="get" action="/explore">
   <div><label>Quality weight</label><input type="number" name="wq" value="{{ wq|int }}" min="0" max="10" style="width:5rem"></div>
   <div><label>Lightness weight</label><input type="number" name="wl" value="{{ wl|int }}" min="0" max="10" style="width:5rem"></div>
   <div><label>Challenge weight</label><input type="number" name="wc" value="{{ wc|int }}" min="0" max="10" style="width:5rem"></div>
   <div><label>Max hrs/week</label><input type="number" name="max_hours" value="{{ max_hours|int }}" min="1" max="40" style="width:5rem"></div>
-  <div><label>Min sections</label><input type="number" name="min_sections" value="{{ min_sections }}" min="1" max="20" style="width:5rem"></div>
+  <div><label>Min distinct reports</label><input type="number" name="min_sections" value="{{ min_sections }}" min="1" max="20" style="width:5rem"></div>
   <div><label>Dept (blank = all)</label><input type="text" name="dept" value="{{ dept }}" style="width:6rem"></div>
   <div><label>Regime</label>
     <select name="regime">
       <option value="" {{ 'selected' if not regime }}>any</option>
       <option value="A" {{ 'selected' if regime == 'A' }}>A — open choice</option>
       <option value="B" {{ 'selected' if regime == 'B' }}>B — hidden names</option>
-      <option value="C" {{ 'selected' if regime == 'C' }}>C — monopoly</option>
+      <option value="C" {{ 'selected' if regime == 'C' }}>C — one observed instructor</option>
     </select></div>
   <div><label><input type="checkbox" name="hide_pleasers" value="1" {{ 'checked' if hide_pleasers }}>
     hide crowd-pleasers</label></div>
@@ -27,7 +28,7 @@ a GPA-protector and an Honors-Analysis-seeker have different sweet spots.</p>
 <p class="muted">{{ n_total }} courses match — showing top {{ scored|length }}.</p>
 <div class="scroll"><table>
   <tr><th>#</th><th>Course</th><th>Your score</th><th>Rating</th><th>Hrs/wk</th>
-      <th>Challenge</th><th>n</th><th>Regime</th><th>Likely Autumn ’26</th></tr>
+      <th>Challenge</th><th>Distinct reports</th><th>Regime</th><th>Archived Autumn ’26 signal</th></tr>
   {% for score, r in scored %}
   <tr>
     <td class="muted">{{ loop.index }}</td>
@@ -36,9 +37,9 @@ a GPA-protector and an Honors-Analysis-seeker have different sweet spots.</p>
     <td>{{ '%.2f'|format(r['avg_rating']) }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) }}</td>
     <td>{{ '%.2f'|format(r['avg_challenge']) if r['avg_challenge'] else '—' }}</td>
-    <td>{{ r['n_sections'] }}</td>
+    <td>{{ r['n_reports'] }}</td>
     <td><span class="badge {{ r['regime'] }}">{{ r['regime'] }}</span></td>
-    <td>{{ r['likely_instructor'] or '—' }}</td>
+    <td>{% if r['p_autumn_2026'] is not none %}{{ (r['p_autumn_2026'] * 100)|round|int }}/100{% else %}—{% endif %}</td>
   </tr>
   {% endfor %}
 </table></div>

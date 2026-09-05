@@ -2,9 +2,9 @@
 {% block content %}
 <h1>Start from your path</h1>
 <div class="card">
-  <form method="get" action="/plan">
-    <label class="muted">Your intended path — pick as many as apply: major, possible double
-    major, minors. Hold ⌘/Ctrl to multi-select.</label><br>
+  <form method="post" action="/plan">
+    <label class="muted">Your intended path — pick any combination (up to twelve): major,
+    possible double major, minors. Hold ⌘/Ctrl to multi-select.</label><br>
     <select name="path" multiple size="8" style="min-width: min(24rem, 100%); margin-top:.4rem">
       {% for m in majors %}<option value="{{ m }}">{{ m }}</option>{% endfor %}
     </select>
@@ -25,23 +25,23 @@
          placeholder="Try: ANTH 21107 · ECON · &quot;cities&quot; · &quot;climate&quot;">
   <button>Search</button>
 </form>
-<p class="muted">Power tools: the <a href="/explore">goldilocks explorer</a> ranks every course
+<p class="muted">Power tools: the <a href="/explore">goldilocks explorer</a> ranks covered courses
 by your own quality/lightness/challenge weights.</p>
 
 {% if results is not none %}
   <h2>{{ results|length }} result{{ '' if results|length == 1 else 's' }} for “{{ query }}”</h2>
   {% if results %}
   <div class="scroll"><table>
-    <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>Sections</th><th>Regime</th>
-        <th>Likely Autumn ’26 instructor</th></tr>
+    <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>Distinct reports</th><th>Regime</th>
+        <th>Archived Autumn ’26 signal</th></tr>
     {% for r in results %}
     <tr>
       <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:50] }}{% endif %}</a></td>
       <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
       <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
-      <td>{{ r['n_sections'] }}</td>
-      <td><span class="badge {{ r['regime'] }}">{{ {'A':'open choice','B':'hidden names','C':'monopoly'}[r['regime']] }}</span></td>
-      <td>{{ r['likely_instructor'] or '—' }}</td>
+      <td>{{ r['n_reports'] }}</td>
+      <td><span class="badge {{ r['regime'] }}">{{ {'A':'open choice','B':'hidden names','C':'one observed instructor'}[r['regime']] }}</span></td>
+      <td>{% if r['p_autumn_2026'] is not none %}{{ (r['p_autumn_2026'] * 100)|round|int }}/100{% else %}—{% endif %}</td>
     </tr>
     {% endfor %}
   </table></div>

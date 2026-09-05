@@ -7,3 +7,4 @@ analyzeCourseFeedback/scrapeFeedback/comments.db.gz
 analyzeCourseFeedback/scrapeFeedback/slate_comments.txt
 analyzeCourseFeedback/getSectionTimes/prereg_dump.txt
 analyzeCourseFeedback/getSectionTimes/prereg_page.html
+release/dist/

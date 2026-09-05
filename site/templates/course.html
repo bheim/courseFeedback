@@ -6,16 +6,16 @@
 
 {% if sig %}
 <div class="card">
-  <span class="badge {{ sig['regime'] }}">{{ {'A':'open choice','B':'hidden names at pre-reg','C':'single-instructor monopoly'}[sig['regime']] }}</span>
-  {% if sig['monopoly'] %}<span class="badge warn">only one instructor ever — no professor choice exists</span>{% endif %}
+  <span class="badge {{ sig['regime'] }}">{{ {'A':'open choice','B':'hidden names at pre-reg','C':'one observed instructor'}[sig['regime']] }}</span>
+  {% if sig['monopoly'] %}<span class="badge warn">one instructor observed in our covered history</span>{% endif %}
   {% if sig['crowd_pleaser'] and sig['crowd_pleaser'] >= 40 %}<span class="badge warn">crowd-pleaser pattern: loved but light &amp; unchallenging</span>{% endif %}
   {% if sig['required_by_n_programs'] %}<span class="badge info">appears in {{ sig['required_by_n_programs'] }} program requirement list{{ 's' if sig['required_by_n_programs'] > 1 }}</span>{% endif %}
   <div style="margin-top: .8rem;">
     <span class="stat"><b>{{ '%.2f'|format(sig['avg_rating']) if sig['avg_rating'] else '—' }}</b><span>rating ({{ sig['rating_pctl'] }}th pctl)</span></span>
     <span class="stat"><b>{{ '%.1f'|format(sig['avg_hours']) if sig['avg_hours'] else '—' }}</b><span>hrs/week ({{ sig['hours_pctl'] }}th pctl)</span></span>
     <span class="stat"><b>{{ '%.2f'|format(sig['avg_challenge']) if sig['avg_challenge'] else '—' }}</b><span>challenged-me ({{ sig['challenge_pctl'] }}th pctl)</span></span>
-    <span class="stat"><b>{{ sig['n_sections'] }}</b><span>sections of history</span></span>
-    <span class="stat"><b>{{ sig['n_instructors'] }}</b><span>instructors ever</span></span>
+    <span class="stat"><b>{{ sig['n_reports'] }}</b><span>distinct reports covered</span></span>
+    <span class="stat"><b>{{ sig['n_instructors'] }}</b><span>recorded instructor identities</span></span>
     {% if sig['fairness_gap'] is not none %}
     <span class="stat"><b>{{ '%+.2f'|format(sig['fairness_gap']) }}</b><span>fairness gap</span></span>
     {% endif %}
@@ -23,23 +23,27 @@
 </div>
 
 <div class="card">
-  <h2 style="margin-top:0">Autumn 2026 forecast</h2>
+  <h2 style="margin-top:0">Archived {{ forecast_target }} heuristic</h2>
   {% if sig['p_autumn_2026'] is not none %}
-    <p><b>{{ (sig['p_autumn_2026'] * 100)|round|int }}%</b> likely to be offered
-    {% if sig['likely_instructor'] %} · likely instructor: <b>{{ sig['likely_instructor'] }}</b>
-      ({{ (sig['instructor_conf'] * 100)|round|int }}% of weighted history)
-      {% if sig['n_instructors'] > 3 %}<span class="muted"> — multi-instructor course: treat this as “most likely from the pool,” not a promise</span>{% endif %}
+    <p><b>{{ (sig['p_autumn_2026'] * 100)|round|int }}/100</b> historical offering score
+    {% if sig['likely_instructor'] %} · most frequent known instructor in weighted history: <b>{{ sig['likely_instructor'] }}</b>
+      ({{ (sig['instructor_conf'] * 100)|round|int }}% of known-instructor historical weight)
     {% endif %}</p>
-  {% else %}<p class="muted">No forecast — course hasn't appeared recently.</p>{% endif %}
+    <p class="muted">Generated {{ forecast_as_of }} from covered feedback history. This is
+    not a calibrated probability, excludes first-time instructors, and does not estimate
+    whether a student receives a class. Published schedules are authoritative.</p>
+  {% else %}<p class="muted">No historical score is available in our coverage.</p>{% endif %}
 </div>
 
 {% if sig['n_comments'] %}
 <div class="card">
-  <h2 style="margin-top:0">What {{ sig['n_comments'] }} recent comments signal</h2>
+  <h2 style="margin-top:0">Experimental captured-comment signals</h2>
   <span class="stat"><b>{{ sig['hard_pct'] }}%</b><span>mention hard/heavy</span></span>
   <span class="stat"><b>{{ sig['easy_pct'] }}%</b><span>mention easy/light</span></span>
   <span class="stat"><b>{{ sig['grading_pct'] }}%</b><span>mention grading</span></span>
-  <p class="muted">Keyword signals from the last four quarters. Read the full comments at the
+  <p class="muted">Based on up to {{ sig['n_comments'] }} captured comment rows from the last
+  four quarters. Counts are pre-dedup upper bounds and cross-listed reports may affect the
+  percentages. Read the full comments at the
   <a href="{{ feedback_url }}">official feedback page</a> (UChicago login).</p>
 </div>
 {% endif %}
@@ -58,11 +62,11 @@
 
 <h2>Quarter-by-quarter history</h2>
 <div class="scroll"><table>
-  <tr><th>Quarter</th><th>Sections</th><th>“Excellent course” avg</th><th>Instructor(s)</th></tr>
+  <tr><th>Quarter</th><th>Distinct reports</th><th>“Excellent course” avg</th><th>Instructor(s)</th></tr>
   {% for h in history %}
   <tr>
     <td>{{ h['quarter'] }}</td>
-    <td>{{ h['n_sections'] }}</td>
+    <td>{{ h['n_reports'] }}</td>
     <td>{{ h['avg_excellence'] if h['avg_excellence'] is not none else '—' }}</td>
     <td>{{ h['instructors'] or '—' }}</td>
   </tr>

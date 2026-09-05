@@ -6,6 +6,20 @@ commit, and push. This file is the project's memory and its to-do list.**
 
 ---
 
+## Product boundary (decision recorded 2026-09-04)
+
+The project now has two separately released layers. The existing simple Chrome
+extension and its aggregate API are the stable public/UChicago-community layer;
+they must remain backward-compatible. The advanced Course Copilot site and its
+planning, forecasting, preregistration, and reveal tools are invitation-only and
+must run behind a separate access and deployment boundary.
+
+See `PRODUCT_LAYERS.md` for the authoritative data boundary, publication gates,
+probability language, staged rollout, and current implementation status. In
+particular: raw comments and credentials never publish, neither layer automates
+registration, and invitation-only access does not make an unvalidated
+probability claim acceptable.
+
 ## North Star
 
 UChicago students can no longer freely pick their professors — Sosc and Civ
@@ -38,30 +52,35 @@ allocates, add/drop opens Monday of finals week):
 - **Regime B — names hidden** (Sosc + Civ for all, Hum for first-years):
   rank the *lotteries* — each sequence's instructor-pool median, spread, and
   workload; then own the add/drop reveal moment with alerts + swap advice.
-- **Regime C — monopolies** (~201 of 664 established courses have exactly one
-  instructor ever): nothing to choose, so optimize *timing and preparation* —
-  which quarter, what to pair it with, what the grading reputation is.
+- **Regime C — observed single-instructor histories** (~201 of 664 established
+  courses have one instructor in our coverage): no observed instructor choice,
+  so optimize *timing and preparation* — which quarter and what to pair it
+  with. Do not infer that no other instructor exists outside our coverage.
 
 The regime is detectable from our own data (instructor history + dept lists).
 
 ## Non-negotiable principles
 
-1. **Evidence, never accusations.** Show "sole instructor since 2021;
-   grading-fairness rated 0.3 below the course's other qualities; N
-   grading-related comments." Never assert unverifiable claims about named
-   people ("caps grades at B"). Everything displayed must trace to data.
+1. **Evidence, never accusations.** Show "sole observed instructor in our
+   coverage since 2021" and "grading-fairness rated 0.3 below the course's
+   other qualities; N grading-related comments." Never assert unverifiable
+   claims about named people ("caps grades at B"). Everything displayed must
+   trace to data.
 2. **Comments are collected but never republished verbatim.** Display only
    aggregated/synthesized themes; link to the official feedback page for raw
    text so reading actual quotes requires the same UChicago login it does
    today. Students wrote them believing they'd stay behind that login.
 3. **Sample sizes on every number.** A 4.9 from one section is not a 4.9 from
    twelve. Percentile ranks over raw scores where distributions are compressed.
-4. **Honest uncertainty.** Every prediction ships with confidence, and
-   confidence tiers are backtested (see baselines below). Multi-section
-   courses get pool predictions, never a false single name.
+4. **Honest uncertainty.** Every probability-like output names the event,
+   evidence window, denominator, calibration status, and held-out score. When
+   those are unavailable, display descriptive evidence or a clearly labeled
+   heuristic tier, not a percentage. Multi-section courses get pool evidence,
+   never a false single-name assignment probability.
 5. **Never damage the source data.** Additive passes and in-place updates
    only; no deletes; `main` branch stays the untouched original; all work on
-   `claude/explore-code-data-x8tkpa`.
+   `claude/explore-code-data-x8tkpa`. The installed extension and its API
+   contract also remain untouched until a compatible change passes staging.
 6. **No silent failures.** The 2025 platform migration silently cost two
    quarters of ratings before anyone noticed. Every scrape ends with a
    data-quality check (fraction of new rows with ratings/hours/instructors)
@@ -71,19 +90,40 @@ The regime is detectable from our own data (instructor history + dept lists).
 
 ## Data foundation (current state)
 
-- **course_feedback.db**: 23,641 sections, 4,528 professors, 36,746
+- **course_feedback.db**: 23,641 course rows, 4,528 professors, 36,746
   teaching links; Autumn 2019 – Spring 2026 (COVID quarters excluded).
-- Instructor + quarter data: complete and clean (100% coverage on new rows).
+  These are raw database-row counts, not unique-report denominators: duplicate
+  capture/repair rows remain to be merged by report URL before public display.
+  Catalog cross-list canonicalization is a separate operation.
+  The 2026-09-04 release gate also finds 11,137 teaching links whose course row
+  no longer exists. Forensics account for 6,646 as redundant links whose
+  relationships already survive elsewhere; the other 4,491 lack enough parent
+  metadata to attach safely. A normalized derived database can exclude all of
+  them while retaining a valid professor link for every one of the 19,349
+  currently covered report URLs. The raw database remains blocked for release.
+- Every surviving report row has at least one valid instructor link, and new
+  scrape rows have 100% instructor/quarter coverage. The relational history is
+  not clean because 11,137 legacy child links have missing course parents.
 - Ratings (12 questions) + hours: healed through Spring 2026 as of
   2026-08-16. All rated rows are column-complete with hours; the only gap
   is ~2,596 graduate-form rows (W6) plus historical pre-2020 hours holes.
 - Known quirks: ~1,378 rows with "Form N" quarter labels (excluded from
-  time-based analysis); 77 professor identities split by name variants;
-  cross-listed courses fragmented across dept listings (fix in W2/W4).
+  time-based analysis); 77 same-department surname-collision groups whose
+  members all have different first names (not evidence of identity splits);
+  32 canonical courses with the same display name under multiple professor IDs
+  require review; cross-listed courses remain fragmented across department
+  listings (fix in W2/W4).
 
-## Measured baselines (the bar future work must beat)
+## Historical backtest baselines (the bar future work must beat)
 
 Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
+
+These are historical experiment results preserved from the 2026-08 work. They
+do not establish that `p_autumn_2026` or `instructor_conf` is a calibrated
+probability, and they do not support exact-section assignment or registration-
+allocation probabilities. A 2026-09 audit found that the generic production
+labels overstate what the committed implementation proves; W4 now separates
+the existing heuristics from the missing reproducible probability model.
 
 - Course-offering forecast: 63–74% precision at p>=0.5 across five test
   quarters with the Terms-Offered exclusion signal (was 61–70% without;
@@ -91,14 +131,49 @@ Backtested on 9 held-out quarters (Autumn 2023 – Spring 2026):
   mild hindsight bias, so forward predictions are the honest use).
 - Instructor prediction: 84–88% top-1 accuracy when model confidence >=70%
   (covers ~half of courses); 77–83% top-3 pool hit rate.
-- Per-section honesty split: single-section courses 70–77% top-1;
-  multi-section courses 35–52% per section — hence pool display for
-  multi-section, single name only for single-section.
-- Fairness-gap signal: average gap between the fairness rating and a
-  course's other ratings is ~0.00 across 664 established courses, so
-  deficits of 0.25+ are true outliers (harsh-grading fingerprint).
+- URL-deduplicated per-section split: single-section courses 69.7–74.3%
+  top-1; multi-section courses 16.3–26.0% across Autumn 2023 through Spring
+  2026. The older 35–52% multi-section range was duplicate-biased and is
+  invalid. These results do not justify a single-name exact-section inference.
+- Archived pre-dedup fairness-gap baseline: average gap was ~0.00 across 664
+  courses. It is not a release statistic: URL-level recomputation changes 532
+  of 1,110 comparable gaps, with 23 courses crossing the current `-0.2` flag.
 
 ## Workstreams (priority order; check off and date as completed)
+
+### W0. Preserve the public layer; isolate the advanced layer — IN PROGRESS 2026-09-04
+
+- [x] Record the two-layer product decision, data boundaries, probability
+      language, publication gates, and staged rollout in `PRODUCT_LAYERS.md`
+- [x] Freeze the exact Chrome Web Store v3.0 extension source in a hash-pinned,
+      deterministic allowlist package; capture its request and response shape
+      in sanitized compatibility fixtures without changing the five source
+      files (2026-09-04)
+- [ ] Verify the exact deployed PythonAnywhere server artifact and data
+      snapshot before any endpoint cutover
+- [ ] Create a sanitized public release path that excludes credentials,
+      authenticated captures, raw comments, personal plans, ballots, and
+      internal handoffs from both release artifacts and history. The extension
+      packager is complete; a fresh sanitized Git history/repository is not.
+- [ ] Obtain written confirmation for publishing feedback-derived aggregates;
+      add attribution, privacy, affiliation, contact, and takedown terms
+- [ ] Correct public aggregates: URL deduplication, ID-based instructor joins,
+      normalized teaching relationships, denominators, sample sizes, coverage
+      wording, and as-of dates; run the data-quality tripwire. A route/schema-
+      compatible read-only v2 API and release gate exist, but deployment is
+      blocked until a derived artifact excludes the 11,137 legacy orphans and
+      passes zero-dangling/zero-duplicate integrity gates. Surname-only identity
+      input must remain null unless a reviewed full-name/ID path is available.
+- [ ] Stage Layer 2 separately with server-side invitation access, isolated
+      configuration/data, health checks, validation, safe logging, and no
+      dependency on the extension's production service
+- [x] Harden Layer 2's current interface: URL-deduplicated visible coverage
+      counts, minimum evidence floors, tie-aware reveal ranks, bounded inputs,
+      POSTed personal choices, unique program coverage counts, and suppression
+      of the uncalibrated returner-only instructor guess on ranking pages
+      (2026-09-04)
+- [ ] Keep all registration actions advisory/read-only; seat watching may use
+      the public guest portal, but no code may submit registration forms
 
 ### W1. Heal & guard the data — DONE 2026-08-16
 - [x] Diagnose post-migration damage (5/12 questions dead, hours dead,
@@ -153,24 +228,38 @@ course_feedback.db for committing.
       discussions, stimulated interest)
 
 ### W4. Intelligence layer (no new data needed to start)
-- [x] Offering forecaster v1 (`forecasting/forecast.py`)
-- [x] Instructor prediction with calibrated confidence
+- [x] Generic historical offering heuristic v1 (`forecasting/forecast.py`);
+      the stored `p_*` field is not yet a calibrated probability
+- [x] Generic historical likely-instructor guess + backtest harness; it is
+      course-level/pool evidence, not an exact-section assignment probability
 - [x] Backtest + pressure-test harnesses (keep green as models change)
-- [x] Monopoly detection; fairness-gap signal — productized in
-      `forecasting/build_signals.py` -> signals.db (2026-08-16)
-- [x] Regime classifier v1 (A/B/C per course; B = SOSC/HUMA for now — Civ
-      course detection needs W5 refinement): 859 A / 63 B / 1,042 C among
-      1,964 established courses
-- [ ] Merge split professor identities (77 name-variant pairs)
-- [x] Crowd-pleaser index (rating percentile minus challenge/hours
-      percentiles): 154 courses flagged at >=40
-- [x] Goldilocks scoring v1 (percentiles, default weights 50/30/20;
-      user-tunable sliders come with the W5 site)
+- [ ] Rebuild and calibrate reproducible offering and instructor-assignment
+      models: rolling held-out evaluation, newcomer mass, stable professor IDs,
+      assignment constraints, uncertainty intervals, and Brier/log scores
+- [ ] Implement any exact-section Autumn 2026 scenario analysis now preserved
+      only as prose in `HANDOFF_PREREG_AUTUMN2026.md`; until then its percentages
+      remain heuristic scenario weights, not production model outputs
+- [ ] Registration-allocation probability requires a new demand/rankings/
+      priority-rules/outcomes dataset; no such model exists today
+- [x] Pre-dedup one-instructor and fairness-gap signals exist in
+      `forecasting/build_signals.py` -> `signals.db`; their current values are
+      archived inputs, not release-ready aggregates
+- [x] Pre-dedup regime classifier v1 exists (B = SOSC/HUMA for now; Civ needs
+      W5 refinement). Its archived 859/63/1,042 split over 1,964 courses is
+      inflated. The measured logical-report rebuild expectation is 799/62/564
+      over 1,425 eligible courses, with 568 one-observed-instructor flags.
+- [ ] Review the 32 canonical courses with the same display name under multiple
+      professor IDs; never merge the 77 surname-collision groups automatically
+- [x] Pre-dedup crowd-pleaser and Goldilocks scoring code exists (default
+      weights 50/30/20). The archived 154 crowd-pleaser flags fall to 109 in
+      the measured logical-report rebuild; all percentiles and flags must be
+      regenerated before release.
 - [ ] Comment parsing (after W3): themes, workload descriptions, grading
       complaints, "easy/hard" mentions -> structured signals + per-course
       synthesized summaries (LLM batch; respect principle 2)
-- [x] Improve forecaster with W2 terms-offered + merged identities;
-      pressure test re-run and baselines updated (2026-08-16)
+- [x] Historical W2 terms-offered experiment and pressure-test rerun completed
+      (2026-08-16). Its baselines are archived pending the ID-safe,
+      logical-report rebuild; surname collisions are not merge evidence.
 
 ### W5. Product surfaces
 - [x] Site v1 shipped 2026-08-16 (`site/`, run: `cd site && python app.py`
@@ -181,36 +270,36 @@ course_feedback.db for committing.
       your major"; /plan ranks each program's requirement pool (levels,
       prereq links, flags) and renders every Core area as a ranked
       lottery with pool medians. Courses show "counts toward" programs.
-- [ ] Site v3: professor pages, per-sequence lottery detail (variance,
-      full instructor pool with ratings), multi-select (major + minor),
-      "my remaining requirements" checklist, deploy to PythonAnywhere
+- [x] Unrestricted multi-select for majors, possible second majors, and minors
+      on the home and `/plan` views (verified in code 2026-09-04)
+- [ ] Site v3 remaining: professor pages, per-sequence lottery detail
+      (variance, full instructor pool with ratings), "my remaining
+      requirements" checklist, and an invitation-only deployment isolated from
+      the extension's production service
 - [x] Pre-reg list builder v1 (2026-08-16, /prereg): candidates -> ranked
-      list with risk scores, offering odds, likely instructors,
-      retakeability
-- [x] Hedged registration mode v1 (2026-08-16, part of /prereg; components
-      a-c below all implemented — portfolio pick, trial-load budget, drop
-      order by retakeability): the system permits 400 units
-      (4 courses) and drops are penalty-free online until 5pm Friday of
-      week 3 (adds/swaps until the same deadline; instructor consent needed
-      late in the window) — so register 4 intending to drop 1. Components:
-      (a) portfolio construction — pair each risky slot (hidden-name Core
-      draw, new/unknown instructor, harsh-grader monopoly) with a hedge
-      course, choosing the 4th course that maximizes expected quality of
-      the best 3-course subset; (b) trial-window workload budget — carrying
-      4 courses for 3 weeks must be survivable per our hours data; (c)
-      week-3 drop advisor — weighs revealed instructors, the student's own
-      impressions, and retakeability asymmetry (drop the course that runs
-      every quarter; keep the rare offering or the rare great-professor
-      pairing, per the forecaster). Etiquette: drop promptly once decided
-      so the seat returns to the pool.
+      list with an additive risk heuristic, historical offering/instructor
+      fields, and retakeability. Its percentages are not calibrated odds.
+- [x] Hedged registration UI v1 (2026-08-16, `/prereg`): selects a fourth
+      candidate using retakeability, rating percentile, and hours; totals the
+      trial load; and sorts a drop order by retakeability
+- [ ] Hedged portfolio model. The original 2026-08 roadmap entry described
+      components (a)-(c) as implemented, but the 2026-09 code audit found no
+      expected-best-three calculation, uncertainty propagation, or formal
+      portfolio optimizer. Preserve these as the design target: (a) pair risky
+      slots with a hedge that maximizes expected quality of the best three;
+      (b) enforce a survivable trial-window workload budget; (c) combine
+      revealed instructors, the student's impressions, and retakeability in a
+      week-3 drop advisor. Etiquette: drop promptly once decided so the seat
+      returns to the pool.
 - [ ] Verify current-year hedge mechanics each autumn: exact drop/add
       deadlines, tuition and financial-aid treatment of a 4th course
 - [x] Add/drop reveal check v1 (2026-08-16, /reveal): enter your revealed
       instructor -> rank in the course's historical pool + keep/swap
       advice (on-demand; automated alerts later)
-- [ ] Extension upgrades: sample sizes in the widget; predicted
-      instructor/pool display when the name field is hidden or "Staff";
-      keep production extension untouched until the new one is tested
+- [ ] Extension maintenance/upgrades: first add API compatibility fixtures and
+      fix missing/`Staff` instructor handling; then consider sample sizes as an
+      additive field. Keep forecasts and advanced tools in Layer 2, and keep the
+      production extension untouched until backward compatibility is verified
 - [ ] Four-year planner (needs W2 requirements): remaining requirements ->
       which quarter to take what, workload-balanced
 
@@ -219,12 +308,13 @@ course_feedback.db for committing.
       (needs a mapping decision — its questions differ semantically)
 - [ ] Backfill the ~2,500 grad-form rows across recent quarters
 
-### Coverage map (verified dark zones — display honestly, don't imply absence = bad)
-- Intro MATH (13100-15300, 19620): the feedback site publishes essentially
-  no reports for these sections (35 links in the whole 15xxx band, 33 of
-  them 15910). Not a parser gap — the reports don't exist. Site should
-  label these "not surveyed," never blank.
-- WRIT 10100: zero reports (writing seminars don't run the survey).
+### Coverage map (known dark zones — display honestly, never infer world absence)
+- Intro MATH (13100-15300, 19620): our captured numeric/report coverage is
+  effectively absent (35 links in the whole 15xxx band, 33 of them 15910).
+  Label this "absent from our numeric coverage"; do not claim the sections were
+  not surveyed or that reports do not exist outside the dataset.
+- WRIT 10100: zero reports in the current database. This is a coverage fact,
+  not proof that writing seminars do not run a survey.
 - Language courses (LATN etc.): reports exist but use a form without the
   numeric tables our parser reads — comments capture works, ratings don't.
 - SOSC-primary sections: numeric extraction sparse — form variant, queued.
@@ -260,8 +350,8 @@ course_feedback.db for committing.
   cookie refresh (`cookies/getCookies.py`), scrape/repair/capture runs,
   pushing updated databases. Each run: `git pull`, run the script named in
   the current workstream, follow its printed wrap-up, `git push`.
-- **Claude (this branch):** everything else — code, models, analysis,
-  verification, the site, this roadmap. Claude's cloud environment cannot
+- **Codex/agent (this branch):** everything else — code, models, analysis,
+  verification, the site, this roadmap. The agent environment cannot
   reach UChicago sites (network policy) and cannot log in; scrapers are
   therefore written and tested-by-preview here, executed on the laptop.
 
@@ -270,4 +360,4 @@ course_feedback.db for committing.
 1. `RUNBOOK.md` update run (catalog -> cookies -> links -> feedback ->
    averages -> copy -> push)
 2. Data-quality tripwire must pass (W1)
-3. Claude: verify, retrain/re-backtest, regenerate predictions, update site
+3. Agent: verify, retrain/re-backtest, regenerate predictions, update site

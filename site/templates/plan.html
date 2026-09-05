@@ -3,9 +3,9 @@
 {% block content %}
 <h1>Your path</h1>
 <div class="card">
-<form method="get" action="/plan">
-  <label class="muted">Pick everything you're considering — major, possible double major,
-  minors. Hold ⌘ (Mac) or Ctrl to select several. No restrictions.</label><br>
+<form method="post" action="/plan">
+  <label class="muted">Pick any combination you're considering — major, possible double
+  major, and minors (up to twelve). Hold ⌘ (Mac) or Ctrl to select several.</label><br>
   <select name="path" multiple size="10" style="min-width: min(24rem, 100%); margin-top: .4rem;">
     {% for m in majors %}<option value="{{ m }}" {{ 'selected' if m in paths }}>{{ m }}</option>{% endfor %}
   </select>
@@ -17,27 +17,27 @@
 <h2>{{ pv['name'] }}</h2>
 {% if not pv['has_sections'] %}
 <p class="muted">Grouped by level — rerun the catalog scrape to unlock this program's
-tracks/specialization grouping. {{ pv['unrated'] }} listed courses lack feedback history.</p>
+tracks/specialization grouping. {{ pv['unrated'] }} listed courses are absent from our
+feedback coverage.</p>
 {% else %}
 <p class="muted">Grouped by the catalog's own requirement sections (tracks, specializations,
-minor). {{ pv['unrated'] }} listed courses lack feedback history.</p>
+minor). {{ pv['unrated'] }} listed courses are absent from our feedback coverage.</p>
 {% endif %}
 {% for sec_name, rows in pv['groups'] %}
 <h2 style="font-size:.95rem; color: var(--muted)">{{ sec_name }}</h2>
 <div class="scroll"><table>
-  <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>n</th><th>Prereqs</th>
-      <th>Likely Autumn ’26</th><th>Flags</th></tr>
+  <tr><th>Course</th><th>Rating</th><th>Hrs/wk</th><th>Distinct reports</th><th>Prereqs</th>
+      <th>Archived Autumn ’26 heuristic</th><th>Flags</th></tr>
   {% for r in rows %}
   <tr>
     <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:55] }}{% endif %}</a></td>
     <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
-    <td>{{ r['n_sections'] }}</td>
+    <td>{{ r['n_reports'] }}</td>
     <td class="muted">{% for d2, c2 in prereqs_by_code.get(r['dept'] ~ ' ' ~ r['course_id'], []) %}<a href="/course/{{ d2 }}/{{ c2 }}" title="{{ ctitle(d2, c2) }}">{{ d2 }} {{ c2 }}</a>{{ ', ' if not loop.last }}{% endfor %}</td>
-    <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%
-        {{ r['likely_instructor'] or '' }}</td>
+    <td>{% if r['p_autumn_2026'] is not none %}{{ (r['p_autumn_2026'] * 100)|round|int }}/100{% else %}—{% endif %}</td>
     <td>
-      {% if r['monopoly'] %}<span class="badge C">monopoly</span>{% endif %}
+      {% if r['monopoly'] %}<span class="badge C">one observed instructor</span>{% endif %}
       {% if r['crowd_pleaser'] and r['crowd_pleaser'] >= 40 %}<span class="badge warn">pleaser</span>{% endif %}
       {% if r['grading_pct'] and r['grading_pct'] >= 15 %}<span class="badge warn">grading {{ r['grading_pct'] }}%</span>{% endif %}
     </td>
@@ -47,28 +47,29 @@ minor). {{ pv['unrated'] }} listed courses lack feedback history.</p>
 {% endfor %}
 {% endfor %}
 
-<h2 id="core">Core requirements — pick your lotteries</h2>
-<p class="muted">For Hum, Sosc, and Civ you can't see instructor names at pre-registration —
-you're choosing a <i>pool</i>, not a professor. Compare the pools; enter the best lottery.</p>
+<h2 id="core">Core requirements — compare covered course histories</h2>
+<p class="muted">For Hum, Sosc, and Civ instructor names may be hidden at pre-registration.
+This view compares course-level aggregate histories; it does not estimate section assignments
+or the probability of receiving a class.</p>
 
 {% for sec in core_sections %}
 <div class="card">
   <h2 style="margin-top:0">{{ sec['label'] }}
     {% if sec['hidden'] %}<span class="badge B">names hidden at pre-reg</span>{% endif %}
-    <span class="muted" style="font-weight:400"> · {{ sec['n_total'] }} rated options,
-    pool median rating {{ '%.2f'|format(sec['median']) if sec['median'] else '—' }}</span>
+    <span class="muted" style="font-weight:400"> · {{ sec['n_total'] }} covered rated options,
+    median course rating {{ '%.2f'|format(sec['median']) if sec['median'] else '—' }}</span>
   </h2>
   <div class="scroll"><table>
-    <tr><th>Sequence / course</th><th>Rating</th><th>Hrs/wk</th><th>n</th>
-        <th>Instructors ever</th><th>Likely Autumn ’26</th></tr>
+    <tr><th>Sequence / course</th><th>Rating</th><th>Hrs/wk</th><th>Distinct reports</th>
+        <th>Recorded instructor identities</th><th>Archived Autumn ’26 score</th></tr>
     {% for r in sec['rows'] %}
     <tr>
       <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:55] }}{% endif %}</a></td>
       <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
       <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
-      <td>{{ r['n_sections'] }}</td>
+      <td>{{ r['n_reports'] }}</td>
       <td>{{ r['n_instructors'] }}</td>
-      <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%</td>
+      <td>{% if r['p_autumn_2026'] is not none %}{{ (r['p_autumn_2026'] * 100)|round|int }}/100{% else %}—{% endif %}</td>
     </tr>
     {% endfor %}
   </table></div>

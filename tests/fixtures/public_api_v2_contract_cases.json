@@ -1,0 +1,114 @@
+[
+  {
+    "name": "ordinary legacy surname",
+    "request": {
+      "courseTitle": "Sample philosophy course",
+      "courseId": "PHIL 25000",
+      "instructor": "Brooks",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "PHIL 25000",
+      "course_match": "matched",
+      "professor_match": "surname_only",
+      "course_metrics": true,
+      "professor_metrics": false
+    }
+  },
+  {
+    "name": "staff instructor",
+    "request": {
+      "courseTitle": "Sample humanities course",
+      "courseId": "HUMA 11500",
+      "instructor": "Staff",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "HUMA 11500",
+      "course_match": "matched",
+      "professor_match": "staff",
+      "course_metrics": true,
+      "professor_metrics": false
+    }
+  },
+  {
+    "name": "unknown instructor",
+    "request": {
+      "courseTitle": "Sample humanities course",
+      "courseId": "HUMA 11500",
+      "instructor": "No Such Faculty Member",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "HUMA 11500",
+      "course_match": "matched",
+      "professor_match": "not_found",
+      "course_metrics": true,
+      "professor_metrics": false
+    }
+  },
+  {
+    "name": "course outside coverage",
+    "request": {
+      "courseTitle": "Unknown course",
+      "courseId": "ZZZZ 99999",
+      "instructor": "Staff",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "ZZZZ 99999",
+      "course_match": "not_in_coverage",
+      "professor_match": "staff",
+      "course_metrics": false,
+      "professor_metrics": false
+    }
+  },
+  {
+    "name": "alternate listing supplies evidence",
+    "request": {
+      "courseTitle": "Cross-listed sample",
+      "courseId": "ZZZZ 99999",
+      "instructor": "Staff",
+      "otherListings": ["ANTH 10100"]
+    },
+    "expected": {
+      "courseId": "ANTH 10100",
+      "course_match": "matched",
+      "professor_match": "staff",
+      "course_metrics": true,
+      "professor_metrics": false
+    }
+  },
+  {
+    "name": "multiple resolved instructors",
+    "request": {
+      "courseTitle": "Multi-instructor sample",
+      "courseId": "HUMA 11500",
+      "instructor": "Benjamin Callard and Agnes Callard",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "HUMA 11500",
+      "course_match": "matched",
+      "professor_match": "resolved",
+      "course_metrics": true,
+      "professor_metrics": true
+    }
+  },
+  {
+    "name": "covered report with no numeric form",
+    "request": {
+      "courseTitle": "Elementary Latin",
+      "courseId": "LATN 10300",
+      "instructor": "Staff",
+      "otherListings": []
+    },
+    "expected": {
+      "courseId": "LATN 10300",
+      "course_match": "matched",
+      "professor_match": "staff",
+      "course_metrics": false,
+      "professor_metrics": false
+    }
+  }
+]

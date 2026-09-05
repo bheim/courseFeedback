@@ -2,11 +2,12 @@
 {% block title %}Pre-reg toolkit · Course Copilot{% endblock %}
 {% block content %}
 <h1>Pre-registration toolkit</h1>
-<p class="muted">Paste the courses you're considering. You can rank up to ten in My Planner —
-this ranks your candidates, flags the risks, and builds your 4-over-3 hedge.</p>
+<p class="muted">Paste the courses you're considering. This compares covered histories,
+applies a transparent heuristic flag score, and sketches an extra-course hedge when you
+plan to keep three. It does not model the registrar's allocation process.</p>
 
 <div class="card">
-<form method="get" action="/prereg">
+<form method="post" action="/prereg">
   <label class="muted">Candidate courses (any format — codes are detected)</label><br>
   <input class="big" type="text" name="candidates" value="{{ raw }}"
          placeholder="e.g. SOSC 12100, ECON 20000, MATH 20300, ARTH 22305, CMSC 14100">
@@ -22,23 +23,23 @@ this ranks your candidates, flags the risks, and builds your 4-over-3 hedge.</p>
 </div>
 
 {% if missing %}
-<p class="muted">No feedback history for: {{ missing|join(', ') }} — new courses; rank on instinct.</p>
+<p class="muted">Absent from our feedback coverage: {{ missing|join(', ') }}. This does not
+mean the course is new or has never been taught.</p>
 {% endif %}
 
 {% if entries %}
-<h2>Your candidates, ranked</h2>
+<h2>Your candidates, ranked by observed rating</h2>
 <div class="scroll"><table>
-  <tr><th>Rank</th><th>Course</th><th>Rating</th><th>Hrs</th><th>Offered?</th>
-      <th>Likely instructor</th><th>Risk</th><th>If dropped later</th></tr>
+  <tr><th>Rank</th><th>Course</th><th>Rating</th><th>Hrs</th><th>Archived offering score</th>
+      <th>Flag score</th><th>Observed recurrence</th></tr>
   {% for e in entries %}{% set r = e['sig'] %}
   <tr>
     <td><b>{{ loop.index }}</b></td>
     <td><a href="/course/{{ r['dept'] }}/{{ r['course_id'] }}">{{ r['dept'] }} {{ r['course_id'] }}{% if ctitle(r['dept'], r['course_id']) %} — {{ ctitle(r['dept'], r['course_id'])[:45] }}{% endif %}</a></td>
     <td>{{ '%.2f'|format(r['avg_rating']) if r['avg_rating'] else '—' }}</td>
     <td>{{ '%.1f'|format(r['avg_hours']) if r['avg_hours'] else '—' }}</td>
-    <td>{{ (r['p_autumn_2026'] * 100)|round|int if r['p_autumn_2026'] is not none else '—' }}%</td>
-    <td>{{ r['likely_instructor'] or '—' }}
-        {% if r['regime'] == 'B' %}<span class="badge B">pool draw</span>{% endif %}</td>
+    <td>{% if r['p_autumn_2026'] is not none %}{{ (r['p_autumn_2026'] * 100)|round|int }}/100{% else %}—{% endif %}
+        {% if r['regime'] == 'B' %}<span class="badge B">names hidden</span>{% endif %}</td>
     <td>{% if e['risk'] >= 35 %}<span class="badge warn">{{ e['risk'] }}</span>
         {% else %}<span class="badge A">{{ e['risk'] }}</span>{% endif %}
         <span class="muted">{{ e['reasons']|join('; ') }}</span></td>
@@ -46,34 +47,39 @@ this ranks your candidates, flags the risks, and builds your 4-over-3 hedge.</p>
   </tr>
   {% endfor %}
 </table></div>
-<p class="muted">In My Planner: rank these top-down, and rank <i>multiple sections</i> of your
-top choices before adding lower choices — the allocator tries your #1 first.</p>
+<p class="muted">Use the registrar's current instructions when building the actual ballot;
+this ranking does not simulate its allocation rules.</p>
 
 {% if hedge %}
-<h2>The 4-over-3 hedge</h2>
+<h2>Illustrative 4-over-3 hedge</h2>
 <div class="card">
   {% if hedge['worth_it'] %}
-  <p><b>Recommended.</b> Your riskiest keeper is
+  <p><b>Worth considering under this heuristic.</b> Your highest-flag keeper is
   <a href="/course/{{ hedge['riskiest']['sig']['dept'] }}/{{ hedge['riskiest']['sig']['course_id'] }}">{{ hedge['riskiest']['sig']['dept'] }} {{ hedge['riskiest']['sig']['course_id'] }}</a>
-  (risk {{ hedge['riskiest']['risk'] }}: {{ hedge['riskiest']['reasons']|join('; ') }}).</p>
+  (flag {{ hedge['riskiest']['risk'] }}: {{ hedge['riskiest']['reasons']|join('; ') }}).</p>
   {% else %}
-  <p><b>Optional this quarter</b> — none of your keepers is high-risk. A hedge still buys
-  a free look at a fourth course.</p>
+  <p><b>Optional under this heuristic</b> — none of your keepers has a high flag score.
+  An extra course may still provide more information before a decision.</p>
   {% endif %}
-  <p>Best hedge from your list:
+  <p>Suggested hedge from your list using observed recurrence, rating, and workload:
   <a href="/course/{{ hedge['pick']['sig']['dept'] }}/{{ hedge['pick']['sig']['course_id'] }}"><b>{{ hedge['pick']['sig']['dept'] }} {{ hedge['pick']['sig']['course_id'] }}</b></a>
   — {{ hedge['pick']['retake_text'] }}, rated
   {{ '%.2f'|format(hedge['pick']['sig']['avg_rating']) if hedge['pick']['sig']['avg_rating'] }},
   {{ '%.1f'|format(hedge['pick']['sig']['avg_hours']) if hedge['pick']['sig']['avg_hours'] }} hrs/wk.
-  Register all four, decide by Friday of week 3.</p>
+  Confirm the current quarter's registration, tuition, aid, and drop rules before carrying
+  an extra course.</p>
   <p>Trial-window load: <b>{{ hedge['trial_load'] }} hrs/week</b>
   {% if hedge['over_budget'] %}<span class="badge warn">over your {{ max_load|int }} budget —
   consider a lighter hedge or trust your top 3</span>
   {% else %}<span class="badge A">within your {{ max_load|int }} budget</span>{% endif %}</p>
-  <p class="muted"><b>Week-3 drop order</b> (cheapest first, by retakeability):
+  <p class="muted"><b>Heuristic review order</b> (more recurrent options first):
   {% for e in hedge['drop_order'] %}{{ e['sig']['dept'] }} {{ e['sig']['course_id'] }}{{ ' → ' if not loop.last }}{% endfor %}.
   Drop promptly once decided so the seat returns to the pool.</p>
+  <p class="muted">The flag score and hedge ordering are decision heuristics, not probabilities
+  or an optimization of expected grades.</p>
 </div>
+{% elif keep == 4 and entries %}
+<p class="muted">No extra-course hedge is generated when you plan to keep four classes.</p>
 {% elif entries|length and entries|length <= keep %}
 <p class="muted">Add more candidates than the {{ keep }} you'll keep to unlock the hedge.</p>
 {% endif %}

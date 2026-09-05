@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "artifact": "legacy-chrome-extension",
+  "source_directory": "courseFeedbackLaunch",
+  "source_repository": {
+    "url": "https://github.com/bheim/courseFeedback.git",
+    "branch": "claude/explore-code-data-x8tkpa",
+    "git_commit": "0f53d31b35c8a5ca527048048c962c33d6b312da",
+    "git_tree": "bcd4ac695cdae20ae2ae0a00e0a80c4d387ebfd1"
+  },
+  "extension": {
+    "name": "Course Feedback Extension",
+    "version": "3.0",
+    "manifest_version": 3,
+    "chrome_web_store_id": "fhmmbigjknknbmejcjbnkjjpfkbkndim",
+    "chrome_web_store_url": "https://chromewebstore.google.com/detail/course-feedback-extension/fhmmbigjknknbmejcjbnkjjpfkbkndim"
+  },
+  "files": [
+    {
+      "path": "background.js",
+      "size": 257,
+      "sha256": "377c855d5c31ca4733804ca81ccf9d314bf422e7847a0c5bce1185e19b943614"
+    },
+    {
+      "path": "courseScrape.js",
+      "size": 7292,
+      "sha256": "2147bda43fd741329b7b6910d5923c0ebd9cbbe4d63f1c9c7bff5a5a940c86a2"
+    },
+    {
+      "path": "external-link.svg",
+      "size": 561,
+      "sha256": "6c3d1544b39f15692db76f5a30b7373c6ea2b7630dc6a54a2fd076ea189e1b59"
+    },
+    {
+      "path": "manifest.json",
+      "size": 697,
+      "sha256": "7af6dfdbbe9b5c2208419015f2f916ebfa0a3a86531ae49f5600a9dd408f270c"
+    },
+    {
+      "path": "styles.css",
+      "size": 1035,
+      "sha256": "c698ce09e0e530194dc932c7501200ef3d074739a05ca16cdfa6c7ec7ba14d6f"
+    }
+  ]
+}
